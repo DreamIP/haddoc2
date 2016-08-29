@@ -32,3 +32,12 @@
 */ui_*.h
 *.autosave
 *.swp
+
+*/altera_mf/*
+*/lpm/*
+*.ini
+*.qdb
+*.qpg
+*.qtl
+*_vmake
+*_info
