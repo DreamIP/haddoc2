@@ -20,30 +20,29 @@ library ieee;
 	use	ieee.numeric_std.all;
 
 library work;
-	use work.conv_types.all;
+	use work.cnn_types.all;
 
 entity neighExtractor is
 
     generic(
-		PIXEL_SIZE			:	integer;
-		IMAGE_WIDTH   	    :	integer;
-		NEIGH_SIZE	      	:	integer
+		PIXEL_SIZE      :   integer;
+		IMAGE_WIDTH     :   integer;
+		NEIGH_SIZE      :   integer
 	);
 
     port(
-        in_data 	      	:	in 	std_logic_vector((PIXEL_SIZE-1) downto 0);
-        clk	      	        :	in 	std_logic;
-        reset_n		      	:	in	std_logic;
-        enable  	      	:	in	std_logic;
-        neigh		      	:	out	pix_array (0 to (NEIGH_SIZE * NEIGH_SIZE)- 1)
+        in_data         :	in 	std_logic_vector((PIXEL_SIZE-1) downto 0);
+        clk	            :	in 	std_logic;
+        reset_n	        :	in	std_logic;
+        enable          :	in	std_logic;
+        out_data        :	out	pixel_array (0 to (NEIGH_SIZE * NEIGH_SIZE)- 1)
     );
 end neighExtractor;
 
 architecture rtl of neighExtractor is
 
     -- signals
-    signal pixel_out        :   pixel_array(0 to NEIGH_SIZE-1);
-    signal pixel_out        :   pixel_array(0 to NEIGH_SIZE-1);
+    signal pixel_out    :   pixel_array(0 to NEIGH_SIZE-1);
 
     -- components
     component taps
@@ -73,7 +72,7 @@ architecture rtl of neighExtractor is
                 gen1_inst : taps
                 generic map(
                     PIXEL_SIZE  => PIXEL_SIZE,
-                    TAPS_WIDTH  => IMAGE_WIDTH,
+                    TAPS_WIDTH  => IMAGE_WIDTH - 1,
                     NEIGH_SIZE  => NEIGH_SIZE
                 )
                 port map(
@@ -82,7 +81,7 @@ architecture rtl of neighExtractor is
                     enable		=> enable,
                     in_data		=> in_data,
                     taps_data	=> out_data(0 to NEIGH_SIZE-1),
-                    out_data	=> pix_out(0)
+                    out_data	=> pixel_out(0)
                 );
             end generate gen_1;
 
@@ -91,33 +90,33 @@ architecture rtl of neighExtractor is
                 geni_inst : taps
                 generic map(
                     PIXEL_SIZE  => PIXEL_SIZE,
-                    TAPS_WIDTH  => IMAGE_WIDTH,
+                    TAPS_WIDTH  => IMAGE_WIDTH - 1,
                     NEIGH_SIZE  => NEIGH_SIZE
                 )
                 port map(
                     clk			=> clk,
                     reset_n		=> reset_n,
                     enable		=> enable,
-                    in_data		=> in_data,
+                    in_data		=> pixel_out(i-1),
                     taps_data	=> out_data(i * NEIGH_SIZE to NEIGH_SIZE*(i+1)-1),
-                    out_data	=> pix_out(i)
+                    out_data	=> pixel_out(i)
                 );
             end generate gen_i;
 
             -- Last line
-            gen_last : if i=0 generate
+            gen_last : if i= (NEIGH_SIZE-1) generate
                 gen_last_inst : taps
                 generic map(
                     PIXEL_SIZE  => PIXEL_SIZE,
-                    TAPS_WIDTH  => IMAGE_WIDTH,
+                    TAPS_WIDTH  => IMAGE_WIDTH - 1,
                     NEIGH_SIZE  => NEIGH_SIZE
                 )
                 port map(
                     clk			=> clk,
                     reset_n		=> reset_n,
                     enable		=> enable,
-                    in_data		=> in_data,
-                    taps_data	=> out_data((NEIGH_SIZE-1) * NEIGH_SIZE to NEIGH_SIZE*NEIGH_SIZE),
+                    in_data		=> pixel_out(i-1),
+                    taps_data	=> out_data((NEIGH_SIZE-1) * NEIGH_SIZE to NEIGH_SIZE*NEIGH_SIZE - 1),
                     out_data	=> OPEN
                 );
             end generate gen_last;
