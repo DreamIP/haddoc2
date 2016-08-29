@@ -1,0 +1,34 @@
+#Quartus rtus rules
+*/db/
+*/incremental_db/
+*.bak
+*.stp
+*/altera/*
+*/lpm/*
+*/work/*
+*.wlf
+*/output_files/
+
+# texmaker rules
+*.out
+*.log
+*.lof
+*.lol
+*.lot
+*.loc
+*.synctex.gz
+*.toc
+*.aux
+*.ps
+*.synctex.gz(busy)
+
+# g++/Qt rules
+*.o
+*/build-*/*
+*/build/*
+*/*.pro.user
+*/*.pro.user.*
+*moc_*
+*/ui_*.h
+*.autosave
+*.swp
