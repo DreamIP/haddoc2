@@ -23,15 +23,21 @@ proc c {} {
   vmap work work
 
 
+# --------------------------------------------------------------
+# vcom -93 -work work $path_to_projectfiles/cnn_types.vhd
+#   vcom -93 -work work $path_to_projectfiles/taps.vhd
+#   vcom -93 -work work $path_to_projectfiles/neighExtractor.vhd
+#   vcom -93 -work work ./neighExtractor_tb.vhd
+# --------------------------------------------------------------
+
 vcom -93 -work work $path_to_projectfiles/cnn_types.vhd
-  vcom -93 -work work $path_to_projectfiles/taps.vhd
-  vcom -93 -work work $path_to_projectfiles/neighExtractor.vhd
-  vcom -93 -work work ./neighExtractor_tb.vhd
+  vcom -93 -work work $path_to_projectfiles/convElement.vhd
+  vcom -93 -work work ./convElement_tb.vhd
 
 }
 
 proc s {} {
-  vsim -novopt -t 1ps -L altera_mf  -L cyclonex work.neighExtractor_tb
+  vsim -novopt -t 1ps -L altera_mf  -L cyclonex work.convElement_tb
 
   source auto_wave.tcl
   run 8000 ns
