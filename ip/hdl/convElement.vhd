@@ -62,14 +62,13 @@ architecture bhv of convElement is
                         sum := sum + mul(i);
                     end loop;
 
-                    if (sum(sum'left) = '1')	then
-    				    sum := (others => '0');
-    				end if;
-
-
+                    -- ReLu : Activation function must be applied AFTER summing all the convolutions of the neuron
+                    -- if (sum(sum'left) = '1')	then
+    				--     sum := (others => '0');
+    				-- end if;
                     sums	<=	sum;
                     norm_s  <=  to_integer (unsigned(norm_in));
-                    res     <=  sums SRL norm_s;
+                    res     <=  sums SRA norm_s;
 
                     data_out <= std_logic_vector (res(PIXEL_SIZE -1  downto 0));
                 end if;

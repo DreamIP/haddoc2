@@ -95,7 +95,7 @@ begin
     variable i	:	integer	:= 0;
     begin
         for i in 0 to 8 loop
-            s_data_in(i) <= std_logic_vector(to_unsigned(i,PIXEL_SIZE));
+            s_data_in(i) <= std_logic_vector(to_signed(i,PIXEL_SIZE));
             wait for 40 ns;
         end loop;
     end process;
@@ -104,7 +104,7 @@ begin
     variable i	:	integer	:= 0;
     begin
         for i in 0 to 8 loop
-            s_kernel_in(i) <= std_logic_vector(to_unsigned(1,PIXEL_SIZE));
+            s_kernel_in(i) <= std_logic_vector(to_signed(-1,PIXEL_SIZE));
             wait for 40 ns;
         end loop;
     end process;
