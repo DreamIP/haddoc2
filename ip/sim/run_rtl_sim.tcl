@@ -31,13 +31,13 @@ proc c {} {
 # --------------------------------------------------------------
 
 vcom -93 -work work $path_to_projectfiles/cnn_types.vhd
-  vcom -93 -work work $path_to_projectfiles/convElement.vhd
-  vcom -93 -work work ./convElement_tb.vhd
+  vcom -93 -work work $path_to_projectfiles/sumFeatures.vhd
+  vcom -93 -work work ./sumFeatures_tb.vhd
 
 }
 
 proc s {} {
-  vsim -novopt -t 1ps -L altera_mf  -L cyclonex work.convElement_tb
+  vsim -novopt -t 1ps -L altera_mf  -L cyclonex work.sumFeatures_tb
 
   source auto_wave.tcl
   run 8000 ns
