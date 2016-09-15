@@ -5,15 +5,15 @@ library ieee;
 library work;
 	use work.cnn_types.all;
 
-entity sumFeatures is
+entity sumElement is
 
     generic(
         PIXEL_SIZE      :   integer;
-        NB_CONVED       :   integer
+        NB_IN_FLOWS     :   integer
     );
 
     port(
-        in_data         :   pixel_array (0 to NB_CONVED - 1);
+        in_data         :   pixel_array (0 to NB_IN_FLOWS - 1);
         clk	            :	in 	std_logic;
         reset_n	        :	in	std_logic;
         enable          :	in	std_logic;
@@ -21,15 +21,15 @@ entity sumFeatures is
     );
 end entity;
 --
-architecture bhv of sumFeatures is
+architecture bhv of sumElement is
 
     -- Gestion de l'overflow de manière très approximative ...
-    type pixel_array_signed is array (0 to NB_CONVED - 1) of signed (PIXEL_SIZE -1 downto 0);
+    type pixel_array_signed is array (0 to NB_IN_FLOWS - 1) of signed (PIXEL_SIZE -1 downto 0);
     signal	data_s	    :	pixel_array_signed ;
     signal  sum_s       :   signed (PIXEL_SIZE - 1 downto 0);
 
     begin
-    CAST : for i in 0 to (NB_CONVED - 1) generate
+    CAST : for i in 0 to (NB_IN_FLOWS - 1) generate
         data_s(i)      <=  signed(in_data(i));
     end generate;
 
@@ -42,7 +42,7 @@ architecture bhv of sumFeatures is
             elsif (RISING_EDGE(clk)) then
                 if (enable='1') then
 
-                    SUM_LOOP : for i in 0 to (NB_CONVED - 1) loop
+                    SUM_LOOP : for i in 0 to (NB_IN_FLOWS - 1) loop
                         sum := sum + data_s(i);
                     end loop;
 
