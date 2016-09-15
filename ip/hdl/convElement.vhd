@@ -17,34 +17,35 @@ entity convElement is
         reset_n     :   in  std_logic;
         enable      :   in  std_logic;
 
-        data_in     :   in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
-        kernel_in   :   in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
-        norm_in     :   in  std_logic_vector(PIXEL_SIZE-1 downto 0);
-        data_out    :   out std_logic_vector(PIXEL_SIZE-1 downto 0)
+        in_data     :   in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
+        in_kernel   :   in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
+        in_norm     :   in  std_logic_vector(PIXEL_SIZE-1 downto 0);
+
+        out_data    :   out std_logic_vector(PIXEL_SIZE-1 downto 0)
     );
 end convElement;
 
 architecture bhv of convElement is
 
     -- Signals
-    type	pixel_array_1 is array (0 to KERNEL_SIZE * KERNEL_SIZE - 1) of signed (PIXEL_SIZE downto 0);
-	type	pixel_array_2 is array (0 to KERNEL_SIZE * KERNEL_SIZE - 1) of signed (PIXEL_SIZE + PIXEL_SIZE +1 downto 0);
-	signal	data_s	    :	pixel_array_1 ;
-	signal	kernel_s	:	pixel_array_1 ;
+    type	pixel_array_s1 is array (0 to KERNEL_SIZE * KERNEL_SIZE - 1) of signed (PIXEL_SIZE downto 0);
+	type	pixel_array_s2 is array (0 to KERNEL_SIZE * KERNEL_SIZE - 1) of signed (PIXEL_SIZE + PIXEL_SIZE +1 downto 0);
+	signal	data_s	    :	pixel_array_s1 ;
+	signal	kernel_s	:	pixel_array_s1 ;
 	signal	sums		:	signed (PIXEL_SIZE + PIXEL_SIZE +1 downto 0);
 	signal	norm_s		:	integer range 0 to PIXEL_SIZE-1;
 	signal 	res    		:	signed (PIXEL_SIZE + PIXEL_SIZE + 1  downto 0);
 
     begin
         SIGNED_CAST     :   for i in 0 to ( KERNEL_SIZE * KERNEL_SIZE - 1 ) generate
-            data_s(i)      <=  signed(data_s(i)(data_s(i)'LEFT') & (data_in(i)));
-            kernel_s(i)    <=  signed(kernel_in(i)(kernel_in(i)'LEFT) & (kernel_in(i)));
+            data_s(i)      <=  signed(data_s(i)(data_s(i)'LEFT') & (in_data(i)));
+            kernel_s(i)    <=  signed(in_kernel(i)(in_kernel(i)'LEFT) & (in_kernel(i)));
     end generate;
 
     process(clk)
         -- Variables
 
-        variable mul    :   pixel_array_2;
+        variable mul    :   pixel_array_s2;
         variable sum    :   signed (PIXEL_SIZE + PIXEL_SIZE + 1 downto 0):= (others=>'0');
 
         begin
@@ -71,8 +72,8 @@ architecture bhv of convElement is
             end if;
     end process;
 
-    norm_s  <=  to_integer (unsigned(norm_in));
+    norm_s  <=  to_integer (unsigned(in_norm));
     res     <=  sums SRA norm_s;
-    data_out <= std_logic_vector (res(PIXEL_SIZE -1  downto 0));
+    out_data <= std_logic_vector (res(PIXEL_SIZE -1  downto 0));
 
 end bhv;
