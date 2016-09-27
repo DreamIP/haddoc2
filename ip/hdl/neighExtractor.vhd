@@ -7,10 +7,10 @@
 ---------------------------------------------------------------------------------
 
 --                          ------------------
---                         |                  |
---          in_data    --->|                  | ---> out_data
---          enable     --->|        NE        |(pixel_array of size NEIGH_SIZE)
---          reset_n    --->|                  |
+--                         |                  | ________|\
+--          in_data    --->|                  | ________  > out_data
+--          enable     --->|        NE        |         |/
+--          reset_n    --->|                  |(pixel_array of size NEIGH_SIZE)
 --          clk        --->|                  |
 --                          ------------------
 
