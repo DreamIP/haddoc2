@@ -42,6 +42,8 @@ architecture bhv of sumElement is
             elsif (RISING_EDGE(clk)) then
                 if (enable='1') then
 
+                    sum     := (others=>'0');
+
                     SUM_LOOP : for i in 0 to (NB_IN_FLOWS - 1) loop
                         sum := sum + data_s(i);
                     end loop;
@@ -51,7 +53,6 @@ architecture bhv of sumElement is
                     end if;
 
                     sum_s	<=	sum;
-                    sum := (others=>'0');
                 end if;
             end if;
         end process;

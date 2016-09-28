@@ -62,9 +62,8 @@ architecture tb of neighExtractor_tb is
 		--	STIMULUS
 		---------------------------------------------------------
 
-        -- Clock
+        -- Clock & Enable
         s_enable 	<=	'1' ;
-
         clk_stim : process
             begin
                 s_clk <= '1';

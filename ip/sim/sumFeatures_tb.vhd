@@ -5,15 +5,15 @@ library ieee;
 library work;
 	use work.cnn_types.all;
 
-entity sumFeatures_tb is
+entity sumElement_tb is
 end entity;
 
-architecture tb of sumFeatures_tb is
+architecture tb of sumElement_tb is
 
     ---------------------------------------------------------
     --	C.U.T
     ---------------------------------------------------------
-    component sumFeatures is
+    component sumElement is
 
         generic(
             PIXEL_SIZE      :   integer;
@@ -43,7 +43,7 @@ architecture tb of sumFeatures_tb is
     --------------------------------------------------------
     --	C.U.T INSTANSTATION
     ---------------------------------------------------------
-        cut : sumFeatures
+        cut : sumElement
         generic map(
             PIXEL_SIZE  => 8,
             NB_CONVED   => 5

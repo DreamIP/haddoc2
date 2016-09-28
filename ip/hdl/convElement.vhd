@@ -38,9 +38,9 @@ architecture bhv of convElement is
 
     begin
         SIGNED_CAST     :   for i in 0 to ( KERNEL_SIZE * KERNEL_SIZE - 1 ) generate
-            data_s(i)      <=  signed(data_s(i)(data_s(i)'LEFT') & (in_data(i)));
+            data_s(i)      <=  signed(in_data(i)(in_data(i)'LEFT) & (in_data(i)));
             kernel_s(i)    <=  signed(in_kernel(i)(in_kernel(i)'LEFT) & (in_kernel(i)));
-    end generate;
+        end generate;
 
     process(clk)
         -- Variables
@@ -58,7 +58,8 @@ architecture bhv of convElement is
                     Product : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE-1) loop
                         mul(i) := data_s(i) * kernel_s(i);
                     end loop;
-
+                    
+                    sum     := (others=>'0');
                     Summation : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE-1) loop
                         sum := sum + mul(i);
                     end loop;
@@ -73,7 +74,7 @@ architecture bhv of convElement is
     end process;
 
     norm_s  <=  to_integer (unsigned(in_norm));
-    res     <=  sums SRA norm_s;
+    res     <=  SHIFT_RIGHT (sums,norm_s);
     out_data <= std_logic_vector (res(PIXEL_SIZE -1  downto 0));
 
 end bhv;
