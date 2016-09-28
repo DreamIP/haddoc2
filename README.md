@@ -1,4 +1,4 @@
-# IP Library for CNNs
+# HADDoC2 : Hardware Automated Dataflow Description of CNNs 
 
 This work introduces a software tool to generate hardware description of a neural network respecting the dataflow semantics.
 - "ip" directory contains the VHDL design files that will be instantiated during the generation process.
