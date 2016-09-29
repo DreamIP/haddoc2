@@ -11,24 +11,30 @@ proc c_lib {} {
 }
 
 proc c {} {
-    set path_to_ips /home/kamel/dev/CNN/ip/hdl
-    set path_to_projectfiles /home/kamel/dev/CNN/example/hdl
+    set path_to_ips /home/kamel/dev/haddoc2/ip/hdl
+    set path_to_projectfiles /home/kamel/dev/haddoc2/example/hdl
     vlib work
     vmap work work
 
     vcom -93 -work work $path_to_ips/cnn_types.vhd
     vcom -93 -work work $path_to_ips/taps.vhd
     vcom -93 -work work $path_to_ips/neighExtractor.vhd
-    vcom -93 -work work $path_to_ips/convElement.vhd
-    vcom -93 -work work $path_to_ips/sumElement.vhd
+    vcom -93 -work work $path_to_ips/maxElement.vhd
 
-    vcom -93 -work work $path_to_projectfiles/FirstLayer.vhd
-    vcom -93 -work work ./FirstLayer_tb.vhd
+    vcom -93 -work work $path_to_projectfiles/PoolLayer1.vhd
+    vcom -93 -work work -work work ./PoolLayer1_tb.vhd
+
+    # vcom -93 -work work $path_to_ips/convElement.vhd
+    # vcom -93 -work work $path_to_ips/sumElement.vhd
+
+    # vcom -93 -work work $path_to_projectfiles/FirstLayer.vhd
+    # vcom -93 -work work ./FirstLayer_tb.vhd
+
 
 }
 
 proc s {} {
-  vsim -novopt -t 1ps -L altera_mf  -L cyclonex work.FirstLayer_tb
+  vsim -novopt -t 1ps -L altera_mf  -L cyclonex work.PoolLayer1_tb
 
   source auto_wave.tcl
   run 8000 ns

@@ -111,7 +111,7 @@ architecture tb of FirstLayer_tb is
         end process;
 
 
-        -- VALUES : BLUR EVERYWHERE ---------------------------------------------------------------------
+        -- VALUES : BLUR EVERYWHERE --------------------------------
         -- Kernel 1
         s_w_11(0) <= std_logic_vector(to_unsigned(1,8));
         s_w_11(1) <= std_logic_vector(to_unsigned(1,8));
@@ -145,7 +145,7 @@ architecture tb of FirstLayer_tb is
         s_w_13(7) <= std_logic_vector(to_unsigned(1,8));
         s_w_13(8) <= std_logic_vector(to_unsigned(1,8));
 
-        -- NORMS : devide by 9 = shift 
+        -- NORMS : devide by 9 = shift
         s_n_11    <= std_logic_vector(to_unsigned(3,8));
         s_n_12    <= std_logic_vector(to_unsigned(3,8));
         s_n_13    <= std_logic_vector(to_unsigned(3,8));

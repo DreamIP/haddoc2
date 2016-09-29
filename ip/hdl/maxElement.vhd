@@ -17,7 +17,7 @@ entity maxElement is
     );
 
     port (
-        in_data         :   pixel_array (0 to NB_IN_FLOWS - 1);
+        in_data         :   pixel_array (0 to NB_IN_FLOWS * NB_IN_FLOWS - 1);
         clk	            :	in 	std_logic;
         reset_n	        :	in	std_logic;
         enable          :	in	std_logic;
@@ -29,8 +29,10 @@ architecture bhv of maxElement is
     -------------------------------------------
     -- SIGNALS
     -------------------------------------------
-    signal	signed_data	    :	pixel_array_signed ;
+    type	pixel_array_signed   is array (0 to NB_IN_FLOWS * NB_IN_FLOWS -1 ) of signed (PIXEL_SIZE-1 downto 0);
+    signal	signed_data	    :	pixel_array_signed;
     signal  s_max           :   std_logic_vector(PIXEL_SIZE-1 downto 0);
+    constant STRIDE         :   unsigned := "10";
 
     begin
     CAST : for i in 0 to (NB_IN_FLOWS - 1) generate
@@ -40,22 +42,31 @@ architecture bhv of maxElement is
     -- Max
     process(clk)
         variable v_max : signed (PIXEL_SIZE - 1 downto 0);
+        variable cmp   : unsigned (1 downto 0) :="00"; --Gestion des strides
         begin
             if (reset_n ='0') then
                 v_max := (others=>'0');
+                cmp   := (others=>'0');
             elsif (RISING_EDGE(clk)) then
                 if (enable='1') then
+                    if(cmp < STRIDE) then
 
-                    MAX_LOOP : for i in 0 to (NB_IN_FLOWS - 1) loop
-                        if (signed_data(i) > v_max) then
-                            v_max := signed_data(i);
-                        end if;
-                    end loop;
+                        cmp := cmp + "01";
+                        v_max :=signed_data(0);
 
-                out_data <= v_max;
-                v_max := (others=>'0');
+                        MAX_LOOP : for i in 0 to (NB_IN_FLOWS * NB_IN_FLOWS - 1) loop
+                            if (signed_data(i) > v_max) then
+                                v_max := signed_data(i);
+                            end if;
+                        end loop;
+
+                        s_max <= std_logic_vector(v_max);
+                    else
+                        cmp := "00";
+                    end if;
                 end if;
             end if;
+        v_max := (others=>'0');
         end process;
-
+        out_data <=s_max;
 end bhv;

@@ -7,9 +7,9 @@ library work;
 
 entity FirstLayer is
   generic(
-      PIXEL_SIZE    :   integer;
-      IMAGE_WIDTH   :   integer;
-      KERNEL_SIZE   :   integer
+      PIXEL_SIZE    :   integer :=8;
+      IMAGE_WIDTH   :   integer :=254;
+      KERNEL_SIZE   :   integer :=3
 );
 
   port(
