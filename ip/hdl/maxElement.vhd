@@ -13,11 +13,11 @@ entity maxElement is
 
     generic(
         PIXEL_SIZE      :   integer;
-        NB_IN_FLOWS     :   integer
+        KERNEL_SIZE     :   integer
     );
 
     port (
-        in_data         :   pixel_array (0 to NB_IN_FLOWS * NB_IN_FLOWS - 1);
+        in_data         :   pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
         clk	            :	in 	std_logic;
         reset_n	        :	in	std_logic;
         enable          :	in	std_logic;
@@ -29,13 +29,13 @@ architecture bhv of maxElement is
     -------------------------------------------
     -- SIGNALS
     -------------------------------------------
-    type	pixel_array_signed   is array (0 to NB_IN_FLOWS * NB_IN_FLOWS -1 ) of signed (PIXEL_SIZE-1 downto 0);
+    type	pixel_array_signed   is array (0 to KERNEL_SIZE * KERNEL_SIZE -1 ) of signed (PIXEL_SIZE-1 downto 0);
     signal	signed_data	    :	pixel_array_signed;
     signal  s_max           :   std_logic_vector(PIXEL_SIZE-1 downto 0);
     constant STRIDE         :   unsigned := "10";
 
     begin
-    CAST : for i in 0 to (NB_IN_FLOWS - 1) generate
+    CAST : for i in 0 to (KERNEL_SIZE - 1) generate
         signed_data(i)      <=  signed(in_data(i));
     end generate;
 
@@ -54,7 +54,7 @@ architecture bhv of maxElement is
                         cmp := cmp + "01";
                         v_max :=signed_data(0);
 
-                        MAX_LOOP : for i in 0 to (NB_IN_FLOWS * NB_IN_FLOWS - 1) loop
+                        MAX_LOOP : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) loop
                             if (signed_data(i) > v_max) then
                                 v_max := signed_data(i);
                             end if;
@@ -69,4 +69,7 @@ architecture bhv of maxElement is
         v_max := (others=>'0');
         end process;
         out_data <=s_max;
+        
+        -- Gestion de out_valid : Pour le moment, clone enable
+        out_valid <= enable;
 end bhv;

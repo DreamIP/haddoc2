@@ -56,6 +56,8 @@ architecture bhv of sumElement is
                 end if;
             end if;
         end process;
-
         out_data <= std_logic_vector (sum_s);
+        
+        -- Gestion de out_valid : Pour le moment, clone enable
+        out_valid <= enable;
 end bhv;

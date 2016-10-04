@@ -27,15 +27,15 @@ entity taps  is
 	generic (
         PIXEL_SIZE		:	integer;
 		TAPS_WIDTH		:	integer;
-		NEIGH_SIZE		:	integer
+		KERNEL_SIZE		:	integer
 	);
 
 	port (
 		clk				:	in	std_logic;
 		reset_n			:	in	std_logic;
-		enable			:	in	std_logic;
+		enable		    :	in	std_logic;
 		in_data			:	in	std_logic_vector (PIXEL_SIZE-1 downto 0);
-		taps_data		:	out	pixel_array (0 to NEIGH_SIZE -1 );
+		taps_data		:	out	pixel_array (0 to KERNEL_SIZE -1 );
 		out_data		:	out	std_logic_vector (PIXEL_SIZE-1 downto 0)
 	);
 end taps;
@@ -59,7 +59,7 @@ architecture bhv of taps is
 			elsif (rising_edge(clk)) then
 
 				if (enable='1') then
-                    taps_data <= cell(0 to NEIGH_SIZE-1);
+                    taps_data <= cell(0 to KERNEL_SIZE-1);
 					cell(0)	<=	in_data;
 					for i in 1 to (TAPS_WIDTH-1) loop
 						cell(i) <= cell(i-1);
