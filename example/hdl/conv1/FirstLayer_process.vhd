@@ -38,7 +38,7 @@ entity FirstLayer_process is
   );
 end entity;
 
-architecture rtl of FirstLayer_process is
+architecture STRUCTURAL of FirstLayer_process is
     --------------------------------------------------------------------------------
     -- COMPONENTS
     --------------------------------------------------------------------------------

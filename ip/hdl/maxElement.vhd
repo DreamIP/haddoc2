@@ -69,7 +69,7 @@ architecture bhv of maxElement is
         v_max := (others=>'0');
         end process;
         out_data <=s_max;
-        
+
         -- Gestion de out_valid : Pour le moment, clone enable
         out_valid <= enable;
 end bhv;

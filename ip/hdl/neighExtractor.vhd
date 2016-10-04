@@ -113,7 +113,7 @@ architecture rtl of neighExtractor is
 	end component;
 
 	signal all_valid    :  std_logic;
-	signal s_valid    :  std_logic;
+	signal s_valid      :  std_logic;
 	signal tmp_dv    	:  std_logic;
 	signal tmp_fv    	:  std_logic;
 
@@ -188,7 +188,7 @@ architecture rtl of neighExtractor is
     -- Manage out_dv and out_fv
     --------------------------------------------------------------------------
 
-    -- Delay untill all the taps latches are written on 
+    -- Delay untill all the taps latches are written on
     dv_proc : process(clk)
     -- 10 bits is enought to bufferize 1024 Pixels
     variable cmp : unsigned (9 downto 0) :=(others => '0');
