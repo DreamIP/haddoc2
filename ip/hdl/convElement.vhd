@@ -93,7 +93,7 @@ architecture bhv of convElement is
     out_data     <= std_logic_vector (res_unsigned);
 
     --------------------------------------------------------------------------
-    -- Manage out_dv and out_fv : for now, only bufferize in_dv and in_fv
+    -- Manage out_dv and out_fv : for now, only clone in_dv and in_fv
     --------------------------------------------------------------------------
 	out_dv <= in_dv;
 	out_fv <= in_fv;

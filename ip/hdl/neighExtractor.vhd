@@ -10,7 +10,7 @@
 --          reset_n    --->|                  |
 --          clk        --->|                  |
 --          enable     --->|                  |
---          			   |                  |---> out_data (pixel_array of size KERNEL_SIZE)
+--          			   |                  |---> out_data (pixel_array of size KERNEL_SIZE²)
 --          			   |        NE        |---> out_dv
 --          			   |                  |---> out_fv
 --          in_data    --->|                  |---> out_valid
@@ -19,6 +19,30 @@
 --          			   |				  |
 --							------------------
 
+--                        out_data(0)      out_data(1)      out_data(2)
+--                           ^                 ^                 ^
+--                           |                 |                 |
+--               -------     |     -------     |     -------     |    ---------------------------
+--              |        |   |    |        |   |    |        |   |   |                           |
+--  in_data --->|        |---|--> |        |---|--> |        |---|-->|          BUFFER           |---> to_P1
+--              |        |        |        |        |        |       |                           |
+--               -------           -------           -------          ---------------------------
+--                        out_data(3)      out_data(4)      out_data(5)
+--                           ^                 ^                 ^
+--                           |                 |                 |
+--               -------     |     -------     |     -------     |    ---------------------------
+--              |        |   |    |        |   |    |        |   |   |                           |
+--  P1      --->|        |---|--> |        |---|--> |        |---|-->|          BUFFER           |---> to_P2
+--              |        |        |        |        |        |       |                           |
+--               -------           -------           -------          ---------------------------
+--                        out_data(6)      out_data(7)      out_data(8)
+--                           ^                 ^                 ^
+--                           |                 |                 |
+--               -------     |     -------     |     -------     |    ---------------------------
+--              |        |   |    |        |   |    |        |   |   |                           |
+--  P2      --->|        |---|--> |        |---|--> |        |---|-->|          BUFFER           |---> OPEN
+--              |        |        |        |        |        |       |                           |
+--               -------           -------           -------          ---------------------------
 
 library ieee;
 	use	ieee.std_logic_1164.all;
@@ -161,10 +185,12 @@ architecture rtl of neighExtractor is
 
 
     --------------------------------------------------------------------------
-    -- Manage out_dv and out_fv : for now, only bufferize in_dv and in_fv
+    -- Manage out_dv and out_fv
     --------------------------------------------------------------------------
 
+    -- Delay untill all the taps latches are written on 
     dv_proc : process(clk)
+    -- 10 bits is enought to bufferize 1024 Pixels
     variable cmp : unsigned (9 downto 0) :=(others => '0');
     begin
         if (reset_n = '0') then
