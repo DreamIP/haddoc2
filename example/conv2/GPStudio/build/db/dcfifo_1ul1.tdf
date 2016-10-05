@@ -1,0 +1,162 @@
+--dcfifo_mixed_widths CARRY_CHAIN="MANUAL" CARRY_CHAIN_LENGTH=48 DEVICE_FAMILY="Cyclone III" IGNORE_CARRY_BUFFERS="OFF" LPM_NUMWORDS=32768 LPM_SHOWAHEAD="OFF" LPM_WIDTH=16 LPM_WIDTH_R=16 LPM_WIDTHU=15 LPM_WIDTHU_R=15 OVERFLOW_CHECKING="ON" RDSYNC_DELAYPIPE=4 READ_ACLR_SYNCH="OFF" UNDERFLOW_CHECKING="ON" USE_EAB="ON" WRITE_ACLR_SYNCH="OFF" WRSYNC_DELAYPIPE=4 aclr data q rdclk rdempty rdreq rdusedw wrclk wrfull wrreq wrusedw CYCLONEII_M4K_COMPATIBILITY="ON" INTENDED_DEVICE_FAMILY="Cyclone III" LOW_POWER_MODE="AUTO" ALTERA_INTERNAL_OPTIONS=AUTO_SHIFT_REGISTER_RECOGNITION=OFF
+--VERSION_BEGIN 13.1 cbx_a_gray2bin 2013:10:17:04:07:49:SJ cbx_a_graycounter 2013:10:17:04:07:49:SJ cbx_altdpram 2013:10:17:04:07:49:SJ cbx_altsyncram 2013:10:17:04:07:49:SJ cbx_cycloneii 2013:10:17:04:07:49:SJ cbx_dcfifo 2013:10:17:04:07:49:SJ cbx_fifo_common 2013:10:17:04:07:49:SJ cbx_lpm_add_sub 2013:10:17:04:07:49:SJ cbx_lpm_compare 2013:10:17:04:07:49:SJ cbx_lpm_counter 2013:10:17:04:07:49:SJ cbx_lpm_decode 2013:10:17:04:07:49:SJ cbx_lpm_mux 2013:10:17:04:07:49:SJ cbx_mgl 2013:10:17:04:34:36:SJ cbx_scfifo 2013:10:17:04:07:49:SJ cbx_stratix 2013:10:17:04:07:49:SJ cbx_stratixii 2013:10:17:04:07:49:SJ cbx_stratixiii 2013:10:17:04:07:49:SJ cbx_stratixv 2013:10:17:04:07:49:SJ cbx_util_mgl 2013:10:17:04:07:49:SJ  VERSION_END
+
+
+-- Copyright (C) 1991-2013 Altera Corporation
+--  Your use of Altera Corporation's design tools, logic functions 
+--  and other software and tools, and its AMPP partner logic 
+--  functions, and any output files from any of the foregoing 
+--  (including device programming or simulation files), and any 
+--  associated documentation or information are expressly subject 
+--  to the terms and conditions of the Altera Program License 
+--  Subscription Agreement, Altera MegaCore Function License 
+--  Agreement, or other applicable license agreement, including, 
+--  without limitation, that your use is for the sole purpose of 
+--  programming logic devices manufactured by Altera and sold by 
+--  Altera or its authorized distributors.  Please refer to the 
+--  applicable agreement for further details.
+
+
+FUNCTION a_gray2bin_3hb (gray[15..0])
+RETURNS ( bin[15..0]);
+FUNCTION a_graycounter_267 (aclr, clock, cnt_en)
+RETURNS ( q[15..0]);
+FUNCTION a_graycounter_ujc (aclr, clock, cnt_en)
+RETURNS ( q[15..0]);
+FUNCTION altsyncram_fl31 (aclr1, address_a[14..0], address_b[14..0], addressstall_b, clock0, clock1, clocken1, data_a[15..0], wren_a)
+RETURNS ( q_b[15..0]);
+FUNCTION dffpipe_0f9 (clock, clrn, d[15..0])
+RETURNS ( q[15..0]);
+FUNCTION alt_synch_pipe_1md (clock, clrn, d[15..0])
+RETURNS ( q[15..0]);
+FUNCTION alt_synch_pipe_2md (clock, clrn, d[15..0])
+RETURNS ( q[15..0]);
+FUNCTION cmpr_k66 (dataa[15..0], datab[15..0])
+RETURNS ( aeb);
+
+--synthesis_resources = lut 74 M9K 64 reg 224 
+OPTIONS ALTERA_INTERNAL_OPTION = "AUTO_SHIFT_REGISTER_RECOGNITION=OFF;REMOVE_DUPLICATE_REGISTERS=OFF;SYNCHRONIZER_IDENTIFICATION=OFF;SYNCHRONIZATION_REGISTER_CHAIN_LENGTH = 2;suppress_da_rule_internal=d101;suppress_da_rule_internal=d102;suppress_da_rule_internal=d103;{-to wrptr_g} suppress_da_rule_internal=S102;{-to wrptr_g} POWER_UP_LEVEL=LOW;-name CUT ON -from rdptr_g -to ws_dgrp|dffpipe_2f9:dffpipe18|dffe19a;-name SDC_STATEMENT ""set_false_path -from *rdptr_g* -to *ws_dgrp|dffpipe_2f9:dffpipe18|dffe19a* "";-name CUT ON -from delayed_wrptr_g -to rs_dgwp|dffpipe_1f9:dffpipe15|dffe16a;-name SDC_STATEMENT ""set_false_path -from *delayed_wrptr_g* -to *rs_dgwp|dffpipe_1f9:dffpipe15|dffe16a* """;
+
+SUBDESIGN dcfifo_1ul1
+( 
+	aclr	:	input;
+	data[15..0]	:	input;
+	q[15..0]	:	output;
+	rdclk	:	input;
+	rdempty	:	output;
+	rdreq	:	input;
+	rdusedw[14..0]	:	output;
+	wrclk	:	input;
+	wrfull	:	output;
+	wrreq	:	input;
+	wrusedw[14..0]	:	output;
+) 
+VARIABLE 
+	rdptr_g_gray2bin : a_gray2bin_3hb;
+	rs_dgwp_gray2bin : a_gray2bin_3hb;
+	wrptr_g_gray2bin : a_gray2bin_3hb;
+	ws_dgrp_gray2bin : a_gray2bin_3hb;
+	rdptr_g1p : a_graycounter_267;
+	wrptr_g1p : a_graycounter_ujc;
+	fifo_ram : altsyncram_fl31;
+	delayed_wrptr_g[15..0] : dffe;
+	rdptr_g[15..0] : dffe;
+	wrptr_g[15..0] : dffe
+		WITH (
+			power_up = "low"
+		);
+	rs_brp : dffpipe_0f9;
+	rs_bwp : dffpipe_0f9;
+	rs_dgwp : alt_synch_pipe_1md;
+	ws_brp : dffpipe_0f9;
+	ws_bwp : dffpipe_0f9;
+	ws_dgrp : alt_synch_pipe_2md;
+	rdusedw_sub_dataa[15..0]	:	WIRE;
+	rdusedw_sub_datab[15..0]	:	WIRE;
+	rdusedw_sub_result[15..0]	:	WIRE;
+	wrusedw_sub_dataa[15..0]	:	WIRE;
+	wrusedw_sub_datab[15..0]	:	WIRE;
+	wrusedw_sub_result[15..0]	:	WIRE;
+	rdempty_eq_comp : cmpr_k66;
+	wrfull_eq_comp : cmpr_k66;
+	int_rdempty	: WIRE;
+	int_wrfull	: WIRE;
+	ram_address_a[14..0]	: WIRE;
+	ram_address_b[14..0]	: WIRE;
+	valid_rdreq	: WIRE;
+	valid_wrreq	: WIRE;
+	wrptr_gs[15..0]	: WIRE;
+
+BEGIN 
+	rdptr_g_gray2bin.gray[15..0] = rdptr_g[15..0].q;
+	rs_dgwp_gray2bin.gray[15..0] = rs_dgwp.q[15..0];
+	wrptr_g_gray2bin.gray[15..0] = wrptr_g[15..0].q;
+	ws_dgrp_gray2bin.gray[15..0] = ws_dgrp.q[15..0];
+	rdptr_g1p.aclr = aclr;
+	rdptr_g1p.clock = rdclk;
+	rdptr_g1p.cnt_en = valid_rdreq;
+	wrptr_g1p.aclr = aclr;
+	wrptr_g1p.clock = wrclk;
+	wrptr_g1p.cnt_en = valid_wrreq;
+	fifo_ram.aclr1 = aclr;
+	fifo_ram.address_a[] = ram_address_a[];
+	fifo_ram.address_b[] = ram_address_b[];
+	fifo_ram.addressstall_b = (! valid_rdreq);
+	fifo_ram.clock0 = wrclk;
+	fifo_ram.clock1 = rdclk;
+	fifo_ram.clocken1 = valid_rdreq;
+	fifo_ram.data_a[] = data[];
+	fifo_ram.wren_a = valid_wrreq;
+	delayed_wrptr_g[].clk = wrclk;
+	delayed_wrptr_g[].clrn = (! aclr);
+	delayed_wrptr_g[].d = wrptr_g[].q;
+	rdptr_g[].clk = rdclk;
+	rdptr_g[].clrn = (! aclr);
+	rdptr_g[].d = rdptr_g1p.q[];
+	rdptr_g[].ena = valid_rdreq;
+	wrptr_g[].clk = wrclk;
+	wrptr_g[].clrn = (! aclr);
+	wrptr_g[].d = wrptr_g1p.q[];
+	wrptr_g[].ena = valid_wrreq;
+	rs_brp.clock = rdclk;
+	rs_brp.clrn = (! aclr);
+	rs_brp.d[] = rdptr_g_gray2bin.bin[];
+	rs_bwp.clock = rdclk;
+	rs_bwp.clrn = (! aclr);
+	rs_bwp.d[] = rs_dgwp_gray2bin.bin[];
+	rs_dgwp.clock = rdclk;
+	rs_dgwp.clrn = (! aclr);
+	rs_dgwp.d[] = delayed_wrptr_g[].q;
+	ws_brp.clock = wrclk;
+	ws_brp.clrn = (! aclr);
+	ws_brp.d[] = ws_dgrp_gray2bin.bin[];
+	ws_bwp.clock = wrclk;
+	ws_bwp.clrn = (! aclr);
+	ws_bwp.d[] = wrptr_g_gray2bin.bin[];
+	ws_dgrp.clock = wrclk;
+	ws_dgrp.clrn = (! aclr);
+	ws_dgrp.d[] = rdptr_g[].q;
+	rdusedw_sub_result[] = rdusedw_sub_dataa[] - rdusedw_sub_datab[];
+	rdusedw_sub_dataa[] = rs_bwp.q[];
+	rdusedw_sub_datab[] = rs_brp.q[];
+	wrusedw_sub_result[] = wrusedw_sub_dataa[] - wrusedw_sub_datab[];
+	wrusedw_sub_dataa[] = ws_bwp.q[];
+	wrusedw_sub_datab[] = ws_brp.q[];
+	rdempty_eq_comp.dataa[] = rs_dgwp.q[];
+	rdempty_eq_comp.datab[] = rdptr_g[].q;
+	wrfull_eq_comp.dataa[] = ws_dgrp.q[];
+	wrfull_eq_comp.datab[] = wrptr_gs[];
+	int_rdempty = rdempty_eq_comp.aeb;
+	int_wrfull = wrfull_eq_comp.aeb;
+	q[] = fifo_ram.q_b[];
+	ram_address_a[] = ( (wrptr_g[15..15].q $ wrptr_g[14..14].q), wrptr_g[13..0].q);
+	ram_address_b[] = ( (rdptr_g1p.q[15..15] $ rdptr_g1p.q[14..14]), rdptr_g1p.q[13..0]);
+	rdempty = int_rdempty;
+	rdusedw[] = ( rdusedw_sub_result[14..0]);
+	valid_rdreq = (rdreq & (! int_rdempty));
+	valid_wrreq = (wrreq & (! int_wrfull));
+	wrfull = int_wrfull;
+	wrptr_gs[] = ( (! wrptr_g[15..15].q), (! wrptr_g[14..14].q), wrptr_g[13..0].q);
+	wrusedw[] = ( wrusedw_sub_result[14..0]);
+END;
+--VALID FILE

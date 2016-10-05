@@ -1,0 +1,832 @@
+Partition Merge report for convLayer
+Wed Oct  5 17:48:05 2016
+Quartus II 64-Bit Version 13.1.0 Build 162 10/23/2013 SJ Full Version
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Partition Merge Summary
+  3. Partition Merge Netlist Types Used
+  4. Partition Merge Partition Warnings
+  5. Partition Merge Partition Statistics
+  6. Partition Merge Partition Pin Processing
+  7. Partition Merge Resource Usage Summary
+  8. Partition Merge RAM Summary
+  9. Partition Merge Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 1991-2013 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+
+
+
++----------------------------------------------------------------------------------+
+; Partition Merge Summary                                                          ;
++------------------------------------+---------------------------------------------+
+; Partition Merge Status             ; Successful - Wed Oct  5 17:48:05 2016       ;
+; Quartus II 64-Bit Version          ; 13.1.0 Build 162 10/23/2013 SJ Full Version ;
+; Revision Name                      ; convLayer                                   ;
+; Top-level Entity Name              ; top                                         ;
+; Family                             ; Cyclone III                                 ;
+; Total logic elements               ; 6,008                                       ;
+;     Total combinational functions  ; 3,672                                       ;
+;     Dedicated logic registers      ; 3,887                                       ;
+; Total registers                    ; 3887                                        ;
+; Total pins                         ; 53                                          ;
+; Total virtual pins                 ; 0                                           ;
+; Total memory bits                  ; 2,335,552                                   ;
+; Embedded Multiplier 9-bit elements ; 0                                           ;
+; Total PLLs                         ; 1                                           ;
++------------------------------------+---------------------------------------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------+
+; Partition Merge Netlist Types Used                                                                                            ;
++--------------------------------+----------------+-------------------+------------------------+--------------------------------+
+; Partition Name                 ; Partition Type ; Netlist Type Used ; Netlist Type Requested ; Partition Contents             ;
++--------------------------------+----------------+-------------------+------------------------+--------------------------------+
+; Top                            ; User-created   ; Source File       ; Source File            ;                                ;
+; ci:ci_inst                     ; User-created   ; Post-Synthesis    ; Post-Synthesis         ; ci:ci_inst                     ;
+; conv2:conv2_inst               ; User-created   ; Post-Synthesis    ; Post-Synthesis         ; conv2:conv2_inst               ;
+; fi:fi_inst                     ; User-created   ; Post-Synthesis    ; Post-Synthesis         ; fi:fi_inst                     ;
+; mt9:mt9_inst                   ; User-created   ; Post-Synthesis    ; Post-Synthesis         ; mt9:mt9_inst                   ;
+; pi:pi_inst                     ; User-created   ; Post-Synthesis    ; Post-Synthesis         ; pi:pi_inst                     ;
+; usb_cypress_CY7C68014A:usb     ; User-created   ; Post-Synthesis    ; Post-Synthesis         ; usb_cypress_CY7C68014A:usb     ;
+; hard_block:auto_generated_inst ; Auto-generated ; Source File       ; Source File            ; hard_block:auto_generated_inst ;
++--------------------------------+----------------+-------------------+------------------------+--------------------------------+
+
+
++------------------------------------------------------------------------------------------------------+
+; Partition Merge Partition Warnings                                                                   ;
++------------------------------------------------+----------------------------+------------------------+
+; Port                                           ; Partition                  ; Info                   ;
++------------------------------------------------+----------------------------+------------------------+
+; conv2:conv2_inst|datard_o[31]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[31]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[30]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[30]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[29]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[29]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[28]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[28]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[27]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[27]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[26]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[26]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[25]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[25]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[24]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[24]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[23]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[23]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[22]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[22]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[21]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[21]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[20]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[20]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[19]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[19]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[18]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[18]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[17]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[17]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[16]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[16]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[15]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[15]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[14]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[14]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[13]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[13]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[12]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[12]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[11]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[11]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[10]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[10]                  ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[9]                   ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[9]                   ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[8]                   ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[8]                   ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[7]                   ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[7]                   ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[6]                   ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[6]                   ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[5]                   ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[5]                   ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[4]                   ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[4]                   ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[3]                   ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[3]                   ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[2]                   ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[2]                   ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[1]                   ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[1]                   ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|datard_o[0]                   ; conv2:conv2_inst           ; Driven by constant GND ;
+; pi:pi_inst|conv2_datard_i[0]                   ; pi:pi_inst                 ; Driven by constant GND ;
+; conv2:conv2_inst|out3_data[7]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; fi:fi_inst|conv2_out3_data[7]                  ; fi:fi_inst                 ; Driven by constant GND ;
+; fi:fi_inst|usb_in3_data[7]                     ; fi:fi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|in3_data[7]         ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; conv2:conv2_inst|out2_data[7]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; fi:fi_inst|conv2_out2_data[7]                  ; fi:fi_inst                 ; Driven by constant GND ;
+; fi:fi_inst|usb_in2_data[7]                     ; fi:fi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|in2_data[7]         ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; conv2:conv2_inst|out1_data[7]                  ; conv2:conv2_inst           ; Driven by constant GND ;
+; fi:fi_inst|conv2_out1_data[7]                  ; fi:fi_inst                 ; Driven by constant GND ;
+; fi:fi_inst|usb_in1_data[7]                     ; fi:fi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|in1_data[7]         ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; mt9:mt9_inst|saddr_o                           ; mt9:mt9_inst               ; Driven by constant GND ;
+; mt9:mt9_inst|oe_n_o                            ; mt9:mt9_inst               ; Driven by constant GND ;
+; mt9:mt9_inst|standby_o                         ; mt9:mt9_inst               ; Driven by constant GND ;
+; mt9:mt9_inst|trigger_o                         ; mt9:mt9_inst               ; Driven by constant VCC ;
+; usb_cypress_CY7C68014A:usb|datard_o[31]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[31]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[30]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[30]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[29]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[29]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[28]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[28]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[27]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[27]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[26]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[26]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[25]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[25]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[24]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[24]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[23]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[23]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[22]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[22]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[21]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[21]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[20]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[20]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[19]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[19]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[18]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[18]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[17]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[17]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[16]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[16]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[15]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[15]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[14]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[14]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[13]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[13]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[12]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[12]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[11]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[11]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[10]        ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[10]                    ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[9]         ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[9]                     ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[8]         ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[8]                     ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[7]         ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[7]                     ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[6]         ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[6]                     ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[5]         ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[5]                     ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[4]         ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[4]                     ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[3]         ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[3]                     ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[2]         ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[2]                     ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[1]         ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[1]                     ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|datard_o[0]         ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_datard_i[0]                     ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|master_rd_o         ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; pi:pi_inst|usb_master_rd_i                     ; pi:pi_inst                 ; Driven by constant GND ;
+; usb_cypress_CY7C68014A:usb|addr[0]             ; usb_cypress_CY7C68014A:usb ; Driven by constant GND ;
+; ci:ci_inst|clk_proc                            ; ci:ci_inst                 ; No fanout              ;
+; ci:ci_inst|clk_125M_i                          ; ci:ci_inst                 ; No fanout              ;
+; ci:ci_inst|clk_usb                             ; ci:ci_inst                 ; No fanout              ;
+; conv2:conv2_inst|rd_i                          ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[1]                   ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[2]                   ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[3]                   ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[4]                   ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[5]                   ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[6]                   ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[7]                   ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[8]                   ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[9]                   ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[10]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[11]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[12]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[13]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[14]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[15]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[16]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[17]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[18]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[19]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[20]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[21]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[22]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[23]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[24]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[25]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[26]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[27]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[28]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[29]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[30]                  ; conv2:conv2_inst           ; No fanout              ;
+; conv2:conv2_inst|datawr_i[31]                  ; conv2:conv2_inst           ; No fanout              ;
+; fi:fi_inst|clk_proc                            ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|reset                               ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out0_data[0]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out0_data[1]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out0_data[2]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out0_data[3]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out0_data[4]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out0_data[5]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out0_data[6]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out0_data[7]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out0_fv                         ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out0_dv                         ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out1_data[0]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out1_data[1]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out1_data[2]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out1_data[3]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out1_data[4]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out1_data[5]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out1_data[6]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out1_data[7]                    ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out1_fv                         ; fi:fi_inst                 ; No fanout              ;
+; fi:fi_inst|usb_out1_dv                         ; fi:fi_inst                 ; No fanout              ;
+; mt9:mt9_inst|data_i[0]                         ; mt9:mt9_inst               ; No fanout              ;
+; mt9:mt9_inst|data_i[1]                         ; mt9:mt9_inst               ; No fanout              ;
+; mt9:mt9_inst|data_i[2]                         ; mt9:mt9_inst               ; No fanout              ;
+; mt9:mt9_inst|data_i[3]                         ; mt9:mt9_inst               ; No fanout              ;
+; pi:pi_inst|clk_proc                            ; pi:pi_inst                 ; No fanout              ;
+; pi:pi_inst|reset                               ; pi:pi_inst                 ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|flagb               ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|flagc               ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[0]  ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[1]  ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[2]  ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[3]  ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[4]  ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[5]  ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[6]  ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[7]  ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[8]  ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[9]  ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[10] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[11] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[12] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[13] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[14] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[15] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[16] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[17] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[18] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[19] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[20] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[21] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[22] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[23] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[24] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[25] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[26] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[27] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[28] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[29] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[30] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|master_datard_i[31] ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|rd_i                ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[1]         ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[2]         ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[3]         ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[4]         ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[5]         ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[6]         ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[7]         ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[8]         ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[9]         ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[10]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[11]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[12]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[13]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[14]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[15]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[16]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[17]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[18]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[19]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[20]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[21]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[22]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[23]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[24]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[25]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[26]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[27]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[28]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[29]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[30]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
+; usb_cypress_CY7C68014A:usb|datawr_i[31]        ; usb_cypress_CY7C68014A:usb ; No fanout              ;
++------------------------------------------------+----------------------------+------------------------+
+Note: The Incremental Compilation Advisor can be used to get more detailed recommendations.
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Partition Merge Partition Statistics                                                                                                                                                      ;
++---------------------------------------------+------+------------+------------------+------------+--------------+------------+----------------------------+--------------------------------+
+; Statistic                                   ; Top  ; ci:ci_inst ; conv2:conv2_inst ; fi:fi_inst ; mt9:mt9_inst ; pi:pi_inst ; usb_cypress_CY7C68014A:usb ; hard_block:auto_generated_inst ;
++---------------------------------------------+------+------------+------------------+------------+--------------+------------+----------------------------+--------------------------------+
+; Estimated Total logic elements              ; 0    ; 0          ; 801              ; 0          ; 1088         ; 72         ; 4058                       ; 0                              ;
+;                                             ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+; Total combinational functions               ; 0    ; 0          ; 447              ; 0          ; 750          ; 72         ; 2403                       ; 0                              ;
+; Logic element usage by number of LUT inputs ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+;     -- 4 input functions                    ; 0    ; 0          ; 45               ; 0          ; 514          ; 34         ; 1234                       ; 0                              ;
+;     -- 3 input functions                    ; 0    ; 0          ; 176              ; 0          ; 62           ; 34         ; 571                        ; 0                              ;
+;     -- <=2 input functions                  ; 0    ; 0          ; 226              ; 0          ; 174          ; 4          ; 598                        ; 0                              ;
+;                                             ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+; Logic elements by mode                      ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+;     -- normal mode                          ; 0    ; 0          ; 162              ; 0          ; 676          ; 72         ; 2218                       ; 0                              ;
+;     -- arithmetic mode                      ; 0    ; 0          ; 285              ; 0          ; 74           ; 0          ; 185                        ; 0                              ;
+;                                             ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+; Total registers                             ; 0    ; 0          ; 523              ; 0          ; 562          ; 0          ; 2802                       ; 0                              ;
+;     -- Dedicated logic registers            ; 0    ; 0          ; 523              ; 0          ; 562          ; 0          ; 2802                       ; 0                              ;
+;     -- I/O registers                        ; 0    ; 0          ; 0                ; 0          ; 0            ; 0          ; 0                          ; 0                              ;
+;                                             ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+; Virtual pins                                ; 0    ; 0          ; 0                ; 0          ; 0            ; 0          ; 0                          ; 0                              ;
+; I/O pins                                    ; 36   ; 0          ; 0                ; 0          ; 1            ; 0          ; 16                         ; 0                              ;
+; Embedded Multiplier 9-bit elements          ; 0    ; 0          ; 0                ; 0          ; 0            ; 0          ; 0                          ; 0                              ;
+; Total memory bits                           ; 0    ; 0          ; 15168            ; 0          ; 131072       ; 0          ; 2189312                    ; 0                              ;
+; Total RAM block bits                        ; 0    ; 0          ; 0                ; 0          ; 0            ; 0          ; 0                          ; 0                              ;
+; PLL                                         ; 0    ; 0          ; 0                ; 0          ; 0            ; 0          ; 0                          ; 1                              ;
+;                                             ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+; Connections                                 ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+;     -- Input Connections                    ; 13   ; 0          ; 1032             ; 0          ; 1564         ; 180        ; 4317                       ; 2                              ;
+;     -- Registered Input Connections         ; 0    ; 0          ; 998              ; 0          ; 1193         ; 0          ; 4187                       ; 0                              ;
+;     -- Output Connections                   ; 6041 ; 0          ; 113              ; 0          ; 120          ; 14         ; 724                        ; 96                             ;
+;     -- Registered Output Connections        ; 0    ; 0          ; 42               ; 0          ; 49           ; 0          ; 668                        ; 0                              ;
+;                                             ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+; Internal Connections                        ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+;     -- Total Connections                    ; 6090 ; 0          ; 4268             ; 0          ; 5335         ; 260        ; 31300                      ; 99                             ;
+;     -- Registered Connections               ; 0    ; 0          ; 2765             ; 0          ; 3341         ; 0          ; 21287                      ; 0                              ;
+;                                             ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+; External Connections                        ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+;     -- Top                                  ; 0    ; 0          ; 977              ; 0          ; 904          ; 0          ; 4169                       ; 4                              ;
+;     -- ci:ci_inst                           ; 0    ; 0          ; 0                ; 0          ; 0            ; 0          ; 0                          ; 0                              ;
+;     -- conv2:conv2_inst                     ; 977  ; 0          ; 0                ; 0          ; 51           ; 33         ; 84                         ; 0                              ;
+;     -- fi:fi_inst                           ; 0    ; 0          ; 0                ; 0          ; 0            ; 0          ; 0                          ; 0                              ;
+;     -- mt9:mt9_inst                         ; 904  ; 0          ; 51               ; 0          ; 2            ; 41         ; 592                        ; 94                             ;
+;     -- pi:pi_inst                           ; 0    ; 0          ; 33               ; 0          ; 41           ; 0          ; 120                        ; 0                              ;
+;     -- usb_cypress_CY7C68014A:usb           ; 4169 ; 0          ; 84               ; 0          ; 592          ; 120        ; 76                         ; 0                              ;
+;     -- hard_block:auto_generated_inst       ; 4    ; 0          ; 0                ; 0          ; 94           ; 0          ; 0                          ; 0                              ;
+;                                             ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+; Partition Interface                         ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+;     -- Input Ports                          ; 23   ; 5          ; 48               ; 62         ; 59           ; 138        ; 117                        ; 2                              ;
+;     -- Output Ports                         ; 13   ; 3          ; 62               ; 50         ; 49           ; 145        ; 100                        ; 3                              ;
+;     -- Bidir Ports                          ; 17   ; 0          ; 0                ; 0          ; 1            ; 0          ; 16                         ; 0                              ;
+;                                             ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+; Registered Ports                            ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+;     -- Registered Input Ports               ; 0    ; 0          ; 10               ; 0          ; 46           ; 0          ; 39                         ; 0                              ;
+;     -- Registered Output Ports              ; 0    ; 0          ; 21               ; 0          ; 34           ; 0          ; 60                         ; 0                              ;
+;                                             ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+; Port Connectivity                           ;      ;            ;                  ;            ;              ;            ;                            ;                                ;
+;     -- Input Ports driven by GND            ; 0    ; 0          ; 0                ; 0          ; 0            ; 0          ; 0                          ; 0                              ;
+;     -- Output Ports driven by GND           ; 0    ; 0          ; 35               ; 0          ; 3            ; 0          ; 34                         ; 0                              ;
+;     -- Input Ports driven by VCC            ; 0    ; 0          ; 0                ; 0          ; 0            ; 0          ; 0                          ; 0                              ;
+;     -- Output Ports driven by VCC           ; 0    ; 0          ; 0                ; 0          ; 1            ; 0          ; 0                          ; 0                              ;
+;     -- Input Ports with no Source           ; 0    ; 0          ; 0                ; 0          ; 0            ; 0          ; 0                          ; 0                              ;
+;     -- Output Ports with no Source          ; 0    ; 0          ; 0                ; 0          ; 0            ; 0          ; 0                          ; 0                              ;
+;     -- Input Ports with no Fanout           ; 0    ; 3          ; 32               ; 22         ; 4            ; 2          ; 66                         ; 0                              ;
+;     -- Output Ports with no Fanout          ; 0    ; 0          ; 0                ; 0          ; 0            ; 0          ; 0                          ; 0                              ;
++---------------------------------------------+------+------------+------------------+------------+--------------+------------+----------------------------+--------------------------------+
+Note: Resource usage numbers presented for Partitions containing post-synthesis logic are estimates.  For Partitions containing post-fit logic, resource usage numbers are accurate based on previous placement information.  Actual Fitter results may vary depending on current Fitter Preservation Level assignments.
+
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Partition Merge Partition Pin Processing                                                                                                                ;
++----------------------------------------------------+----------------------------+---------------+----------+--------------------------------------------+
+; Name                                               ; Partition                  ; Type          ; Location ; Status                                     ;
++----------------------------------------------------+----------------------------+---------------+----------+--------------------------------------------+
+; clk_125M_i                                         ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- clk_125M_i                                  ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- clk_125M_i~input                            ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- ci:ci_inst|clk_125M_i                       ; ci:ci_inst                 ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; clk_50M_i                                          ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- clk_50M_i                                   ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- clk_50M_i~input                             ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_data_i[0]                                      ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_data_i[0]                               ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_data_i[0]~input                         ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|data_i[0]                      ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_data_i[10]                                     ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_data_i[10]                              ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_data_i[10]~input                        ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|data_i[10]                     ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_data_i[11]                                     ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_data_i[11]                              ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_data_i[11]~input                        ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|data_i[11]                     ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_data_i[1]                                      ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_data_i[1]                               ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_data_i[1]~input                         ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|data_i[1]                      ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_data_i[2]                                      ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_data_i[2]                               ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_data_i[2]~input                         ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|data_i[2]                      ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_data_i[3]                                      ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_data_i[3]                               ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_data_i[3]~input                         ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|data_i[3]                      ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_data_i[4]                                      ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_data_i[4]                               ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_data_i[4]~input                         ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|data_i[4]                      ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_data_i[5]                                      ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_data_i[5]                               ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_data_i[5]~input                         ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|data_i[5]                      ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_data_i[6]                                      ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_data_i[6]                               ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_data_i[6]~input                         ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|data_i[6]                      ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_data_i[7]                                      ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_data_i[7]                               ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_data_i[7]~input                         ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|data_i[7]                      ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_data_i[8]                                      ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_data_i[8]                               ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_data_i[8]~input                         ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|data_i[8]                      ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_data_i[9]                                      ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_data_i[9]                               ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_data_i[9]~input                         ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|data_i[9]                      ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_extclk_o                                       ; Top                        ; Output Port   ; n/a      ;                                            ;
+;     -- mt9_extclk_o                                ; Top                        ; Output Pad    ; Unplaced ; Synthesized                                ;
+;     -- mt9_extclk_o~output                         ; Top                        ; Output Buffer ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|extclk_o                       ; mt9:mt9_inst               ; Output Port   ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_fval_i                                         ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_fval_i                                  ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_fval_i~input                            ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|fval_i                         ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_lval_i                                         ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_lval_i                                  ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_lval_i~input                            ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|lval_i                         ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_oe_n_o                                         ; Top                        ; Output Port   ; n/a      ;                                            ;
+;     -- mt9_oe_n_o                                  ; Top                        ; Output Pad    ; Unplaced ; Synthesized                                ;
+;     -- mt9_oe_n_o~output                           ; Top                        ; Output Buffer ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|oe_n_o                         ; mt9:mt9_inst               ; Output Port   ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_pixclk_i                                       ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- mt9_pixclk_i                                ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9_pixclk_i~input                          ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|pixclk_i                       ; mt9:mt9_inst               ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_reset_n_o                                      ; Top                        ; Output Port   ; n/a      ;                                            ;
+;     -- mt9_reset_n_o                               ; Top                        ; Output Pad    ; Unplaced ; Synthesized                                ;
+;     -- mt9_reset_n_o~output                        ; Top                        ; Output Buffer ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|reset_n_o                      ; mt9:mt9_inst               ; Output Port   ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_saddr_o                                        ; Top                        ; Output Port   ; n/a      ;                                            ;
+;     -- mt9_saddr_o                                 ; Top                        ; Output Pad    ; Unplaced ; Synthesized                                ;
+;     -- mt9_saddr_o~output                          ; Top                        ; Output Buffer ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|saddr_o                        ; mt9:mt9_inst               ; Output Port   ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_sclk_o                                         ; Top                        ; Output Port   ; n/a      ;                                            ;
+;     -- mt9_sclk_o                                  ; Top                        ; Output Pad    ; Unplaced ; Synthesized                                ;
+;     -- mt9_sclk_o~output                           ; Top                        ; Output Buffer ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|sclk_o                         ; mt9:mt9_inst               ; Output Port   ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_sdata_io                                       ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- mt9:mt9_inst|sdata_io                       ; mt9:mt9_inst               ; Bidir Port    ; n/a      ;                                            ;
+;     -- mt9_sdata_io                                ; mt9:mt9_inst               ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|sdata_io~output                ; mt9:mt9_inst               ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_standby_o                                      ; Top                        ; Output Port   ; n/a      ;                                            ;
+;     -- mt9_standby_o                               ; Top                        ; Output Pad    ; Unplaced ; Synthesized                                ;
+;     -- mt9_standby_o~output                        ; Top                        ; Output Buffer ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|standby_o                      ; mt9:mt9_inst               ; Output Port   ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; mt9_trigger_o                                      ; Top                        ; Output Port   ; n/a      ;                                            ;
+;     -- mt9_trigger_o                               ; Top                        ; Output Pad    ; Unplaced ; Synthesized                                ;
+;     -- mt9_trigger_o~output                        ; Top                        ; Output Buffer ; Unplaced ; Synthesized                                ;
+;     -- mt9:mt9_inst|trigger_o                      ; mt9:mt9_inst               ; Output Port   ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_addr[0]                                        ; Top                        ; Output Port   ; n/a      ;                                            ;
+;     -- usb_addr[0]                                 ; Top                        ; Output Pad    ; Unplaced ; Synthesized                                ;
+;     -- usb_addr[0]~output                          ; Top                        ; Output Buffer ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|addr[0]          ; usb_cypress_CY7C68014A:usb ; Output Port   ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_addr[1]                                        ; Top                        ; Output Port   ; n/a      ;                                            ;
+;     -- usb_addr[1]                                 ; Top                        ; Output Pad    ; Unplaced ; Synthesized                                ;
+;     -- usb_addr[1]~output                          ; Top                        ; Output Buffer ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|addr[1]          ; usb_cypress_CY7C68014A:usb ; Output Port   ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[0]                                       ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[0]         ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[0]                                ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[0]~output  ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[10]                                      ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[10]        ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[10]                               ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[10]~output ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[11]                                      ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[11]        ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[11]                               ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[11]~output ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[12]                                      ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[12]        ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[12]                               ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[12]~output ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[13]                                      ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[13]        ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[13]                               ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[13]~output ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[14]                                      ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[14]        ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[14]                               ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[14]~output ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[15]                                      ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[15]        ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[15]                               ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[15]~output ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[1]                                       ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[1]         ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[1]                                ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[1]~output  ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[2]                                       ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[2]         ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[2]                                ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[2]~output  ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[3]                                       ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[3]         ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[3]                                ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[3]~output  ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[4]                                       ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[4]         ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[4]                                ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[4]~output  ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[5]                                       ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[5]         ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[5]                                ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[5]~output  ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[6]                                       ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[6]         ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[6]                                ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[6]~output  ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[7]                                       ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[7]         ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[7]                                ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[7]~output  ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[8]                                       ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[8]         ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[8]                                ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[8]~output  ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_fd_io[9]                                       ; Top                        ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[9]         ; usb_cypress_CY7C68014A:usb ; Bidir Port    ; n/a      ;                                            ;
+;     -- usb_fd_io[9]                                ; usb_cypress_CY7C68014A:usb ; Bidir Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|fd_io[9]~output  ; usb_cypress_CY7C68014A:usb ; Output Buffer ; Unplaced ; Preserved from Synthesis Netlist (WYSIWYG) ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_flaga                                          ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- usb_flaga                                   ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_flaga~input                             ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|flaga            ; usb_cypress_CY7C68014A:usb ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_flagb                                          ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- usb_flagb                                   ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_flagb~input                             ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|flagb            ; usb_cypress_CY7C68014A:usb ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_flagc                                          ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- usb_flagc                                   ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_flagc~input                             ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|flagc            ; usb_cypress_CY7C68014A:usb ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_flagd                                          ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- usb_flagd                                   ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_flagd~input                             ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|flagd            ; usb_cypress_CY7C68014A:usb ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_ifclk                                          ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- usb_ifclk                                   ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_ifclk~input                             ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|ifclk            ; usb_cypress_CY7C68014A:usb ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_pktend                                         ; Top                        ; Output Port   ; n/a      ;                                            ;
+;     -- usb_pktend                                  ; Top                        ; Output Pad    ; Unplaced ; Synthesized                                ;
+;     -- usb_pktend~output                           ; Top                        ; Output Buffer ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|pktend           ; usb_cypress_CY7C68014A:usb ; Output Port   ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_rst                                            ; Top                        ; Input Port    ; n/a      ;                                            ;
+;     -- usb_rst                                     ; Top                        ; Input Pad     ; Unplaced ; Synthesized                                ;
+;     -- usb_rst~input                               ; Top                        ; Input Buffer  ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|rst              ; usb_cypress_CY7C68014A:usb ; Input Port    ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_sloe                                           ; Top                        ; Output Port   ; n/a      ;                                            ;
+;     -- usb_sloe                                    ; Top                        ; Output Pad    ; Unplaced ; Synthesized                                ;
+;     -- usb_sloe~output                             ; Top                        ; Output Buffer ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|sloe             ; usb_cypress_CY7C68014A:usb ; Output Port   ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_slrd                                           ; Top                        ; Output Port   ; n/a      ;                                            ;
+;     -- usb_slrd                                    ; Top                        ; Output Pad    ; Unplaced ; Synthesized                                ;
+;     -- usb_slrd~output                             ; Top                        ; Output Buffer ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|slrd             ; usb_cypress_CY7C68014A:usb ; Output Port   ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
+; usb_slwr                                           ; Top                        ; Output Port   ; n/a      ;                                            ;
+;     -- usb_slwr                                    ; Top                        ; Output Pad    ; Unplaced ; Synthesized                                ;
+;     -- usb_slwr~output                             ; Top                        ; Output Buffer ; Unplaced ; Synthesized                                ;
+;     -- usb_cypress_CY7C68014A:usb|slwr             ; usb_cypress_CY7C68014A:usb ; Output Port   ; n/a      ;                                            ;
+;                                                    ;                            ;               ;          ;                                            ;
++----------------------------------------------------+----------------------------+---------------+----------+--------------------------------------------+
+
+
++---------------------------------------------------------------+
+; Partition Merge Resource Usage Summary                        ;
++---------------------------------------------+-----------------+
+; Resource                                    ; Usage           ;
++---------------------------------------------+-----------------+
+; Estimated Total logic elements              ; 6,008           ;
+;                                             ;                 ;
+; Total combinational functions               ; 3672            ;
+; Logic element usage by number of LUT inputs ;                 ;
+;     -- 4 input functions                    ; 1827            ;
+;     -- 3 input functions                    ; 843             ;
+;     -- <=2 input functions                  ; 1002            ;
+;                                             ;                 ;
+; Logic elements by mode                      ;                 ;
+;     -- normal mode                          ; 3128            ;
+;     -- arithmetic mode                      ; 544             ;
+;                                             ;                 ;
+; Total registers                             ; 3887            ;
+;     -- Dedicated logic registers            ; 3887            ;
+;     -- I/O registers                        ; 0               ;
+;                                             ;                 ;
+; I/O pins                                    ; 53              ;
+; Total memory bits                           ; 2335552         ;
+; Embedded Multiplier 9-bit elements          ; 0               ;
+; Total PLLs                                  ; 1               ;
+;     -- PLLs                                 ; 1               ;
+;                                             ;                 ;
+; Maximum fan-out node                        ; clk_50M_i~input ;
+; Maximum fan-out                             ; 2793            ;
+; Total fan-out                               ; 38922           ;
+; Average fan-out                             ; 4.75            ;
++---------------------------------------------+-----------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Partition Merge RAM Summary                                                                                                                                                                                                                                                                                         ;
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+--------+------+
+; Name                                                                                                                                                                                                          ; Type ; Mode             ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size   ; MIF  ;
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+--------+------+
+; conv2:conv2_inst|conv2_process:proc_inst|neighExtractor:\NEs_loop:0:NEs_inst|taps:\taps_inst:1:gen_i:geni_inst|altshift_taps:cell_rtl_0|shift_taps_r7n:auto_generated|altsyncram_j7b1:altsyncram2|ALTSYNCRAM  ; AUTO ; Simple Dual Port ; 316          ; 16           ; 316          ; 16           ; 5056   ; None ;
+; conv2:conv2_inst|conv2_process:proc_inst|neighExtractor:\NEs_loop:1:NEs_inst|taps:\taps_inst:1:gen_i:geni_inst|altshift_taps:cell_rtl_0|shift_taps_r7n:auto_generated|altsyncram_j7b1:altsyncram2|ALTSYNCRAM  ; AUTO ; Simple Dual Port ; 316          ; 16           ; 316          ; 16           ; 5056   ; None ;
+; conv2:conv2_inst|conv2_process:proc_inst|neighExtractor:\NEs_loop:2:NEs_inst|taps:\taps_inst:1:gen_i:geni_inst|altshift_taps:cell_rtl_0|shift_taps_r7n:auto_generated|altsyncram_j7b1:altsyncram2|ALTSYNCRAM  ; AUTO ; Simple Dual Port ; 316          ; 16           ; 316          ; 16           ; 5056   ; None ;
+; mt9:mt9_inst|VideoSampler:VideoSampler_inst|dcfifo:dcfifo_inst|dcfifo_plg1:auto_generated|altsyncram_fi31:fifo_ram|ALTSYNCRAM                                                                                 ; AUTO ; Simple Dual Port ; 16384        ; 8            ; 16384        ; 8            ; 131072 ; None ;
+; usb_cypress_CY7C68014A:usb|flow_in:\FI0_label1:USBFLOW_IN0|com_flow_fifo_rx:ComFlowFifoRx_inst|fifo_com_rx:FIFO_1|dcfifo:dcfifo_component|dcfifo_59k1:auto_generated|altsyncram_5l31:fifo_ram|ALTSYNCRAM      ; AUTO ; Simple Dual Port ; 1024         ; 16           ; 1024         ; 16           ; 16384  ; None ;
+; usb_cypress_CY7C68014A:usb|flow_in:\FI0_label1:USBFLOW_IN0|com_flow_fifo_rx:ComFlowFifoRx_inst|fifo_com_rx:FIFO_2|dcfifo:dcfifo_component|dcfifo_59k1:auto_generated|altsyncram_5l31:fifo_ram|ALTSYNCRAM      ; AUTO ; Simple Dual Port ; 1024         ; 16           ; 1024         ; 16           ; 16384  ; None ;
+; usb_cypress_CY7C68014A:usb|flow_in:\FI1_label1:USBFLOW_IN1|com_flow_fifo_rx:ComFlowFifoRx_inst|fifo_com_rx:FIFO_1|dcfifo:dcfifo_component|dcfifo_59k1:auto_generated|altsyncram_5l31:fifo_ram|ALTSYNCRAM      ; AUTO ; Simple Dual Port ; 1024         ; 16           ; 1024         ; 16           ; 16384  ; None ;
+; usb_cypress_CY7C68014A:usb|flow_in:\FI1_label1:USBFLOW_IN1|com_flow_fifo_rx:ComFlowFifoRx_inst|fifo_com_rx:FIFO_2|dcfifo:dcfifo_component|dcfifo_59k1:auto_generated|altsyncram_5l31:fifo_ram|ALTSYNCRAM      ; AUTO ; Simple Dual Port ; 1024         ; 16           ; 1024         ; 16           ; 16384  ; None ;
+; usb_cypress_CY7C68014A:usb|flow_out:\FO0_label4:USBFLOW_OUT0|com_flow_fifo_tx:ComFlowFifoTX_inst|fifo_com_tx:FIFO_1|dcfifo:dcfifo_component|dcfifo_1ul1:auto_generated|altsyncram_fl31:fifo_ram|ALTSYNCRAM    ; AUTO ; Simple Dual Port ; 32768        ; 16           ; 32768        ; 16           ; 524288 ; None ;
+; usb_cypress_CY7C68014A:usb|flow_out:\FO0_label4:USBFLOW_OUT0|com_flow_fifo_tx:ComFlowFifoTX_inst|fifo_com_tx:FIFO_FLAG|dcfifo:dcfifo_component|dcfifo_nnl1:auto_generated|altsyncram_ji31:fifo_ram|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 256          ; 16           ; 256          ; 16           ; 4096   ; None ;
+; usb_cypress_CY7C68014A:usb|flow_out:\FO0_label4:USBFLOW_OUT0|com_flow_fifo_tx:ComFlowFifoTX_inst|fifo_com_tx:FIFO_PKT|dcfifo:dcfifo_component|dcfifo_nnl1:auto_generated|altsyncram_ji31:fifo_ram|ALTSYNCRAM  ; AUTO ; Simple Dual Port ; 256          ; 16           ; 256          ; 16           ; 4096   ; None ;
+; usb_cypress_CY7C68014A:usb|flow_out:\FO1_label4:USBFLOW_OUT1|com_flow_fifo_tx:ComFlowFifoTX_inst|fifo_com_tx:FIFO_1|dcfifo:dcfifo_component|dcfifo_1ul1:auto_generated|altsyncram_fl31:fifo_ram|ALTSYNCRAM    ; AUTO ; Simple Dual Port ; 32768        ; 16           ; 32768        ; 16           ; 524288 ; None ;
+; usb_cypress_CY7C68014A:usb|flow_out:\FO1_label4:USBFLOW_OUT1|com_flow_fifo_tx:ComFlowFifoTX_inst|fifo_com_tx:FIFO_FLAG|dcfifo:dcfifo_component|dcfifo_nnl1:auto_generated|altsyncram_ji31:fifo_ram|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 256          ; 16           ; 256          ; 16           ; 4096   ; None ;
+; usb_cypress_CY7C68014A:usb|flow_out:\FO1_label4:USBFLOW_OUT1|com_flow_fifo_tx:ComFlowFifoTX_inst|fifo_com_tx:FIFO_PKT|dcfifo:dcfifo_component|dcfifo_nnl1:auto_generated|altsyncram_ji31:fifo_ram|ALTSYNCRAM  ; AUTO ; Simple Dual Port ; 256          ; 16           ; 256          ; 16           ; 4096   ; None ;
+; usb_cypress_CY7C68014A:usb|flow_out:\FO2_label4:USBFLOW_OUT2|com_flow_fifo_tx:ComFlowFifoTX_inst|fifo_com_tx:FIFO_1|dcfifo:dcfifo_component|dcfifo_1ul1:auto_generated|altsyncram_fl31:fifo_ram|ALTSYNCRAM    ; AUTO ; Simple Dual Port ; 32768        ; 16           ; 32768        ; 16           ; 524288 ; None ;
+; usb_cypress_CY7C68014A:usb|flow_out:\FO2_label4:USBFLOW_OUT2|com_flow_fifo_tx:ComFlowFifoTX_inst|fifo_com_tx:FIFO_FLAG|dcfifo:dcfifo_component|dcfifo_nnl1:auto_generated|altsyncram_ji31:fifo_ram|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 256          ; 16           ; 256          ; 16           ; 4096   ; None ;
+; usb_cypress_CY7C68014A:usb|flow_out:\FO2_label4:USBFLOW_OUT2|com_flow_fifo_tx:ComFlowFifoTX_inst|fifo_com_tx:FIFO_PKT|dcfifo:dcfifo_component|dcfifo_nnl1:auto_generated|altsyncram_ji31:fifo_ram|ALTSYNCRAM  ; AUTO ; Simple Dual Port ; 256          ; 16           ; 256          ; 16           ; 4096   ; None ;
+; usb_cypress_CY7C68014A:usb|flow_out:\FO3_label4:USBFLOW_OUT3|com_flow_fifo_tx:ComFlowFifoTX_inst|fifo_com_tx:FIFO_1|dcfifo:dcfifo_component|dcfifo_1ul1:auto_generated|altsyncram_fl31:fifo_ram|ALTSYNCRAM    ; AUTO ; Simple Dual Port ; 32768        ; 16           ; 32768        ; 16           ; 524288 ; None ;
+; usb_cypress_CY7C68014A:usb|flow_out:\FO3_label4:USBFLOW_OUT3|com_flow_fifo_tx:ComFlowFifoTX_inst|fifo_com_tx:FIFO_FLAG|dcfifo:dcfifo_component|dcfifo_nnl1:auto_generated|altsyncram_ji31:fifo_ram|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 256          ; 16           ; 256          ; 16           ; 4096   ; None ;
+; usb_cypress_CY7C68014A:usb|flow_out:\FO3_label4:USBFLOW_OUT3|com_flow_fifo_tx:ComFlowFifoTX_inst|fifo_com_tx:FIFO_PKT|dcfifo:dcfifo_component|dcfifo_nnl1:auto_generated|altsyncram_ji31:fifo_ram|ALTSYNCRAM  ; AUTO ; Simple Dual Port ; 256          ; 16           ; 256          ; 16           ; 4096   ; None ;
+; usb_cypress_CY7C68014A:usb|flow_wishbone:FLOW_PARAMS|com_flow_fifo_rx:COM_RX_PARAMS|fifo_com_rx:FIFO_1|dcfifo:dcfifo_component|dcfifo_i3k1:auto_generated|altsyncram_gi31:fifo_ram|ALTSYNCRAM                 ; AUTO ; Simple Dual Port ; 64           ; 16           ; 64           ; 16           ; 1024   ; None ;
+; usb_cypress_CY7C68014A:usb|flow_wishbone:FLOW_PARAMS|com_flow_fifo_rx:COM_RX_PARAMS|fifo_com_rx:FIFO_2|dcfifo:dcfifo_component|dcfifo_i3k1:auto_generated|altsyncram_gi31:fifo_ram|ALTSYNCRAM                 ; AUTO ; Simple Dual Port ; 64           ; 16           ; 64           ; 16           ; 1024   ; None ;
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+--------+------+
+
+
++--------------------------+
+; Partition Merge Messages ;
++--------------------------+
+Info: *******************************************************************
+Info: Running Quartus II 64-Bit Partition Merge
+    Info: Version 13.1.0 Build 162 10/23/2013 SJ Full Version
+    Info: Processing started: Wed Oct  5 17:48:04 2016
+Info: Command: quartus_cdb --read_settings_files=off --write_settings_files=off convLayer -c convLayer --merge=on
+Critical Warning (138069): Setting INCREMENTAL_COMPILATION to "OFF" is no longer supported. Assignment is ignored. To disable partitions, set the IGNORE_PARTITIONS global assignment to "ON" instead.
+Info (35007): Using synthesis netlist for partition "Top"
+Info (35007): Using synthesis netlist for partition "ci:ci_inst"
+Info (35007): Using synthesis netlist for partition "conv2:conv2_inst"
+Info (35007): Using synthesis netlist for partition "fi:fi_inst"
+Info (35007): Using synthesis netlist for partition "mt9:mt9_inst"
+Info (35007): Using synthesis netlist for partition "pi:pi_inst"
+Info (35007): Using synthesis netlist for partition "usb_cypress_CY7C68014A:usb"
+Info (35002): Resolved and merged 7 partition(s)
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 1 node(s), including 0 DDIO, 1 PLL, 0 transceiver and 0 LCELL
+Info (35048): Found 147 ports with constant drivers. For more information, refer to the Partition Merger report
+Info (35047): Found 129 ports with no fan-out. For more information, refer to the Partition Merger report
+Warning (35016): Found partition port(s) not driving logic, possibly wasting area
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[0]", driven by node "pi:pi_inst|usb_master_datard_o~2", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[1]", driven by node "pi:pi_inst|usb_master_datard_o~4", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[2]", driven by node "pi:pi_inst|usb_master_datard_o~6", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[3]", driven by node "pi:pi_inst|usb_master_datard_o~8", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[4]", driven by node "pi:pi_inst|usb_master_datard_o~10", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[5]", driven by node "pi:pi_inst|usb_master_datard_o~12", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[6]", driven by node "pi:pi_inst|usb_master_datard_o~14", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[7]", driven by node "pi:pi_inst|usb_master_datard_o~16", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[8]", driven by node "pi:pi_inst|usb_master_datard_o~18", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[9]", driven by node "pi:pi_inst|usb_master_datard_o~20", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[10]", driven by node "pi:pi_inst|usb_master_datard_o~22", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[11]", driven by node "pi:pi_inst|usb_master_datard_o~24", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[12]", driven by node "pi:pi_inst|usb_master_datard_o~26", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[13]", driven by node "pi:pi_inst|usb_master_datard_o~28", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[14]", driven by node "pi:pi_inst|usb_master_datard_o~30", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[15]", driven by node "pi:pi_inst|usb_master_datard_o~32", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[16]", driven by node "pi:pi_inst|usb_master_datard_o~34", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[17]", driven by node "pi:pi_inst|usb_master_datard_o~36", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[18]", driven by node "pi:pi_inst|usb_master_datard_o~38", does not drive logic
+    Warning (35018): Partition port "usb_cypress_CY7C68014A:usb|master_datard_i[19]", driven by node "pi:pi_inst|usb_master_datard_o~40", does not drive logic
+    Warning (35039): Only the first 20 ports are reported. For a full list of ports, refer to the Partition Warnings panel in the Partition Merge report
+Warning (15899): PLL "ci:ci_inst|altpll:pll0|pll_altpll:auto_generated|pll1" has parameters clk3_multiply_by and clk3_divide_by specified but port CLK[3] is not connected
+Warning (21074): Design contains 7 input pin(s) that do not drive logic
+    Warning (15610): No output dependent on input pin "clk_125M_i"
+    Warning (15610): No output dependent on input pin "usb_flagb"
+    Warning (15610): No output dependent on input pin "usb_flagc"
+    Warning (15610): No output dependent on input pin "mt9_data_i[0]"
+    Warning (15610): No output dependent on input pin "mt9_data_i[1]"
+    Warning (15610): No output dependent on input pin "mt9_data_i[2]"
+    Warning (15610): No output dependent on input pin "mt9_data_i[3]"
+Info (21057): Implemented 6748 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 23 input pins
+    Info (21059): Implemented 13 output pins
+    Info (21060): Implemented 17 bidirectional pins
+    Info (21061): Implemented 6182 logic cells
+    Info (21064): Implemented 512 RAM segments
+    Info (21065): Implemented 1 PLLs
+Info: Quartus II 64-Bit Partition Merge was successful. 0 errors, 32 warnings
+    Info: Peak virtual memory: 950 megabytes
+    Info: Processing ended: Wed Oct  5 17:48:05 2016
+    Info: Elapsed time: 00:00:01
+    Info: Total CPU time (on all processors): 00:00:02
+
+

@@ -1,0 +1,16 @@
+Fitter Status : Successful - Wed Oct  5 17:48:39 2016
+Quartus II 64-Bit Version : 13.1.0 Build 162 10/23/2013 SJ Full Version
+Revision Name : convLayer
+Top-level Entity Name : top
+Family : Cyclone III
+Device : EP3C120F780C7
+Timing Models : Final
+Total logic elements : 5,321 / 119,088 ( 4 % )
+    Total combinational functions : 3,686 / 119,088 ( 3 % )
+    Dedicated logic registers : 3,887 / 119,088 ( 3 % )
+Total registers : 3887
+Total pins : 53 / 532 ( 10 % )
+Total virtual pins : 0
+Total memory bits : 2,335,552 / 3,981,312 ( 59 % )
+Embedded Multiplier 9-bit elements : 0 / 576 ( 0 % )
+Total PLLs : 1 / 4 ( 25 % )

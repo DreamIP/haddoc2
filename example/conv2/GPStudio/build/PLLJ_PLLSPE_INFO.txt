@@ -1,0 +1,5 @@
+PLL_Name	ci:ci_inst|altpll:pll0|pll_altpll:auto_generated|pll1
+PLLJITTER	37
+PLLSPEmax	84
+PLLSPEmin	-53
+
