@@ -43,3 +43,5 @@
 *.qtl
 *_vmake
 *_info
+
+*/GPStudio/*
