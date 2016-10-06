@@ -21,6 +21,7 @@
     <file name="neighExtractor.vhd" type="vhdl" group="hdl" path="../../ip/hdl/neighExtractor.vhd"/>
     <file name="convElement.vhd" type="vhdl" group="hdl" path="../../ip/hdl/convElement.vhd"/>
     <file name="sumElement.vhd" type="vhdl" group="hdl" path="../../ip/hdl/sumElement.vhd"/>
+    <file name="convLayer.vhd" type="vhdl" group="hdl" path="../../ip/hdl/convLayer.vhd"/>
 
     <!-- <file name="maxElement.vhd" type="vhdl" group="hdl" path="hdl/component/maxElement.vhd"/> -->
 
