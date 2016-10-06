@@ -5,11 +5,17 @@
 *.stp
 */altera/*
 */lpm/*
+*/altera_mf/*
 */work/*
 *.wlf
 */output_files/
 *.qws
 */simulation/*
+*.qdb
+*.qpg
+*.qtl
+*_vmake
+*_info
 
 # texmaker rules
 *.out
@@ -24,24 +30,8 @@
 *.ps
 *.synctex.gz(busy)
 
-# g++/Qt rules
-*.o
-*/build-*/*
+# generals
 */build/*
-*/*.pro.user
-*/*.pro.user.*
-*moc_*
-*/ui_*.h
-*.autosave
-*.swp
 
-*/altera_mf/*
-*/lpm/*
-*.ini
-*.qdb
-*.qpg
-*.qtl
-*_vmake
-*_info
-
-*/build/
+# Caffe
+*/dataset/*
