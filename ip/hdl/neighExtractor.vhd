@@ -188,67 +188,87 @@ architecture rtl of neighExtractor is
     -- Manage out_dv and out_fv
     --------------------------------------------------------------------------
 
-    -- Delay untill all the taps latches are written on
     dv_proc : process(clk)
-    -- 10 bits is enought to bufferize 1024 Pixels
-    variable cmp : unsigned (9 downto 0) :=(others => '0');
+    -- 12 bits is enought to count until 4096
+    constant NBITS_DELAY : integer := 12;
+    variable delay_cmp : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
+    variable edge_cmp  : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
+
     begin
         if (reset_n = '0') then
-            cmp := (others => '0');
-            tmp_dv <='0';
+            delay_cmp := (others => '0');
+            edge_cmp  := (others => '0');
+            tmp_dv    <='0';
+
         elsif (rising_edge(clk)) then
             if(s_valid = '1') then
-                if (cmp > to_unsigned(IMAGE_WIDTH,10)) then
-                    tmp_dv <= '1';
+                -- Initial delay : Wait until there is data in all the taps
+                if (delay_cmp > to_unsigned((KERNEL_SIZE - 1) * IMAGE_WIDTH + KERNEL_SIZE - 1 , NBITS_DELAY)) then
+
+                    -- When pixel is at 0 or (IMAGE_WIDTH - KERNEL_SIZE - 1) -> data is not valid -> dv=0
+                    -- When 0 ...
+                    if (edge_cmp = to_unsigned(0,NBITS_DELAY)) then
+                        edge_cmp := edge_cmp + to_unsigned(1,NBITS_DELAY);
+                        tmp_dv <= '0';
+
+                    -- When ((IMAGE_WIDTH - KERNEL_SIZE + 1) - 1 ..)
+                    elsif ( edge_cmp = to_unsigned (IMAGE_WIDTH - KERNEL_SIZE , NBITS_DELAY)) then
+                        edge_cmp := (others => '0');
+                        tmp_dv <= '0';
+
+                    -- Between 1 and (IMAGE_WIDTH - KERNEL_SIZE)
+                    else
+                        edge_cmp := edge_cmp + to_unsigned(1,NBITS_DELAY);
+                        tmp_dv <= '1';
+                    end if;
+
+
+                -- When taps are nor full
                 else
-                    cmp := cmp + "0000000001";
+                    delay_cmp := delay_cmp + to_unsigned(1,NBITS_DELAY);
                     tmp_dv <= '0';
+
+
                 end if;
+
             end if;
+
+            -- Refresh counters at new each frame
+            if (in_fv = '0') then
+                delay_cmp := (others => '0');
+                edge_cmp  := (others => '0');
+            end if;
+
         end if;
     end process;
 
     fv_proc : process(clk)
-    variable cmp : unsigned (9 downto 0) :=(others => '0');
+    constant NBITS_DELAY : integer := 12;
+    variable delay_cmp : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
+    variable edge_cmp  : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
     begin
         if (reset_n = '0') then
-            cmp := (others => '0');
+            delay_cmp := (others => '0');
+            edge_cmp  := (others => '0');
             tmp_fv <='0';
         elsif (rising_edge(clk)) then
+
             if(s_valid = '1') then
-                if (cmp > to_unsigned(IMAGE_WIDTH,10)) then
+                if (delay_cmp > to_unsigned((KERNEL_SIZE - 1) * IMAGE_WIDTH + KERNEL_SIZE  , NBITS_DELAY)) then
                     tmp_fv <= '1';
                 else
-                    cmp := cmp + "0000000001";
+                    delay_cmp := delay_cmp + to_unsigned(1,NBITS_DELAY);
                     tmp_fv <= '0';
                 end if;
             end if;
+
+            -- if (in_fv = '0') then
+            --     delay_cmp := (others => '0');
+            -- end if;
+
         end if;
     end process;
 
-    -- dv_buff : bit_taps
-	-- generic map(
-		-- TAPS_WIDTH => (KERNEL_SIZE-1) * IMAGE_WIDTH + KERNEL_SIZE
-	-- )
-	-- port map (
-		-- clk        => clk,
-		-- reset_n    => reset_n,
-		-- enable	   => s_valid,
-		-- in_data	   => in_dv,
-		-- out_data   => tmp_dv
-	-- );
-	   ------------------------------------------------------------------------
-	-- fv_buff : bit_taps
-	-- generic map(
-		-- TAPS_WIDTH 	=> (KERNEL_SIZE-1) * IMAGE_WIDTH + KERNEL_SIZE
-	-- )
-	-- port map (
-		-- clk        	=> clk,
-		-- reset_n    	=> reset_n,
-		-- enable	   	=> s_valid,
-		-- in_data	   	=> in_fv,
-		-- out_data   	=> tmp_fv
-	-- );
 
     out_dv <= tmp_dv and in_dv;
     out_fv <= tmp_fv and in_fv;
