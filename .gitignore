@@ -31,7 +31,7 @@
 *.synctex.gz(busy)
 
 # generals
-build/*
+example/conv2/GPStudio/build/*
 
 # Caffe
-dataset/*
+caffe/dataset/*
