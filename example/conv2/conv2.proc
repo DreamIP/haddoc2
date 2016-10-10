@@ -37,23 +37,23 @@
       <flow name="out1" size="8" type="out" desc="Output 1 - SobelV">
           <properties>
               <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="320"/>
-	          <property name="height"   type="int" value="240"/>
+              <property name="width"    type="int" value="318"/>
+	          <property name="height"   type="int" value="238"/>
           </properties>
       </flow>
 
       <flow name="out2" size="8" type="out" desc="Output 2 - Blur">
           <properties>
               <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="320"/>
-	          <property name="height"   type="int" value="240"/>
+              <property name="width"    type="int" value="318"/>
+	          <property name="height"   type="int" value="238"/>
           </properties>
       </flow>
       <flow name="out3" size="8" type="out" desc="Output 3 - SobelH">
           <properties>
               <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="320"/>
-	          <property name="height"   type="int" value="240"/>
+              <property name="width"    type="int" value="318"/>
+	          <property name="height"   type="int" value="238"/>
           </properties>
       </flow>
   </flows>

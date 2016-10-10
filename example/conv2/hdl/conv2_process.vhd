@@ -9,7 +9,7 @@ library work;
 entity conv2_process is
     generic(
         PIXEL_SIZE    :   integer := 8;
-        IMAGE_WIDTH   :   integer := 32;
+        IMAGE_WIDTH   :   integer := 320;
         KERNEL_SIZE   :   integer := 3;
         NB_IN_FLOWS   :   integer := 3;
         NB_OUT_FLOWS  :   integer := 5

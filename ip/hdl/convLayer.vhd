@@ -22,13 +22,13 @@ entity convLayer is
         reset_n	      : in  std_logic;
         enable        : in  std_logic;
 
-        in_data       : in  pixel_array     (0 to NB_IN_FLOWS - 1);
-        in_dv         : in  std_logic_vector(0 to NB_IN_FLOWS - 1);
-        in_fv         : in  std_logic_vector(0 to NB_IN_FLOWS - 1);
+        in_data       : in  pixel_array      (0 to NB_IN_FLOWS - 1);
+        in_dv         : in  std_logic_vector (0 to NB_IN_FLOWS - 1);
+        in_fv         : in  std_logic_vector (0 to NB_IN_FLOWS - 1);
 
-        out_data      : out pixel_array     (0 to NB_OUT_FLOWS - 1);
-        out_dv        : out std_logic_vector(0 to NB_OUT_FLOWS - 1);
-        out_fv        : out std_logic_vector(0 to NB_OUT_FLOWS - 1)
+        out_data      : out pixel_array      (0 to NB_OUT_FLOWS - 1);
+        out_dv        : out std_logic_vector (0 to NB_OUT_FLOWS - 1);
+        out_fv        : out std_logic_vector (0 to NB_OUT_FLOWS - 1)
     );
 end entity;
 
@@ -92,9 +92,9 @@ architecture STRUCTURAL of convLayer is
         clk	            :	in  std_logic;
         reset_n	        :	in  std_logic;
         enable          :	in  std_logic;
-        in_data         :   in  pixel_array (0 to NB_IN_FLOWS - 1);
-        in_dv           :   in  std_logic_vector(0 to NB_IN_FLOWS - 1);
-        in_fv           :   in  std_logic_vector(0 to NB_IN_FLOWS - 1);
+        in_data         :   in  pixel_array      (0 to NB_IN_FLOWS - 1);
+        in_dv           :   in  std_logic_vector (0 to NB_IN_FLOWS - 1);
+        in_fv           :   in  std_logic_vector (0 to NB_IN_FLOWS - 1);
         out_data        :   out std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out_dv          :   out std_logic;
         out_fv          :   out std_logic
