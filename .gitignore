@@ -32,6 +32,7 @@
 
 # generals
 example/conv2/GPStudio/build/*
+*/build/*
 
 # Caffe
 caffe/dataset/*
