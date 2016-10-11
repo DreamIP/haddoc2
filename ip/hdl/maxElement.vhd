@@ -17,11 +17,17 @@ entity maxElement is
     );
 
     port (
-        in_data         :   pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
         clk	            :	in 	std_logic;
         reset_n	        :	in	std_logic;
-        enable          :	in	std_logic;
+        enable          :   in  std_logic;
+
+        in_data         :   in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
+        in_dv           :   in  std_logic;
+        in_fv           :   in  std_logic;
+
         out_data        :   out std_logic_vector (PIXEL_SIZE - 1 downto 0)
+        out_dv          :   out std_logic;
+        out_fv          :   out std_logic
 );
 end entity;
 
@@ -29,47 +35,57 @@ architecture bhv of maxElement is
     -------------------------------------------
     -- SIGNALS
     -------------------------------------------
-    type	pixel_array_signed   is array (0 to KERNEL_SIZE * KERNEL_SIZE -1 ) of signed (PIXEL_SIZE-1 downto 0);
-    signal	signed_data	    :	pixel_array_signed;
+    type    pixel_array_unsigned is array ( integer range <> ) of unsigned ( PIXEL_SIZE-1 downto 0 );
+    signal	unsigned_data	:	pixel_array_unsigned (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
     signal  s_max           :   std_logic_vector(PIXEL_SIZE-1 downto 0);
-    constant STRIDE         :   unsigned := "10";
+    signal  all_valid       :   std_logic;
 
+
+
+    -- Cast data to unsigned
     begin
     CAST : for i in 0 to (KERNEL_SIZE - 1) generate
-        signed_data(i)      <=  signed(in_data(i));
+        unsigned_data(i)      <=  unsigned(in_data(i));
     end generate;
 
-    -- Max
+    all_valid <= in_dv and in_fv;
+
+    -- Compute Max of neighborhood
     process(clk)
-        variable v_max : signed (PIXEL_SIZE - 1 downto 0);
-        variable cmp   : unsigned (1 downto 0) :="00"; --Gestion des strides
+        variable v_max : unsigned (PIXEL_SIZE - 1 downto 0);
+
         begin
+
             if (reset_n ='0') then
                 v_max := (others=>'0');
-                cmp   := (others=>'0');
+                s_max := (others=>'0');
+
+
             elsif (RISING_EDGE(clk)) then
+
                 if (enable='1') then
-                    if(cmp < STRIDE) then
-
-                        cmp := cmp + "01";
-                        v_max :=signed_data(0);
-
+                    if(all_valid  = '1') then
+                        v_max := unsigned_data(0);
                         MAX_LOOP : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) loop
-                            if (signed_data(i) > v_max) then
-                                v_max := signed_data(i);
+                            if (unsigned_data(i) > v_max) then
+                                v_max := unsigned_data(i);
                             end if;
                         end loop;
 
                         s_max <= std_logic_vector(v_max);
-                    else
-                        cmp := "00";
+                        v_max := (others=>'0');
                     end if;
                 end if;
             end if;
-        v_max := (others=>'0');
-        end process;
-        out_data <=s_max;
 
-        -- Gestion de out_valid : Pour le moment, clone enable
-        out_valid <= enable;
+
+    end process;
+
+
+    -- Out flow :
+    out_data <= s_max;
+    out_dv   <= in_dv;
+    out_fv   <= in_fv;
+
+
 end bhv;

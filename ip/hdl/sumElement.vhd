@@ -83,6 +83,7 @@ architecture bhv of sumElement is
                     end if;
 
                     sum_s	<=	sum;
+
                 end if;
             end if;
         end process;
