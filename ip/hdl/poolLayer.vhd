@@ -68,7 +68,7 @@ architecture STRUCTURAL of poolLayer is
             in_data         :   in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
             in_dv           :   in  std_logic;
             in_fv           :   in  std_logic;
-            out_data        :   out std_logic_vector (PIXEL_SIZE - 1 downto 0)
+            out_data        :   out std_logic_vector (PIXEL_SIZE - 1 downto 0);
             out_dv          :   out std_logic;
             out_fv          :   out std_logic
     );
@@ -120,9 +120,10 @@ architecture STRUCTURAL of poolLayer is
                 enable       => enable,
                 in_data      => s_ne_data(i),
                 in_dv        => s_ne_dv(i),
-                in_fv        => s_ne_fv(i)
-                out_data     => out_data,
-                out_dv       => out_dv,
-                out_fv       => out_fv
+                in_fv        => s_ne_fv(i),
+                out_data     => out_data(i),
+                out_dv       => out_dv(i),
+                out_fv       => out_fv(i)
             );
         end generate MEs_LOOP;
+end STRUCTURAL;
