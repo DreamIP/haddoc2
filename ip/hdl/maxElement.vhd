@@ -25,7 +25,7 @@ entity maxElement is
         in_dv           :   in  std_logic;
         in_fv           :   in  std_logic;
 
-        out_data        :   out std_logic_vector (PIXEL_SIZE - 1 downto 0)
+        out_data        :   out std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out_dv          :   out std_logic;
         out_fv          :   out std_logic
 );
@@ -39,6 +39,7 @@ architecture bhv of maxElement is
     signal	unsigned_data	:	pixel_array_unsigned (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
     signal  s_max           :   std_logic_vector(PIXEL_SIZE-1 downto 0);
     signal  all_valid       :   std_logic;
+    signal  tmp_dv          :   std_logic;
 
 
 
@@ -52,28 +53,28 @@ architecture bhv of maxElement is
 
     -- Compute Max of neighborhood
     process(clk)
-        variable v_max : unsigned (PIXEL_SIZE - 1 downto 0);
-
+        variable v_max  : unsigned (PIXEL_SIZE - 1 downto 0);
         begin
 
             if (reset_n ='0') then
-                v_max := (others=>'0');
-                s_max := (others=>'0');
-
+                v_max  := (others=>'0');
+                s_max  <= (others=>'0');
+                tmp_dv <= '0';
 
             elsif (RISING_EDGE(clk)) then
 
                 if (enable='1') then
                     if(all_valid  = '1') then
-                        v_max := unsigned_data(0);
-                        MAX_LOOP : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) loop
-                            if (unsigned_data(i) > v_max) then
-                                v_max := unsigned_data(i);
-                            end if;
-                        end loop;
+                            -- compute MAX
+                            v_max := unsigned_data(0);
+                            MAX_LOOP : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) loop
+                                if (unsigned_data(i) > v_max) then
+                                    v_max := unsigned_data(i);
+                                end if;
+                            end loop;
+                            s_max <= std_logic_vector(v_max);
+                            v_max := (others=>'0');
 
-                        s_max <= std_logic_vector(v_max);
-                        v_max := (others=>'0');
                     end if;
                 end if;
             end if;
