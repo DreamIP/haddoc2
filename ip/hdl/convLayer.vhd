@@ -109,7 +109,7 @@ architecture STRUCTURAL of convLayer is
     type pixel_array_2d is array ( integer range <> ) of pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
 
     -- Output of the neighborhood extractors (in one array of pixel_array)
-    signal s_ne_data : pixel_array_2d (0 to NB_IN_FLOWS -1);
+    signal s_ne_data : pixel_array_2d   (0 to NB_IN_FLOWS -1);
     signal s_ne_dv   : std_logic_vector (0 to NB_IN_FLOWS -1);
     signal s_ne_fv   : std_logic_vector (0 to NB_IN_FLOWS -1);
 

@@ -2,7 +2,7 @@
 -- Design Name 	: neighExtractor
 -- File Name   	: neighExtractor.vhd
 -- Function    	: Extracts a generic neighborhood from serial in_data
--- Coder       	: Kamel Eddine ABDELOUAHAB
+-- Coder       	: Kamel ABDELOUAHAB
 -- Institution 	: Institut Pascal
 ---------------------------------------------------------------------------------
 
@@ -10,14 +10,14 @@
 --          reset_n    --->|                  |
 --          clk        --->|                  |
 --          enable     --->|                  |
---          			   |                  |---> out_data (pixel_array of size KERNEL_SIZE²)
---          			   |        NE        |---> out_dv
---          			   |                  |---> out_fv
+--          		       |                  |---> out_data (pixel_array of size KERNEL_SIZE²)
+--          		       |        NE        |---> out_dv
+--          		       |                  |---> out_fv
 --          in_data    --->|                  |---> out_valid
 --          in_dv      --->|                  |
---          in_fv      --->|				  |
---          			   |				  |
---							------------------
+--          in_fv      --->|  		          |
+--          		       |		          |
+--			                ------------------
 
 --                        out_data(0)      out_data(1)      out_data(2)
 --                           ^                 ^                 ^
@@ -38,11 +38,11 @@
 --                        out_data(6)      out_data(7)      out_data(8)
 --                           ^                 ^                 ^
 --                           |                 |                 |
---               -------     |     -------     |     -------     |    ---------------------------
---              |        |   |    |        |   |    |        |   |   |                           |
---  P2      --->|        |---|--> |        |---|--> |        |---|-->|          BUFFER           |---> OPEN
---              |        |        |        |        |        |       |                           |
---               -------           -------           -------          ---------------------------
+--               -------     |     -------     |     -------     |
+--              |        |   |    |        |   |    |        |   |
+--  P2      --->|        |---|--> |        |---|--> |        |---|
+--              |        |        |        |        |        |
+--               -------           -------           -------
 
 library ieee;
 	use	ieee.std_logic_1164.all;
@@ -60,7 +60,7 @@ entity neighExtractor is
 	);
 
     port(
-		clk	            :	in 	std_logic;
+	clk	        :	in 	std_logic;
         reset_n	        :	in	std_logic;
         enable	        :	in	std_logic;
 
@@ -69,8 +69,8 @@ entity neighExtractor is
         in_fv	        :	in	std_logic;
 
         out_data        :	out	pixel_array (0 to (KERNEL_SIZE * KERNEL_SIZE)- 1);
-        out_dv			:	out std_logic;
-        out_fv			:	out std_logic
+        out_dv		:	out std_logic;
+        out_fv		:	out std_logic
     );
 end neighExtractor;
 
@@ -83,12 +83,12 @@ architecture rtl of neighExtractor is
     component taps
     generic (
         PIXEL_SIZE		:	integer;
-		TAPS_WIDTH		:	integer;
-		KERNEL_SIZE		:	integer
+		TAPS_WIDTH	:	integer;
+		KERNEL_SIZE	:	integer
 	);
 
 	port (
-		clk				:	in	std_logic;
+		clk			:	in	std_logic;
 		reset_n			:	in	std_logic;
 		enable			:	in	std_logic;
 		in_data			:	in	std_logic_vector (PIXEL_SIZE-1 downto 0);
@@ -114,8 +114,8 @@ architecture rtl of neighExtractor is
 
 	signal all_valid    :  std_logic;
 	signal s_valid      :  std_logic;
-	signal tmp_dv    	:  std_logic;
-	signal tmp_fv    	:  std_logic;
+	signal tmp_dv       :  std_logic;
+	signal tmp_fv       :  std_logic;
 
     begin
 
@@ -133,14 +133,14 @@ architecture rtl of neighExtractor is
                 gen1_inst : taps
                 generic map(
                     PIXEL_SIZE  => PIXEL_SIZE,
-                    TAPS_WIDTH  => IMAGE_WIDTH - 1,
+                    TAPS_WIDTH  => IMAGE_WIDTH ,
                     KERNEL_SIZE => KERNEL_SIZE
                 )
                 port map(
-                    clk			=> clk,
-                    reset_n		=> reset_n,
-                    enable		=> s_valid,
-                    in_data		=> in_data,
+                    clk		    => clk,
+                    reset_n	    => reset_n,
+                    enable	    => s_valid,
+                    in_data	    => in_data,
                     taps_data	=> out_data(0 to KERNEL_SIZE-1),
                     out_data	=> pixel_out(0)
                 );
@@ -151,14 +151,14 @@ architecture rtl of neighExtractor is
                 geni_inst : taps
                 generic map(
                     PIXEL_SIZE   => PIXEL_SIZE,
-                    TAPS_WIDTH   => IMAGE_WIDTH - 1,
+                    TAPS_WIDTH   => IMAGE_WIDTH,
                     KERNEL_SIZE  => KERNEL_SIZE
                 )
                 port map(
-                    clk			 => clk,
-                    reset_n		 => reset_n,
-                    enable	 	 => s_valid,
-                    in_data		 => pixel_out(i-1),
+                    clk		 => clk,
+                    reset_n	 => reset_n,
+                    enable	 => s_valid,
+                    in_data	 => pixel_out(i-1),
                     taps_data	 => out_data(i * KERNEL_SIZE to KERNEL_SIZE*(i+1)-1),
                     out_data	 => pixel_out(i)
                 );
@@ -169,7 +169,7 @@ architecture rtl of neighExtractor is
                 gen_last_inst : taps
                 generic map(
                     PIXEL_SIZE  => PIXEL_SIZE,
-                    TAPS_WIDTH  => IMAGE_WIDTH - 1,
+                    TAPS_WIDTH  => KERNEL_SIZE,
                     KERNEL_SIZE => KERNEL_SIZE
                 )
                 port map(
@@ -190,7 +190,7 @@ architecture rtl of neighExtractor is
 
     dv_proc : process(clk)
     -- 12 bits is enought to count until 4096
-    constant NBITS_DELAY : integer := 12;
+    constant NBITS_DELAY : integer := 20;
     variable delay_cmp : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
     variable edge_cmp  : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
 
@@ -201,49 +201,53 @@ architecture rtl of neighExtractor is
             tmp_dv    <='0';
 
         elsif (rising_edge(clk)) then
-            if(s_valid = '1') then
-                -- Initial delay : Wait until there is data in all the taps
-                if (delay_cmp > to_unsigned((KERNEL_SIZE - 1) * IMAGE_WIDTH + KERNEL_SIZE - 1 , NBITS_DELAY)) then
+            if(enable = '1') then
 
-                    -- When pixel is at 0 or (IMAGE_WIDTH - KERNEL_SIZE - 1) -> data is not valid -> dv=0
-                    -- When 0 ...
-                    if (edge_cmp = to_unsigned(0,NBITS_DELAY)) then
-                        edge_cmp := edge_cmp + to_unsigned(1,NBITS_DELAY);
-                        tmp_dv <= '0';
+                if(all_valid = '1') then
 
-                    -- When ((IMAGE_WIDTH - KERNEL_SIZE + 1) - 1 ..)
-                    elsif ( edge_cmp = to_unsigned (IMAGE_WIDTH - KERNEL_SIZE , NBITS_DELAY)) then
-                        edge_cmp := (others => '0');
-                        tmp_dv <= '0';
+                    -- Initial delay : Wait until there is data in all the taps
+                    if (delay_cmp >= to_unsigned((KERNEL_SIZE-1)*IMAGE_WIDTH + KERNEL_SIZE - 1 , NBITS_DELAY)) then
 
-                    -- Between 1 and (IMAGE_WIDTH - KERNEL_SIZE)
-                    else
-                        edge_cmp := edge_cmp + to_unsigned(1,NBITS_DELAY);
-                        tmp_dv <= '1';
-                    end if;
+                        if ( edge_cmp > to_unsigned (IMAGE_WIDTH - KERNEL_SIZE, NBITS_DELAY)) then
 
 
-                -- When taps are nor full
-                else
-                    delay_cmp := delay_cmp + to_unsigned(1,NBITS_DELAY);
-                    tmp_dv <= '0';
+                            if ( edge_cmp  = to_unsigned (IMAGE_WIDTH - 1, NBITS_DELAY)) then
+                                edge_cmp  := (others => '0');
+                                tmp_dv <= '0';
+                            else
+                                edge_cmp := edge_cmp + to_unsigned(1,NBITS_DELAY);
+                                tmp_dv <= '0';
+                            end if;
+
+                                -- Between 1 and (IMAGE_WIDTH - KERNEL_SIZE)
+                        else
+                                edge_cmp := edge_cmp + to_unsigned(1,NBITS_DELAY);
+                                tmp_dv <= '1';
+                        end if;
 
 
+                            -- When taps are nor full
+                        else
+                            delay_cmp := delay_cmp + to_unsigned(1,NBITS_DELAY);
+                            tmp_dv <= '0';
+
+                        end if;
                 end if;
 
-            end if;
-
             -- Refresh counters at new each frame
-            if (in_fv = '0') then
-                delay_cmp := (others => '0');
-                edge_cmp  := (others => '0');
-            end if;
+                if (in_fv = '0') then
+                    delay_cmp := (others => '0');
+                    edge_cmp  := (others => '0');
+                end if;
 
+
+            end if;
         end if;
+
     end process;
 
     fv_proc : process(clk)
-    constant NBITS_DELAY : integer := 12;
+    constant NBITS_DELAY : integer := 20;
     variable delay_cmp : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
     variable edge_cmp  : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
     begin
@@ -251,10 +255,12 @@ architecture rtl of neighExtractor is
             delay_cmp := (others => '0');
             edge_cmp  := (others => '0');
             tmp_fv <='0';
-        elsif (rising_edge(clk)) then
 
-            if(s_valid = '1') then
-                if (delay_cmp > to_unsigned((KERNEL_SIZE - 1) * IMAGE_WIDTH + KERNEL_SIZE  , NBITS_DELAY)) then
+
+        elsif (rising_edge(clk)) then
+            if (enable = '1') then
+            if (all_valid = '1') then
+                    if (delay_cmp >= to_unsigned((KERNEL_SIZE-1)*IMAGE_WIDTH + KERNEL_SIZE - 1 , NBITS_DELAY)) then
                     tmp_fv <= '1';
                 else
                     delay_cmp := delay_cmp + to_unsigned(1,NBITS_DELAY);
@@ -266,6 +272,7 @@ architecture rtl of neighExtractor is
             --     delay_cmp := (others => '0');
             -- end if;
 
+        end if;
         end if;
     end process;
 

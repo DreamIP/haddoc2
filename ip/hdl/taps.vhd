@@ -60,12 +60,15 @@ architecture bhv of taps is
 			elsif (rising_edge(clk)) then
 
 				if (enable='1') then
-                    taps_data <= cell(0 to KERNEL_SIZE-1);
+
 					cell(0)	<=	in_data;
 					for i in 1 to (TAPS_WIDTH-1) loop
 						cell(i) <= cell(i-1);
 					end loop;
-				out_data <= cell(TAPS_WIDTH-1);
+
+                    taps_data <= cell(0 to KERNEL_SIZE-1);
+				    out_data <= cell(TAPS_WIDTH-1);
+
 				end if;
 			end if;
 	end process;
