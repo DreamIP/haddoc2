@@ -10,7 +10,7 @@ entity poolLayer is
         PIXEL_SIZE    :   integer;
         IMAGE_WIDTH   :   integer;
         KERNEL_SIZE   :   integer;
-        NB_IN_FLOWS   :   integer
+        NB_OUT_FLOWS   :   integer
     );
 
     port(
@@ -18,13 +18,13 @@ entity poolLayer is
         reset_n	      : in  std_logic;
         enable        : in  std_logic;
 
-        in_data       : in  pixel_array      (0 to NB_IN_FLOWS - 1);
-        in_dv         : in  std_logic_vector (0 to NB_IN_FLOWS - 1);
-        in_fv         : in  std_logic_vector (0 to NB_IN_FLOWS - 1);
+        in_data       : in  pixel_array      (0 to NB_OUT_FLOWS - 1);
+        in_dv         : in  std_logic_vector (0 to NB_OUT_FLOWS - 1);
+        in_fv         : in  std_logic_vector (0 to NB_OUT_FLOWS - 1);
 
-        out_data      : out pixel_array      (0 to NB_IN_FLOWS - 1);
-        out_dv        : out std_logic_vector (0 to NB_IN_FLOWS - 1);
-        out_fv        : out std_logic_vector (0 to NB_IN_FLOWS - 1)
+        out_data      : out pixel_array      (0 to NB_OUT_FLOWS - 1);
+        out_dv        : out std_logic_vector (0 to NB_OUT_FLOWS - 1);
+        out_fv        : out std_logic_vector (0 to NB_OUT_FLOWS - 1)
     );
 end entity;
 
@@ -80,15 +80,15 @@ architecture STRUCTURAL of poolLayer is
     type pixel_array_2d is array ( integer range <> ) of pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
 
     -- Output of the neighborhood extractors (in one array of pixel_array)
-    signal s_ne_data : pixel_array_2d   (0 to NB_IN_FLOWS -1);
-    signal s_ne_dv   : std_logic_vector (0 to NB_IN_FLOWS -1);
-    signal s_ne_fv   : std_logic_vector (0 to NB_IN_FLOWS -1);
+    signal s_ne_data : pixel_array_2d   (0 to NB_OUT_FLOWS -1);
+    signal s_ne_dv   : std_logic_vector (0 to NB_OUT_FLOWS -1);
+    signal s_ne_fv   : std_logic_vector (0 to NB_OUT_FLOWS -1);
 
 
     --------------------------------------------------------------------------------
     begin
 
-        NEs_loop : for i in 0 to (NB_IN_FLOWS - 1) generate
+        NEs_loop : for i in 0 to (NB_OUT_FLOWS - 1) generate
             NEs_inst : neighExtractor
             generic map(
                 PIXEL_SIZE	 => PIXEL_SIZE,
@@ -108,7 +108,7 @@ architecture STRUCTURAL of poolLayer is
             );
         end generate NEs_loop;
 
-        MEs_LOOP : for i in 0 to (NB_IN_FLOWS - 1) generate
+        MEs_LOOP : for i in 0 to (NB_OUT_FLOWS - 1) generate
             MEs_inst : maxElement
             generic map(
                 PIXEL_SIZE   => PIXEL_SIZE,
