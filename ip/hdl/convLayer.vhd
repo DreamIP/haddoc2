@@ -149,7 +149,7 @@ architecture STRUCTURAL of convLayer is
 
     --------------------------------------------------------------------------------
         CEs_loop : for i in 0 to (NB_OUT_FLOWS * NB_IN_FLOWS - 1) generate
-
+            
             tmp_loop : for j in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) generate
                 tmp_w(j) <= W_CONV_PARAMS(i,j);
             end generate tmp_loop;
@@ -179,7 +179,7 @@ architecture STRUCTURAL of convLayer is
       -- Reorganize data : Each ce_data_2d(i) will contain NB_IN_FLOWS elements
         reorg_i : for i in 0 to (NB_OUT_FLOWS - 1) generate
             reorg_j : for j in 0 to (NB_IN_FLOWS - 1) generate
-                -- A prendre avec des pincettes : VHDL 2008 only
+                --VHDL 2008 only
                 ce_data_2d(i)(j) <= s_ce_data( i + NB_OUT_FLOWS * j);
             end generate reorg_j;
         end generate reorg_i;
