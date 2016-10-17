@@ -15,8 +15,7 @@
     <file name="conv2_slave.vhd" type="vhdl" group="hdl" path="hdl/conv2_slave.vhd"/>
 
     <file name="cnn_types.vhd" type="vhdl" group="hdl" path="../../ip/hdl/cnn_types.vhd"/>
-    <file name="cnn_kernels.vhd" type="vhdl" group="hdl" path="hdl/cnn_kernels.vhd"/>
-    <file name="bit_taps.vhd" type="vhdl" group="hdl" path="../../ip/hdl/bit_taps.vhd"/>
+    <file name="params.vhd" type="vhdl" group="hdl" path="hdl/params.vhd"/>
     <file name="taps.vhd" type="vhdl" group="hdl" path="../../ip/hdl/taps.vhd"/>
     <file name="neighExtractor.vhd" type="vhdl" group="hdl" path="../../ip/hdl/neighExtractor.vhd"/>
     <file name="convElement.vhd" type="vhdl" group="hdl" path="../../ip/hdl/convElement.vhd"/>

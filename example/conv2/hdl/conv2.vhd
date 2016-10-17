@@ -3,8 +3,9 @@ library ieee;
 	use	ieee.numeric_std.all;
 
 library work;
-	use work.cnn_types.all;
-    use work.cnn_kernels.all;
+    use work.cnn_types.all;
+    use work.params.all;
+
 
 entity conv2 is
     generic (
@@ -13,7 +14,7 @@ entity conv2 is
 		OUT1_SIZE 		: integer	:=	8;
 		OUT2_SIZE 		: integer	:=	8;
 		OUT3_SIZE 		: integer	:=	8;
-		CLK_PROC_FREQ 	: integer 	:=  48000000
+		CLK_PROC_FREQ 	: integer 	:=  50000000
 	);
 
     port (
@@ -54,33 +55,30 @@ architecture rtl of conv2 is
     component conv2_process
     generic(
         PIXEL_SIZE    :   integer;
-        IMAGE_WIDTH   :   integer;
-        KERNEL_SIZE   :   integer;
-        NB_IN_FLOWS   :   integer;
-        NB_OUT_FLOWS  :   integer
+        IMAGE_WIDTH   :   integer
     );
 
     port(
         clk	          :    in   std_logic;
         reset_n	      :    in   std_logic;
         enable        :    in   std_logic;
-        in_data       :    in   pixel_array     (0 to NB_IN_FLOWS - 1);
-        in_dv         :    in   std_logic_vector(0 to NB_IN_FLOWS - 1);
-        in_fv         :    in   std_logic_vector(0 to NB_IN_FLOWS - 1);
-        out_data      :    out  pixel_array     (0 to NB_OUT_FLOWS - 1);
-        out_dv        :    out  std_logic_vector(0 to NB_OUT_FLOWS - 1);
-        out_fv        :    out  std_logic_vector(0 to NB_OUT_FLOWS - 1)
+        in_data       :    in   pixel_array     (0 to CONV2_IN_SIZE - 1);
+        in_dv         :    in   std_logic_vector(0 to CONV2_IN_SIZE - 1);
+        in_fv         :    in   std_logic_vector(0 to CONV2_IN_SIZE - 1);
+        out_data      :    out  pixel_array     (0 to CONV2_OUT_SIZE - 1);
+        out_dv        :    out  std_logic_vector(0 to CONV2_OUT_SIZE - 1);
+        out_fv        :    out  std_logic_vector(0 to CONV2_OUT_SIZE - 1)
     );
     end component;
 
     component conv2_slave
     port (
-        clk_proc	: in std_logic;
-        reset_n		: in std_logic;
-        addr_rel_i	: in std_logic_vector(1 downto 0);
-        wr_i		: in std_logic;
-        rd_i		: in std_logic;
-        datawr_i	: in std_logic_vector(31 downto 0);
+        clk_proc	: in  std_logic;
+        reset_n		: in  std_logic;
+        addr_rel_i	: in  std_logic_vector(1 downto 0);
+        wr_i		: in  std_logic;
+        rd_i		: in  std_logic;
+        datawr_i	: in  std_logic_vector(31 downto 0);
         datard_o	: out std_logic_vector(31 downto 0);
         enable_o	: out std_logic
 
@@ -90,22 +88,18 @@ architecture rtl of conv2 is
     --------------------------------------------------------------------------------
     -- SIGNALS & CONSTANTS
     --------------------------------------------------------------------------------
-    constant CONST_NB_IN_FLOWS  : integer := 3;
-    constant CONST_NB_OUT_FLOWS : integer := 5;
-    constant CONST_KERNEL_SIZE  : integer := 3;
-
     signal enable_s             : std_logic;
-    signal dummy_in_data        : pixel_array      (0 to CONST_NB_IN_FLOWS - 1);
-    signal dummy_in_dv          : std_logic_vector (0 to CONST_NB_IN_FLOWS - 1);
-    signal dummy_in_fv          : std_logic_vector (0 to CONST_NB_IN_FLOWS - 1);
+    signal dummy_in_data        : pixel_array      (0 to CONV2_IN_SIZE - 1);
+    signal dummy_in_dv          : std_logic_vector (0 to CONV2_IN_SIZE - 1);
+    signal dummy_in_fv          : std_logic_vector (0 to CONV2_IN_SIZE - 1);
 
-    signal dummy_out_data       : pixel_array      (0 to CONST_NB_OUT_FLOWS - 1);
-    signal dummy_out_dv         : std_logic_vector (0 to CONST_NB_OUT_FLOWS - 1);
-    signal dummy_out_fv         : std_logic_vector (0 to CONST_NB_OUT_FLOWS - 1);
+    signal dummy_out_data       : pixel_array      (0 to CONV2_OUT_SIZE - 1);
+    signal dummy_out_dv         : std_logic_vector (0 to CONV2_OUT_SIZE - 1);
+    signal dummy_out_fv         : std_logic_vector (0 to CONV2_OUT_SIZE - 1);
     begin
 
         -- Emulate 3 in flows
-        dummy_in_loop : for i in 0 to  CONST_NB_IN_FLOWS-1 generate
+        dummy_in_loop : for i in 0 to  CONV2_IN_SIZE-1 generate
             dummy_in_data(i) <= in_data;
             dummy_in_dv(i)   <= in_dv;
             dummy_in_fv(i)   <= in_fv;
@@ -128,10 +122,7 @@ architecture rtl of conv2 is
         proc_inst : conv2_process
         generic map(
             PIXEL_SIZE      => IN_SIZE,
-            IMAGE_WIDTH     => IMAGE_WIDTH,
-            KERNEL_SIZE     => CONST_KERNEL_SIZE,
-            NB_IN_FLOWS     => CONST_NB_IN_FLOWS,
-            NB_OUT_FLOWS    => CONST_NB_OUT_FLOWS
+            IMAGE_WIDTH     => IMAGE_WIDTH
         )
         port map(
             clk	            => clk_proc,
