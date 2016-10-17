@@ -4,7 +4,7 @@ library ieee;
 
 library work;
 	use work.cnn_types.all;
-    use work.cnn_kernels.all;
+
 
 entity convLayer is
     generic(
@@ -13,7 +13,7 @@ entity convLayer is
         KERNEL_SIZE   :   integer;
         NB_IN_FLOWS   :   integer;
         NB_OUT_FLOWS  :   integer;
-        W_CONV_PARAMS :   kernel_array;
+        W_CONV_PARAMS :   pixel_matrix;
         N_CONV_PARAMS :   pixel_array
     );
 
@@ -123,7 +123,7 @@ architecture STRUCTURAL of convLayer is
     signal ce_data_2d: tmp_array_2d (0 to NB_OUT_FLOWS -1);
         -- Each ce_data_2d(i) will contain NB_IN_FLOWS elements
 
-
+    signal tmp_w : pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
     --------------------------------------------------------------------------------
     begin
 
@@ -149,6 +149,11 @@ architecture STRUCTURAL of convLayer is
 
     --------------------------------------------------------------------------------
         CEs_loop : for i in 0 to (NB_OUT_FLOWS * NB_IN_FLOWS - 1) generate
+
+            tmp_loop : for j in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) generate
+                tmp_w(j) <= W_CONV_PARAMS(i,j);
+            end generate tmp_loop;
+
             CEs_inst : convElement
             generic map(
                 KERNEL_SIZE => KERNEL_SIZE,
@@ -161,7 +166,7 @@ architecture STRUCTURAL of convLayer is
                 in_data     => s_ne_data(i/NB_OUT_FLOWS),
                 in_dv    	=> s_ne_dv(i/NB_OUT_FLOWS),
                 in_fv    	=> s_ne_fv(i/NB_OUT_FLOWS),
-                in_kernel   => W_CONV_PARAMS(i),
+                in_kernel   => tmp_w,
                 in_norm     => N_CONV_PARAMS(i),
                 out_data    => s_ce_data(i),
                 out_dv    	=> s_ce_dv(i),
