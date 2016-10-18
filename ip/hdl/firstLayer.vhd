@@ -132,9 +132,9 @@ architecture STRUCTURAL of firstLayer is
                 in_fv    	=> s_ne_fv,
                 in_kernel   => W_CONV_PARAMS_ARRAY,
                 in_norm     => N_CONV_PARAMS(i),
-                out_data    => out_data,
-                out_dv    	=> out_dv,
-                out_fv    	=> out_fv
+                out_data    => out_data(i),
+                out_dv    	=> out_dv(i),
+                out_fv    	=> out_fv(i)
             );
         end generate CEs_loop;
 

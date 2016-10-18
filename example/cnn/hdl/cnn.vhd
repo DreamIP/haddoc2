@@ -69,7 +69,7 @@ architecture rtl of cnn is
         out1_fv       : out std_logic;
         out2_data     : out std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out2_dv       : out std_logic;
-        out2_fv       : out std_logic
+        out2_fv       : out std_logic;
         out3_data     : out std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out3_dv       : out std_logic;
         out3_fv       : out std_logic
@@ -113,7 +113,7 @@ architecture rtl of cnn is
 
         proc_inst : cnn_process
         generic map (
-            PIXEL_SIZE    => PIXEL_SIZE,
+            PIXEL_SIZE    => IN_SIZE,
             IMAGE_WIDTH   => IMAGE_WIDTH
         )
 

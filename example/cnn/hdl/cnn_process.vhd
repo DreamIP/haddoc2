@@ -27,7 +27,7 @@ entity cnn_process is
 
         out2_data     : out std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out2_dv       : out std_logic;
-        out2_fv       : out std_logic
+        out2_fv       : out std_logic;
 
         out3_data     : out std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out3_dv       : out std_logic;
@@ -117,21 +117,21 @@ architecture STRUCTURAL of cnn_process is
     --------------------------------------------------------------------------------
     -- SIGNALS
     --------------------------------------------------------------------------------
-    signal conv1_data : pixel_array     (0 to CONV1_OUT_SIZE);
-    signal conv1_dv   : std_logic_array (0 to CONV1_OUT_SIZE);
-    signal conv1_fv   : std_logic_array (0 to CONV1_OUT_SIZE);
+    signal conv1_data : pixel_array      (0 to CONV1_LAYER_SIZE - 1);
+    signal conv1_dv   : std_logic_vector (0 to CONV1_LAYER_SIZE - 1);
+    signal conv1_fv   : std_logic_vector (0 to CONV1_LAYER_SIZE - 1);
 
-    signal pool1_data : pixel_array     (0 to POOL1_OUT_SIZE);
-    signal pool1_dv   : std_logic_array (0 to POOL1_OUT_SIZE);
-    signal pool1_fv   : std_logic_array (0 to POOL1_OUT_SIZE);
+    signal pool1_data : pixel_array      (0 to POOL1_LAYER_SIZE - 1);
+    signal pool1_dv   : std_logic_vector (0 to POOL1_LAYER_SIZE - 1);
+    signal pool1_fv   : std_logic_vector (0 to POOL1_LAYER_SIZE - 1);
 
-    signal conv2_data : pixel_array     (0 to CONV2_OUT_SIZE);
-    signal conv2_dv   : std_logic_array (0 to CONV2_OUT_SIZE);
-    signal conv2_fv   : std_logic_array (0 to CONV2_OUT_SIZE);
+    signal conv2_data : pixel_array      (0 to CONV2_LAYER_SIZE - 1);
+    signal conv2_dv   : std_logic_vector (0 to CONV2_LAYER_SIZE - 1);
+    signal conv2_fv   : std_logic_vector (0 to CONV2_LAYER_SIZE - 1);
 
-    signal pool2_data : pixel_array     (0 to POOL2_OUT_SIZE);
-    signal pool2_dv   : std_logic_array (0 to POOL2_OUT_SIZE);
-    signal pool2_fv   : std_logic_array (0 to POOL2_OUT_SIZE);
+    signal pool2_data : pixel_array      (0 to POOL2_LAYER_SIZE - 1);
+    signal pool2_dv   : std_logic_vector (0 to POOL2_LAYER_SIZE - 1);
+    signal pool2_fv   : std_logic_vector (0 to POOL2_LAYER_SIZE - 1);
 
     --------------------------------------------------------------------------------
     -- BEGIN STRUCTURAL DESCRIPTION
@@ -143,10 +143,10 @@ architecture STRUCTURAL of cnn_process is
         generic map(
             PIXEL_SIZE    => PIXEL_SIZE,
             IMAGE_WIDTH   => CONV1_IMAGE_WIDTH,
-            NB_OUT_FLOWS  => CONV1_OUT_SIZE,
+            NB_OUT_FLOWS  => CONV1_LAYER_SIZE,
             KERNEL_SIZE   => CONV1_KERNEL_SIZE,
-            W_CONV_PARAMS => CONV1_KENREL_VALUE,
-            N_CONV_PARAMS => CONV1_KENREL_NORM
+            W_CONV_PARAMS => CONV1_KERNEL_VALUE,
+            N_CONV_PARAMS => CONV1_KERNEL_NORM
         )
         port map(
             clk	          => clk,
@@ -166,7 +166,7 @@ architecture STRUCTURAL of cnn_process is
         generic map(
             PIXEL_SIZE    => PIXEL_SIZE,
             IMAGE_WIDTH   => POOL1_IMAGE_WIDTH,
-            NB_OUT_FLOWS  => POOL1_OUT_SIZE,
+            NB_OUT_FLOWS  => POOL1_LAYER_SIZE,
             KERNEL_SIZE   => POOL1_KERNEL_SIZE
         )
         port map(
@@ -183,14 +183,13 @@ architecture STRUCTURAL of cnn_process is
 
         -- CONV2 -------------------------------------------------------------------
         conv2 : convLayer
-        convLayer
         generic map(
             PIXEL_SIZE    => PIXEL_SIZE,
             IMAGE_WIDTH   => CONV2_IMAGE_WIDTH,
-            NB_IN_FLOWS   => CONV2_IN_SIZE,
-            NB_OUT_FLOWS  => CONV2_OUT_SIZE,
+            NB_IN_FLOWS   => POOL1_LAYER_SIZE,
+            NB_OUT_FLOWS  => CONV2_LAYER_SIZE,
             KERNEL_SIZE   => CONV2_KERNEL_SIZE,
-            W_CONV_PARAMS => CONV2_KENREL_VALUE,
+            W_CONV_PARAMS => CONV2_KERNEL_VALUE,
             N_CONV_PARAMS => CONV2_KERNEL_NORM
         )
         port map(
@@ -210,7 +209,7 @@ architecture STRUCTURAL of cnn_process is
         generic map(
             PIXEL_SIZE    => PIXEL_SIZE,
             IMAGE_WIDTH   => POOL2_IMAGE_WIDTH,
-            NB_OUT_FLOWS  => POOL2_OUT_SIZE,
+            NB_OUT_FLOWS  => POOL2_LAYER_SIZE,
             KERNEL_SIZE   => POOL2_KERNEL_SIZE
         )
         port map(
