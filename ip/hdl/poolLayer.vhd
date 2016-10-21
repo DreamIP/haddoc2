@@ -137,7 +137,7 @@ architecture STRUCTURAL of poolLayer is
     signal max_dv     : std_logic_vector (0 to NB_OUT_FLOWS -1);
     signal max_fv     : std_logic_vector (0 to NB_OUT_FLOWS -1);
 
-    signal poolH_data : pixel_array_2d   (0 to NB_OUT_FLOWS -1);
+    signal poolH_data : pixel_array      (0 to NB_OUT_FLOWS -1);
     signal poolH_dv   : std_logic_vector (0 to NB_OUT_FLOWS -1);
     signal poolH_fv   : std_logic_vector (0 to NB_OUT_FLOWS -1);
 
@@ -218,7 +218,7 @@ architecture STRUCTURAL of poolLayer is
             generic map (
                 PIXEL_SIZE     =>  PIXEL_SIZE,
                 IMAGE_WIDTH    =>  IMAGE_WIDTH / 2,
-                KERNEL_SIZE    =>  CONST_KERNEL_SIZE
+                KERNEL_SIZE    =>  KERNEL_SIZE
             )
 
             port map(
