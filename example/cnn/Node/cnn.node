@@ -43,7 +43,7 @@
           <clock name="clk_img" typical="9000000"/>
         </clocks>
       </io>
-      <io name="usb" driver="usb_cypress_CY7C68014A">
+      <iocom name="usb" driver="usb_cypress_CY7C68014A">
         <parts>
           <part name="inputs" x_pos="0" y_pos="0"/>
           <part name="outputs" x_pos="0" y_pos="0"/>
@@ -71,16 +71,7 @@
           <property name="enableflow3" value="1"/>
           <property name="enableflow4" value="1"/>
         </properties>
-        <com_connects driverio="usb">
-          <com_connect link="out0" id="0" type="flow"/>
-          <com_connect link="out1" id="1" type="flow"/>
-          <com_connect link="in0" id="128" type="flow"/>
-          <com_connect link="in1" id="129" type="flow"/>
-          <com_connect link="in2" id="130" type="flow"/>
-          <com_connect link="in3" id="131" type="flow"/>
-          <com_connect link="" id="15" type="paramout"/>
-        </com_connects>
-      </io>
+      </iocom>
     </ios>
   </board>
   <process>

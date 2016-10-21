@@ -18,9 +18,12 @@
     <file name="params.vhd" type="vhdl" group="hdl" path="hdl/params.vhd"/>
     <file name="taps.vhd" type="vhdl" group="hdl" path="../../ip/hdl/taps.vhd"/>
     <file name="neighExtractor.vhd" type="vhdl" group="hdl" path="../../ip/hdl/neighExtractor.vhd"/>
+    <file name="neighExtractor_p.vhd" type="vhdl" group="hdl" path="../../ip/hdl/neighExtractor_p.vhd"/>
     <file name="convElement.vhd" type="vhdl" group="hdl" path="../../ip/hdl/convElement.vhd"/>
     <file name="sumElement.vhd" type="vhdl" group="hdl" path="../../ip/hdl/sumElement.vhd"/>
     <file name="maxElement.vhd" type="vhdl" group="hdl" path="../../ip/hdl/maxElement.vhd"/>
+    <file name="poolH.vhd" type="vhdl" group="hdl" path="../../ip/hdl/poolH.vhd"/>
+    <file name="poolV.vhd" type="vhdl" group="hdl" path="../../ip/hdl/poolV.vhd"/>
     <file name="convLayer.vhd" type="vhdl" group="hdl" path="../../ip/hdl/convLayer.vhd"/>
     <file name="poolLayer.vhd" type="vhdl" group="hdl" path="../../ip/hdl/poolLayer.vhd"/>
     <file name="firstLayer.vhd" type="vhdl" group="hdl" path="../../ip/hdl/firstLayer.vhd"/>
@@ -37,23 +40,23 @@
       <flow name="out1" size="8" type="out" desc="Output 1 - SobelV">
           <properties>
               <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="314"/>
-	          <property name="height"   type="int" value="234"/>
+              <property name="width"    type="int" value="80"/>
+	          <property name="height"   type="int" value="80"/>
           </properties>
       </flow>
 
       <flow name="out2" size="8" type="out" desc="Output 2 - Blur">
           <properties>
               <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="314"/>
-	          <property name="height"   type="int" value="234"/>
+              <property name="width"    type="int" value="80"/>
+	          <property name="height"   type="int" value="80"/>
           </properties>
       </flow>
       <flow name="out3" size="8" type="out" desc="Output 3 - SobelH">
           <properties>
               <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="314"/>
-	          <property name="height"   type="int" value="234"/>
+              <property name="width"    type="int" value="80"/>
+	          <property name="height"   type="int" value="80"/>
           </properties>
       </flow>
   </flows>
