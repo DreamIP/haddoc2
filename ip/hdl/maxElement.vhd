@@ -38,8 +38,7 @@ architecture bhv of maxElement is
     type    pixel_array_unsigned is array ( integer range <> ) of unsigned ( PIXEL_SIZE-1 downto 0 );
     signal	unsigned_data	:	pixel_array_unsigned (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
     signal  s_max           :   std_logic_vector(PIXEL_SIZE-1 downto 0);
-    signal  all_valid       :   std_logic;
-    signal  tmp_dv          :   std_logic;
+
 
 
 
@@ -49,7 +48,6 @@ architecture bhv of maxElement is
         unsigned_data(i)      <=  unsigned(in_data(i));
     end generate;
 
-    all_valid <= in_dv and in_fv;
 
     -- Compute Max of neighborhood
     process(clk)
@@ -59,22 +57,23 @@ architecture bhv of maxElement is
             if (reset_n ='0') then
                 v_max  := (others=>'0');
                 s_max  <= (others=>'0');
-                tmp_dv <= '0';
 
             elsif (RISING_EDGE(clk)) then
 
                 if (enable='1') then
-                    if(all_valid  = '1') then
-                            -- compute MAX
-                            v_max := unsigned_data(0);
-                            MAX_LOOP : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) loop
-                                if (unsigned_data(i) > v_max) then
-                                    v_max := unsigned_data(i);
-                                end if;
-                            end loop;
-                            s_max <= std_logic_vector(v_max);
-                            v_max := (others=>'0');
+                    if(in_fv  = '1') then
+                        if(in_dv  = '1') then
+                                -- compute MAX
+                                v_max := unsigned_data(0);
+                                MAX_LOOP : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) loop
+                                    if (unsigned_data(i) > v_max) then
+                                        v_max := unsigned_data(i);
+                                    end if;
+                                end loop;
+                                s_max <= std_logic_vector(v_max);
+                                v_max := (others=>'0');
 
+                        end if;
                     end if;
                 end if;
             end if;
@@ -83,10 +82,13 @@ architecture bhv of maxElement is
     end process;
 
 
+ 
+
     -- Out flow :
     out_data <= s_max;
     out_dv   <= in_dv;
     out_fv   <= in_fv;
+
 
 
 end bhv;
