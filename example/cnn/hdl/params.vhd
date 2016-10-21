@@ -6,21 +6,21 @@ library work;
 package params is
 
     constant CONV1_IMAGE_WIDTH  : integer := 320;
-    constant CONV1_LAYER_SIZE   : integer := 3;
+    constant CONV1_LAYER_SIZE   : integer := 10;
     constant CONV1_KERNEL_SIZE  : integer := 3;
     constant CONV1_KERNEL_NORM  : pixel_array  (0 to CONV1_LAYER_SIZE * CONV1_LAYER_SIZE - 1) := (others =>(others => '0'));
 
     constant POOL1_IMAGE_WIDTH  : integer := 318;
-    constant POOL1_LAYER_SIZE   : integer := 3;
+    constant POOL1_LAYER_SIZE   : integer := 10;
     constant POOL1_KERNEL_SIZE  : integer := 2;
 
     constant CONV2_IMAGE_WIDTH  : integer := 317;
-    constant CONV2_LAYER_SIZE   : integer := 5;
+    constant CONV2_LAYER_SIZE   : integer := 20;
     constant CONV2_KERNEL_SIZE  : integer := 3;
     constant CONV2_KERNEL_NORM  : pixel_array  (0 to POOL1_LAYER_SIZE * CONV2_LAYER_SIZE - 1) := (others =>(others => '0'));
 
     constant POOL2_IMAGE_WIDTH  : integer := 315;
-    constant POOL2_LAYER_SIZE   : integer := 5;
+    constant POOL2_LAYER_SIZE   : integer := 20;
     constant POOL2_KERNEL_SIZE  : integer := 2;
 
     constant CONV1_KERNEL_VALUE : pixel_matrix (0 to CONV1_LAYER_SIZE * CONV1_LAYER_SIZE - 1, 0 to CONV1_KERNEL_SIZE*CONV1_KERNEL_SIZE - 1) :=

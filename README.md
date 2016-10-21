@@ -1,5 +1,5 @@
 # HADDoC2 :  Hardware Automated Dataflow Description of CNNs
-This work introduces a software tool to generate hardware description of a neural network respecting the dataflow semantics. In order to run the example, Caffe Framework, Quartus 13.1 synthesis tool and GPStuio-FPGA suite should be installed on your machine  
+This work introduces a software tool to generate hardware description of a neural network respecting the dataflow semantics. Depending on which example you need to run, you may need to have Caffe Framework, Quartus 13.1 synthesis tool or GPStudio-FPGA to be previously installed.  
 
 
 ## IP Catalog
@@ -10,7 +10,7 @@ This work introduces a software tool to generate hardware description of a neura
 Components required to implement these layers can be found at `hdl/` directory
 
 ## Caffe
-`caffe` directory contains scripts to generate CNN models using the Caffe Framework. A trained model is given  `caffe/network`.
+`caffe` directory contains scripts to generate CNN models using the Caffe Framework. A trained model is given  `caffe/network`. You'll need to provide datasets on the `caffe/dataset` directory
 - `genNetwork.py` is a python script to build the CNN (The wanted topology is introduced here). It generates `network/train.prototxt` and `network/test.prototxt` files that are required to respectively train and test the network. it also generates the solver `network/solver.prototxt` to perform the training.
 - `trainNetwork.py` is a script to train the generated CNN to produce a model that is ready to deploy.
 - `network/test.prototxt` describes the topology of the generated CNN (number of neurons per layer, image size ...)
