@@ -1,5 +1,5 @@
 # HADDoC2 :  Hardware Automated Dataflow Description of CNNs
-This work introduces a software tool to generate hardware description of a neural network respecting the dataflow semantics. Depending on which example you need to run, you may need to have Caffe Framework, Quartus 13.1 synthesis tool or GPStudio-FPGA to be previously installed.  
+HADDoC is a tool to generate hardware description (VHDL) of a neural network (CNN) respecting the dataflow semantics. Depending on the example you need to run, you may need Caffe Framework, Quartus 13.1 synthesis tool or GPStudio-FPGA to be previously installed.  
 
 
 ## IP Catalog
