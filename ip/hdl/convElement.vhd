@@ -85,13 +85,9 @@ architecture bhv of convElement is
     end process;
 
     -- Divide by the kernel norm -> Shift
-    norm_s  <=  to_integer (unsigned(in_norm));
-    res  <=  SHIFT_RIGHT (sums,norm_s)(PIXEL_SIZE-1 downto 0);
-
-     -- Scale factor -> -[255:255] to [0:255] -> Devide by two and add 128 (well 127 ...)
-    --res_unsigned <= SHIFT_RIGHT(res,1)(PIXEL_SIZE-1 downto 0) + "01111111";
-    -- out_data     <= std_logic_vector (res_unsigned);
-    out_data     <= std_logic_vector (res);
+    norm_s      <=  to_integer (unsigned(in_norm));
+    res         <=  SHIFT_RIGHT (sums,norm_s)(PIXEL_SIZE-1 downto 0);
+    out_data    <= std_logic_vector (res);
 
     --------------------------------------------------------------------------
     -- Manage out_dv and out_fv : for now, only clone in_dv and in_fv
