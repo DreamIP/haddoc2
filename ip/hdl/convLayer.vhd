@@ -114,7 +114,7 @@ architecture STRUCTURAL of convLayer is
     signal s_ne_fv   : std_logic_vector (0 to NB_IN_FLOWS -1);
 
     -- Output of the convElements
-    signal s_ce_data : pixel_array (0 to NB_IN_FLOWS * NB_OUT_FLOWS -1);   --output the conv element
+    signal s_ce_data : pixel_array      (0 to NB_IN_FLOWS * NB_OUT_FLOWS -1);   --output the conv element
     signal s_ce_dv   : std_logic_vector (0 to NB_IN_FLOWS * NB_OUT_FLOWS -1);
     signal s_ce_fv   : std_logic_vector (0 to NB_IN_FLOWS * NB_OUT_FLOWS -1);
 
@@ -149,7 +149,8 @@ architecture STRUCTURAL of convLayer is
 
     --------------------------------------------------------------------------------
         CEs_loop : for i in 0 to (NB_OUT_FLOWS * NB_IN_FLOWS - 1) generate
-            
+
+            --Distrib
             tmp_loop : for j in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) generate
                 tmp_w(j) <= W_CONV_PARAMS(i,j);
             end generate tmp_loop;
