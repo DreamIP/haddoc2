@@ -35,9 +35,10 @@ entity sumElement is
         reset_n	        :	in	std_logic;
         enable          :	in	std_logic;
 
-        in_data         :   in pixel_array     (0 to NB_IN_FLOWS - 1);
-        in_dv           :   in std_logic_vector(0 to NB_IN_FLOWS - 1);
-        in_fv           :   in std_logic_vector(0 to NB_IN_FLOWS - 1);
+        in_data         :   in  pixel_array      (0 to NB_IN_FLOWS - 1);
+        in_dv           :   in  std_logic_vector (0 to NB_IN_FLOWS - 1);
+        in_fv           :   in  std_logic_vector (0 to NB_IN_FLOWS - 1);
+        in_bias         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
 
         out_data        :   out std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out_dv          :   out std_logic;
@@ -50,6 +51,7 @@ architecture bhv of sumElement is
     type pixel_array_signed is array (0 to NB_IN_FLOWS - 1) of signed (PIXEL_SIZE -1 downto 0);
     signal	data_s	    :	pixel_array_signed ;
     signal  sum_s       :   signed (PIXEL_SIZE - 1 downto 0);
+    signal  sum_b       :   signed (PIXEL_SIZE - 1 downto 0);
     signal  tmp_dv      :   std_logic;
     signal  tmp_fv      :   std_logic;
 
@@ -88,8 +90,8 @@ architecture bhv of sumElement is
             end if;
         end process;
 
-
-    out_data <= std_logic_vector (sum_s);
+    sum_b    <= sum_s + signed(in_bias);
+    out_data <= std_logic_vector (sum_b);
 
     --------------------------------------------------------------------------
     -- DataValid and FlowValid Management :

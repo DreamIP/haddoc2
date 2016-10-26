@@ -74,7 +74,8 @@ architecture STRUCTURAL of cnn_process is
         NB_IN_FLOWS   :   integer;
         NB_OUT_FLOWS  :   integer;
         W_CONV_PARAMS :   pixel_matrix;
-        N_CONV_PARAMS :   pixel_array
+        N_CONV_PARAMS :   pixel_array;
+        B_CONV_PARAMS :   pixel_array
     );
 
     port(
@@ -123,7 +124,8 @@ architecture STRUCTURAL of cnn_process is
         NB_IN_FLOWS   :   integer;
         NB_OUT_FLOWS  :   integer;
         W_FC_PARAMS   :   pixel_matrix;
-        N_FC_PARAMS   :   pixel_array
+        N_FC_PARAMS   :   pixel_array;
+        B_FC_PARAMS   :   pixel_array
     );
 
     port(
@@ -225,7 +227,8 @@ architecture STRUCTURAL of cnn_process is
             NB_OUT_FLOWS  => CONV2_LAYER_SIZE,
             KERNEL_SIZE   => CONV2_KERNEL_SIZE,
             W_CONV_PARAMS => CONV2_KERNEL_VALUE,
-            N_CONV_PARAMS => CONV2_KERNEL_NORM
+            N_CONV_PARAMS => CONV2_KERNEL_NORM,
+            B_CONV_PARAMS => CONV2_BIAS
         )
         port map(
             clk	          =>  clk,
@@ -268,7 +271,8 @@ architecture STRUCTURAL of cnn_process is
             NB_OUT_FLOWS  => CONV3_LAYER_SIZE,
             KERNEL_SIZE   => CONV3_KERNEL_SIZE,
             W_CONV_PARAMS => CONV3_KERNEL_VALUE,
-            N_CONV_PARAMS => CONV3_KERNEL_NORM
+            N_CONV_PARAMS => CONV3_KERNEL_NORM,
+            B_CONV_PARAMS => CONV3_BIAS
         )
         port map(
             clk	          =>  clk,
@@ -291,7 +295,8 @@ architecture STRUCTURAL of cnn_process is
             NB_IN_FLOWS   => CONV3_LAYER_SIZE,
             NB_OUT_FLOWS  => FC_LAYER_SIZE,
             W_FC_PARAMS   => FC_KERNEL_VALUE,
-            N_FC_PARAMS   => FC_KERNEL_NORM
+            N_FC_PARAMS   => FC_KERNEL_NORM,
+            B_FC_PARAMS   => FC_BIAS
         )
         port map(
             clk	          =>  clk,

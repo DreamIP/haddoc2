@@ -14,7 +14,8 @@ entity fcLayer is
         NB_IN_FLOWS   :   integer;
         NB_OUT_FLOWS  :   integer;
         W_FC_PARAMS   :   pixel_matrix;
-        N_FC_PARAMS   :   pixel_array
+        N_FC_PARAMS   :   pixel_array;
+        B_FC_PARAMS   :   pixel_array
     );
 
     port(
@@ -95,6 +96,7 @@ architecture STRUCTURAL of fcLayer is
         in_data         :   in  pixel_array      (0 to NB_IN_FLOWS - 1);
         in_dv           :   in  std_logic_vector (0 to NB_IN_FLOWS - 1);
         in_fv           :   in  std_logic_vector (0 to NB_IN_FLOWS - 1);
+        in_bias         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out_data        :   out std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out_dv          :   out std_logic;
         out_fv          :   out std_logic
@@ -199,6 +201,7 @@ architecture STRUCTURAL of fcLayer is
                 in_data      => ce_data_2d(i),
                 in_dv        => s_ce_dv (0 to (NB_IN_FLOWS-1)),
                 in_fv        => s_ce_fv (0 to (NB_IN_FLOWS-1)),
+                in_bias      => B_FC_PARAMS(i),
                 out_data     => out_data(i),
                 out_dv       => out_dv(i),
                 out_fv       => out_fv(i)
