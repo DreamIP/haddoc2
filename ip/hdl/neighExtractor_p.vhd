@@ -223,6 +223,7 @@ architecture rtl of neighExtractor_p is
                 else
                     delay_cmp := (others => '0');
                     tmp_fv <= '0';
+                    tmp_dv <= '0';
                 end if;
 
             -- When enable = 0

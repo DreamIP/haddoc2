@@ -27,6 +27,7 @@
     <file name="convLayer.vhd" type="vhdl" group="hdl" path="../../ip/hdl/convLayer.vhd"/>
     <file name="poolLayer.vhd" type="vhdl" group="hdl" path="../../ip/hdl/poolLayer.vhd"/>
     <file name="firstLayer.vhd" type="vhdl" group="hdl" path="../../ip/hdl/firstLayer.vhd"/>
+    <file name="fcLayer.vhd" type="vhdl" group="hdl" path="../../ip/hdl/fcLayer.vhd"/>
 
 
   </files>
@@ -40,23 +41,23 @@
       <flow name="out1" size="8" type="out" desc="Output 1 - SobelV">
           <properties>
               <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="80"/>
-	          <property name="height"   type="int" value="80"/>
-          </properties>
+              <property name="width"    type="int" value="316"/>
+	          <property name="height"   type="int" value="316"/>
+          </properties>80
       </flow>
 
       <flow name="out2" size="8" type="out" desc="Output 2 - Blur">
           <properties>
               <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="80"/>
-	          <property name="height"   type="int" value="80"/>
+              <property name="width"    type="int" value="154"/>
+	          <property name="height"   type="int" value="154"/>
           </properties>
       </flow>
       <flow name="out3" size="8" type="out" desc="Output 3 - SobelH">
           <properties>
               <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="80"/>
-	          <property name="height"   type="int" value="80"/>
+              <property name="width"    type="int" value="69"/>
+	          <property name="height"   type="int" value="69"/>
           </properties>
       </flow>
   </flows>
