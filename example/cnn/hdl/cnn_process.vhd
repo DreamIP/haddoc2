@@ -228,7 +228,7 @@ architecture STRUCTURAL of cnn_process is
             KERNEL_SIZE   => CONV2_KERNEL_SIZE,
             W_CONV_PARAMS => CONV2_KERNEL_VALUE,
             N_CONV_PARAMS => CONV2_KERNEL_NORM,
-            B_CONV_PARAMS => CONV2_BIAS
+            B_CONV_PARAMS => CONV2_BIAS_VALUE
         )
         port map(
             clk	          =>  clk,
@@ -272,7 +272,7 @@ architecture STRUCTURAL of cnn_process is
             KERNEL_SIZE   => CONV3_KERNEL_SIZE,
             W_CONV_PARAMS => CONV3_KERNEL_VALUE,
             N_CONV_PARAMS => CONV3_KERNEL_NORM,
-            B_CONV_PARAMS => CONV3_BIAS
+            B_CONV_PARAMS => CONV3_BIAS_VALUE
         )
         port map(
             clk	          =>  clk,
@@ -291,12 +291,12 @@ architecture STRUCTURAL of cnn_process is
         generic map(
             PIXEL_SIZE    => PIXEL_SIZE,
             IMAGE_WIDTH   => FC_IMAGE_WIDTH,
-            FEATURE_SIZE  => FC_FEATURE_SIZE,
+            FEATURE_SIZE  => FC_KERNEL_SIZE,
             NB_IN_FLOWS   => FC_IN_SIZE,
             NB_OUT_FLOWS  => FC_OUT_SIZE,
             W_FC_PARAMS   => FC_KERNEL_VALUE,
             N_FC_PARAMS   => FC_KERNEL_NORM,
-            B_FC_PARAMS   => FC_BIAS
+            B_FC_PARAMS   => FC_BIAS_VALUE
         )
         port map(
             clk	          =>  clk,
