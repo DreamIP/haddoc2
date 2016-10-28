@@ -6,6 +6,7 @@ HADDoC is a tool to generate hardware description (VHDL) of a neural network (CN
 `ip` directory contains the VHDL design files that will be instantiated during the generation process.  Currently, 2 types of layers are supported
 - `hdl/convLayer.vhd` : Performs generic kernel convolutions on a generic number of in flows.
 - `hdl/poolLayer.vhd` : Performs subsampling (max pool) on generic neighborhood of input images.
+- `hdl/fcLayer.vhd`   : Fully connected layer. Output a genetic number of maps where each pixel corresponds to a region in the input image of the CNN.
 
 Components required to implement these layers can be found at `hdl/` directory
 
@@ -25,3 +26,6 @@ Components required to implement these layers can be found at `hdl/` directory
     - [ to be generated from `.caffemodel ` file using caffe python handlers ]
 
 The `example/cnn/Node` directory presents an implementation example of the CNN on a Dreamcam_C3 platform. To generate the `.node` file, please run the `make_node.sh` script
+
+## VHDL Generator
+A first parameter parser can be found at `lib/` and contains scripts to generate `params.vhd` file. Which contains the transcription of the CNN topology and parameters into VHDL constants. Theses will be affected as generics to the hardware description of the network. (Will parametrize the instantiated layers)
