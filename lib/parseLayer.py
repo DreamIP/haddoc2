@@ -5,14 +5,17 @@ import math
 
 def to_shiftNorm(kernel):
     norm  = np.sum(kernel);
-    real_shift = math.log(np.abs(norm),2);
-    int_shift  = int(real_shift);
-    return int_shift;
-    # When using the first option, overflow may occur. If so, uncomment this:
-    # if (real_shift == int_shift):
-    #     return int_shift;
-    # else:
-    #     return int_shift + 1;
+    if (norm == 0):
+        return int(0);
+    else:
+        real_shift = math.log(np.abs(norm),2);
+        int_shift  = int(real_shift);
+        return int_shift;
+        # When using the first option, overflow may occur. If so, uncomment this:
+        # if (real_shift == int_shift):
+        #     return int_shift;
+        # else:
+        #     return int_shift + 1;
 ######################################################################
 def write_in_size (layer_name,value,target):
     target.write("constant ")
@@ -54,7 +57,7 @@ def write_bias_value (layer,name,nbits,target):
 
     target.write("constant ")
     target.write(layer_name)
-    target.write("_BIAS_VALUE   :  pixel_array :=")
+    target.write("_BIAS_VALUE   :  pixel_array ")
     target.write("   (0 to " + layer_name + "_OUT_SIZE - 1 ) := \n")
     bias_fp      = to_fixedPoint(bias_data,scale_factor)
 
@@ -80,7 +83,7 @@ def write_kernel_value (layer,name,nbits,target):
     # constant CONV1_KERNEL_VALUE : pixel_matrix
     target.write("constant ")
     target.write(layer_name)
-    target.write("_KERNEL_VALUE :  pixel_matrix :=")
+    target.write("_KERNEL_VALUE :  pixel_matrix ")
     # (0 to CONV1_LAYER_SIZE * CONV1_LAYER_SIZE - 1, 0 to CONV1_KERNEL_SIZE*CONV1_KERNEL_SIZE - 1) :=
     target.write(" (0 to " + layer_name + "_IN_SIZE * " + layer_name + "_OUT_SIZE - 1 ,")
     target.write("  0 to " + layer_name + "_KERNEL_SIZE * "+ layer_name + "_KERNEL_SIZE - 1)")
@@ -114,7 +117,7 @@ def write_kernel_norm (layer,name,nbits,target):
     in_size      = kernel_data.shape[1]
     target.write("constant ")
     target.write(layer_name)
-    target.write("_KERNEL_NORM  :  pixel_array :=")
+    target.write("_KERNEL_NORM  :  pixel_array ")
     target.write("   (0 to " + layer_name + "_IN_SIZE * "+ layer_name + "_OUT_SIZE - 1 ) := \n")
 
     kernel_fp    = to_fixedPoint(kernel_data,scale_factor)
@@ -142,7 +145,7 @@ def write_fc_kernel_value (previous_layer,layer,name,nbits,target):
     # constant CONV1_KERNEL_VALUE : pixel_matrix
     target.write("constant ")
     target.write(layer_name)
-    target.write("_KERNEL_VALUE :  pixel_matrix :=")
+    target.write("_KERNEL_VALUE :  pixel_matrix ")
     # (0 to CONV1_LAYER_SIZE * CONV1_LAYER_SIZE - 1, 0 to CONV1_KERNEL_SIZE*CONV1_KERNEL_SIZE - 1) :=
     target.write(" (0 to " + layer_name + "_IN_SIZE * " + layer_name + "_OUT_SIZE - 1 ,")
     target.write("  0 to " + layer_name + "_KERNEL_SIZE * "+ layer_name + "_KERNEL_SIZE - 1)")
@@ -178,7 +181,7 @@ def write_fc_kernel_norm (previous_layer,layer,name,nbits,target):
 
     target.write("constant ")
     target.write(layer_name)
-    target.write("_KERNEL_NORM  :  pixel_array :=")
+    target.write("_KERNEL_NORM  :  pixel_array ")
     target.write("   (0 to " + layer_name + "_IN_SIZE * "+ layer_name + "_OUT_SIZE - 1 ) := \n")
 
     kernel_fp    = to_fixedPoint(kernel_data,scale_factor)
@@ -228,7 +231,7 @@ def parse_fcLayer(previous_layer,layer,name,nbits,target,image_width):
     out_size     = kernel_data.shape[0]
     # Number of in features is the number of out features of previous layers
     in_size      = previous_layer[0].data.shape[0]
-    # HACK:if everything goes right, we can compute kernel size of FC as follows:
+    # HACK: if everything goes right, we can compute kernel size of FC as follows:
     kernel_size  = int(math.sqrt(kernel_data.shape[1]/in_size))
     ## Write layer params ##
     target.write("--" + layer_name + "\n")
@@ -237,7 +240,7 @@ def parse_fcLayer(previous_layer,layer,name,nbits,target,image_width):
     write_out_size (layer_name,out_size,target);
     write_kernel_size (layer_name,kernel_size,target);
     write_bias_value (layer,name,nbits,target);
-    #write_fc_kernel_norm (previous_layer,layer,name,nbits,target);
+    write_fc_kernel_norm (previous_layer,layer,name,nbits,target);
     write_fc_kernel_value (previous_layer,layer,name,nbits,target);
     target.write("----------------------------------------------------------")
     target.write("--------------------------------------------------------\n")
@@ -263,8 +266,8 @@ if __name__ == "__main__":
 
     with open (filename,'w') as f:
         parse_convLayer(conv1,'CONV1',8,f,320)
-        parse_poolLayer(s1,'POOL1',f,316)
-        parse_convLayer(conv2,'CONV2',8,f,158)
-        parse_poolLayer(s2,'POOL2',f,154)
-        parse_convLayer(conv3,'CONV3',8,f,77)
-        parse_fcLayer  (conv3,fc,'FC',8,f,73)
+        parse_poolLayer(s1,'POOL1',f,318)
+        parse_convLayer(conv2,'CONV2',8,f,159)
+        parse_poolLayer(s2,'POOL2',f,157)
+        parse_convLayer(conv3,'CONV3',8,f,79)
+        parse_fcLayer  (conv3,fc,'FC',8,f,77)
