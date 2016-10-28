@@ -7,8 +7,8 @@ layer {
     scale: 0.00392156862745
   }
   data_param {
-    source: "/home/kamel/dev/CNN/caffe/dataset/mnist_test"
-    batch_size: 1000
+    source: "/home/kamel/dev/haddoc2/caffe/dataset/mnist_test"
+    batch_size: 100
     backend: LMDB
   }
 }

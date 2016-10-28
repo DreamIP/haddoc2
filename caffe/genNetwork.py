@@ -7,13 +7,11 @@ import subprocess
 
 HOME             = os.environ['HOME']
 CAFFE_PATH       = HOME + '/caffe'
-CURRENT_PATH	 =  os.path.dirname(os.path.realpath(__file__))
 
 
 sys.path.insert(0, CAFFE_PATH +'/python')
 import caffe
 
-from pylab import *
 from caffe import layers as L
 from caffe import params as P
 
@@ -45,9 +43,9 @@ def create_solver(solver_prototxt,train_prototxt,test_prototxt):
 		f.write ("base_lr: 0.01" + "\n")
 		f.write ("lr_policy: \"step\"" + "\n")
 		f.write ("gamma: 0.1" + "\n")
-		f.write ("stepsize: 5000" + "\n")
+		f.write ("stepsize: 2500" + "\n")
 		f.write ("display: 500" + "\n")
-		f.write ("max_iter: 10000" + "\n")
+		f.write ("max_iter: 5000" + "\n")
 		f.write ("weight_decay: 0.001" + "\n")
 		f.write ("momentum: 0.9" + "\n")
 		f.write ("solver_mode: CPU" + "\n")
@@ -55,7 +53,7 @@ def create_solver(solver_prototxt,train_prototxt,test_prototxt):
 
 
 #=========================== MAIN ============================#
-
+CURRENT_PATH	=   os.path.dirname(os.path.realpath(__file__))
 DATASET_PATH	= 	CURRENT_PATH  + "/dataset"
 NETWORK_PATH	= 	CURRENT_PATH  + "/network"
 
@@ -89,9 +87,9 @@ print "\t Training set at: " + train_dataset
 print "\t Testset at: " + test_dataset + "\n"
 
 with open(train_prototxt, 'w') as f:
-    f.write(str(create_Net(train_dataset,100,C1,C2,C3)))
+    f.write(str(create_Net(train_dataset,64,C1,C2,C3)))
 
 with open(test_prototxt, 'w') as f:
-    f.write(str(create_Net(test_dataset,1000,C1,C2,C3)))
+    f.write(str(create_Net(test_dataset,100,C1,C2,C3)))
 
 print '\033[92m' + "Succefully generated train and test prototxt files" + '\033[0m'
