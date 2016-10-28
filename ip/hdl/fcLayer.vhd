@@ -125,58 +125,59 @@ architecture STRUCTURAL of fcLayer is
     signal ce_data_2d: tmp_array_2d (0 to NB_OUT_FLOWS -1);
         -- Each ce_data_2d(i) will contain NB_IN_FLOWS elements
 
-    signal tmp_w : pixel_array (0 to FEATURE_SIZE* FEATURE_SIZE- 1);
-    --------------------------------------------------------------------------------
-    begin
+        signal tmp_w : pixel_array (0 to NB_IN_FLOWS * NB_OUT_FLOWS * FEATURE_SIZE * FEATURE_SIZE - 1);
+        --------------------------------------------------------------------------------
+        begin
 
-        NEs_loop : for i in 0 to (NB_IN_FLOWS - 1) generate
-            NEs_inst : neighExtractor
-            generic map(
-                PIXEL_SIZE	 => PIXEL_SIZE,
-                IMAGE_WIDTH  => IMAGE_WIDTH,
-                KERNEL_SIZE	 => FEATURE_SIZE
-            )
-            port map(
-                clk	         => clk,
-                reset_n	     => reset_n,
-                enable	     => enable,
-                in_data      => in_data(i),
-                in_dv	     => in_dv(i),
-                in_fv	     => in_fv(i),
-                out_data     => s_ne_data(i),
-                out_dv	     => s_ne_dv(i),
-                out_fv	     => s_ne_fv(i)
-            );
-        end generate NEs_loop;
+            NEs_loop : for i in 0 to (NB_IN_FLOWS - 1) generate
+                NEs_inst : neighExtractor
+                generic map(
+                    PIXEL_SIZE	 => PIXEL_SIZE,
+                    IMAGE_WIDTH  => IMAGE_WIDTH,
+                    KERNEL_SIZE	 => FEATURE_SIZE
+                )
+                port map(
+                    clk	         => clk,
+                    reset_n	     => reset_n,
+                    enable	     => enable,
+                    in_data      => in_data(i),
+                    in_dv	     => in_dv(i),
+                    in_fv	     => in_fv(i),
+                    out_data     => s_ne_data(i),
+                    out_dv	     => s_ne_dv(i),
+                    out_fv	     => s_ne_fv(i)
+                );
+            end generate NEs_loop;
 
-    --------------------------------------------------------------------------------
-        CEs_loop : for i in 0 to (NB_OUT_FLOWS * NB_IN_FLOWS - 1) generate
+        --------------------------------------------------------------KERNEL_SIZE------------------
 
-            --Distrib
-            tmp_loop : for j in 0 to (FEATURE_SIZE* FEATURE_SIZE- 1) generate
-                tmp_w(j) <= W_FC_PARAMS  (i,j);
-            end generate tmp_loop;
+            CEs_loop : for i in 0 to (NB_OUT_FLOWS * NB_IN_FLOWS - 1) generate
 
-            CEs_inst : convElement
-            generic map(
-                KERNEL_SIZE => FEATURE_SIZE,
-                PIXEL_SIZE  => PIXEL_SIZE
-            )
-            port map(
-                clk         => clk,
-                reset_n     => reset_n,
-                enable      => enable,
-                in_data     => s_ne_data(i/NB_OUT_FLOWS),
-                in_dv    	=> s_ne_dv(i/NB_OUT_FLOWS),
-                in_fv    	=> s_ne_fv(i/NB_OUT_FLOWS),
-                in_kernel   => tmp_w,
-                in_norm     => N_FC_PARAMS  (i),
-                out_data    => s_ce_data(i),
-                out_dv    	=> s_ce_dv(i),
-                out_fv    	=> s_ce_fv(i)
-            );
-        end generate CEs_loop;
 
+                -- Distrib
+                 tmp_loop : for j in 0 to (FEATURE_SIZE * FEATURE_SIZE - 1) generate
+                     tmp_w(i*(FEATURE_SIZE * FEATURE_SIZE) + j) <= W_FC_PARAMS(i,j);
+                 end generate tmp_loop;
+
+                CEs_inst : convElement
+                generic map(
+                    KERNEL_SIZE => FEATURE_SIZE,
+                    PIXEL_SIZE  => PIXEL_SIZE
+                )
+                port map(
+                    clk         => clk,
+                    reset_n     => reset_n,
+                    enable      => enable,
+                    in_data     => s_ne_data(i/NB_OUT_FLOWS),
+                    in_dv    	=> s_ne_dv(i/NB_OUT_FLOWS),
+                    in_fv    	=> s_ne_fv(i/NB_OUT_FLOWS),
+                    in_kernel   => tmp_w(i * FEATURE_SIZE* FEATURE_SIZE to FEATURE_SIZE*FEATURE_SIZE*(i+1)-1),
+                    in_norm     => N_FC_PARAMS(i),
+                    out_data    => s_ce_data(i),
+                    out_dv    	=> s_ce_dv(i),
+                    out_fv    	=> s_ce_fv(i)
+                );
+            end generate CEs_loop;
     --------------------------------------------------------------------------------
 
       -- Reorganize data : Each ce_data_2d(i) will contain NB_IN_FLOWS elements
