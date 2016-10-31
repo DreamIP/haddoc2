@@ -45,6 +45,7 @@ architecture bhv of sumElement_single is
 
     signal  sum_s       :   signed (PIXEL_SIZE-1 downto 0);
 
+    begin
     process(clk)
         variable sum    :   signed (PIXEL_SIZE-1 downto 0);
     -- TODO : Overflow management
@@ -74,6 +75,6 @@ architecture bhv of sumElement_single is
     -- out_dv => '1' when all in_dvs (plural) are at 1
     -- TODO : Unary operators : Only supported in VHDL-2008
 
-    out_dv <= in_dv(0);
-    out_fv <= in_fv(0);
-end bhv;
+    out_dv <= in_dv;
+    out_fv <= in_fv;
+    end bhv;

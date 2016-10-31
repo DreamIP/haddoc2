@@ -48,7 +48,8 @@ architecture STRUCTURAL of cnn_process is
         KERNEL_SIZE   :   integer;
         NB_OUT_FLOWS  :   integer;
         W_CONV_PARAMS :   pixel_matrix;
-        N_CONV_PARAMS :   pixel_array
+        N_CONV_PARAMS :   pixel_array;
+        B_CONV_PARAMS :   pixel_array
     );
 
     port(

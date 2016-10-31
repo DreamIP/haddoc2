@@ -82,8 +82,7 @@ architecture STRUCTURAL of firstLayer is
 
     component sumElement_single
     generic(
-        PIXEL_SIZE      :   integer;
-        NB_IN_FLOWS     :   integer
+        PIXEL_SIZE      :   integer
     );
 
     port(
@@ -92,7 +91,7 @@ architecture STRUCTURAL of firstLayer is
         enable          :	in  std_logic;
         in_data         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
         in_dv           :   in  std_logic;
-        in_fv           :   in  std_logic
+        in_fv           :   in  std_logic;
         in_bias         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out_data        :   out std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out_dv          :   out std_logic;
@@ -108,9 +107,9 @@ architecture STRUCTURAL of firstLayer is
     signal s_ne_dv   : std_logic;
     signal s_ne_fv   : std_logic;
 
-    signal s_ne_data : pixel_array      (0 to NB_OUT_FLOWS - 1);
-    signal s_ne_dv   : std_logic_vector (0 to NB_OUT_FLOWS - 1);
-    signal s_ne_fv   : std_logic_vector (0 to NB_OUT_FLOWS - 1);
+    signal s_ce_data : pixel_array      (0 to NB_OUT_FLOWS - 1);
+    signal s_ce_dv   : std_logic_vector (0 to NB_OUT_FLOWS - 1);
+    signal s_ce_fv   : std_logic_vector (0 to NB_OUT_FLOWS - 1);
 
     signal W_CONV_PARAMS_ARRAY : pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
 
