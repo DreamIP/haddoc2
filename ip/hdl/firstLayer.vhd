@@ -111,7 +111,7 @@ architecture STRUCTURAL of firstLayer is
     signal s_ce_dv   : std_logic_vector (0 to NB_OUT_FLOWS - 1);
     signal s_ce_fv   : std_logic_vector (0 to NB_OUT_FLOWS - 1);
 
-    signal W_CONV_PARAMS_ARRAY : pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
+    signal tmp_w : pixel_array (0 to NB_OUT_FLOWS * KERNEL_SIZE * KERNEL_SIZE - 1);
 
     begin
 
@@ -138,9 +138,9 @@ architecture STRUCTURAL of firstLayer is
         CEs_loop : for i in 0 to (NB_OUT_FLOWS - 1) generate
 
             -- Load kernels in array : matrix to tmp array
-            tmp_loop : for j in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) generate
-                W_CONV_PARAMS_ARRAY(j) <= W_CONV_PARAMS(i,j);
-            end generate tmp_loop;
+             tmp_loop : for j in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) generate
+                 tmp_w(i*(KERNEL_SIZE * KERNEL_SIZE) + j) <= W_CONV_PARAMS(i,j);
+             end generate tmp_loop;
 
             -- Inst Conv Element
             CEs_inst : convElement
@@ -155,7 +155,7 @@ architecture STRUCTURAL of firstLayer is
                 in_data     => s_ne_data,
                 in_dv    	=> s_ne_dv,
                 in_fv    	=> s_ne_fv,
-                in_kernel   => W_CONV_PARAMS_ARRAY,
+                in_kernel   => tmp_w(i * KERNEL_SIZE* KERNEL_SIZE to KERNEL_SIZE*KERNEL_SIZE*(i+1)-1),
                 in_norm     => N_CONV_PARAMS(i),
                 out_data    => s_ce_data(i),
                 out_dv    	=> s_ce_dv(i),
