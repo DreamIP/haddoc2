@@ -13,7 +13,8 @@ entity firstLayer is
         KERNEL_SIZE   :   integer;
         NB_OUT_FLOWS  :   integer;
         W_CONV_PARAMS :   pixel_matrix;
-        N_CONV_PARAMS :   pixel_array
+        N_CONV_PARAMS :   pixel_array;
+        B_CONV_PARAMS :   pixel_array
     );
 
     port(
@@ -77,6 +78,27 @@ architecture STRUCTURAL of firstLayer is
 
     );
     end component;
+    --------------------------------------------------------------------------------
+
+    component sumElement_single
+    generic(
+        PIXEL_SIZE      :   integer;
+        NB_IN_FLOWS     :   integer
+    );
+
+    port(
+        clk	            :	in  std_logic;
+        reset_n	        :	in  std_logic;
+        enable          :	in  std_logic;
+        in_data         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
+        in_dv           :   in  std_logic;
+        in_fv           :   in  std_logic
+        in_bias         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
+        out_data        :   out std_logic_vector (PIXEL_SIZE - 1 downto 0);
+        out_dv          :   out std_logic;
+        out_fv          :   out std_logic
+    );
+    end component;
 
     --------------------------------------------------------------------------------
     -- SIGNALS
@@ -85,6 +107,10 @@ architecture STRUCTURAL of firstLayer is
     signal s_ne_data : pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
     signal s_ne_dv   : std_logic;
     signal s_ne_fv   : std_logic;
+
+    signal s_ne_data : pixel_array      (0 to NB_OUT_FLOWS - 1);
+    signal s_ne_dv   : std_logic_vector (0 to NB_OUT_FLOWS - 1);
+    signal s_ne_fv   : std_logic_vector (0 to NB_OUT_FLOWS - 1);
 
     signal W_CONV_PARAMS_ARRAY : pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
 
@@ -132,10 +158,31 @@ architecture STRUCTURAL of firstLayer is
                 in_fv    	=> s_ne_fv,
                 in_kernel   => W_CONV_PARAMS_ARRAY,
                 in_norm     => N_CONV_PARAMS(i),
-                out_data    => out_data(i),
-                out_dv    	=> out_dv(i),
-                out_fv    	=> out_fv(i)
+                out_data    => s_ce_data(i),
+                out_dv    	=> s_ce_dv(i),
+                out_fv    	=> s_ce_fv(i)
             );
         end generate CEs_loop;
+
+        -- Apply bias
+        SEs_loop : for i in 0 to (NB_OUT_FLOWS - 1) generate
+            SEs_inst : sumElement_single
+            generic map (
+                PIXEL_SIZE   => PIXEL_SIZE
+            )
+            port map(
+                clk          => clk,
+                reset_n      => reset_n,
+                enable       => enable,
+                in_data      => s_ce_data(i),
+                in_dv        => s_ce_dv(i),
+                in_fv        => s_ce_fv(i),
+                in_bias      => B_CONV_PARAMS(i),
+                out_data     => out_data(i),
+                out_dv       => out_dv(i),
+                out_fv       => out_fv(i)
+            );
+        end generate SEs_loop;
+
 
 end STRUCTURAL;

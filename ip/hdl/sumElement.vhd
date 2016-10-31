@@ -78,8 +78,11 @@ architecture bhv of sumElement is
                         sum := sum + data_s(i);
                     end loop;
 
-    -- Apply Activation function : ReLU = 0 threshold (remove negative pixels)
-    -- CAUTION : WE SUPPOSE THERE IS NO OVERFLOW HERE
+                    -- Add bias term
+                        sum := sum + signed(in_bias);
+
+                    -- Apply Activation function : ReLU = 0 threshold (remove negative pixels)
+                    -- CAUTION : WE SUPPOSE THERE IS NO OVERFLOW HERE
                     if (sum(sum'left) = '1')	then
                         sum := (others => '0');
                     end if;
@@ -90,13 +93,13 @@ architecture bhv of sumElement is
             end if;
         end process;
 
-    sum_b    <= sum_s + signed(in_bias);
-    out_data <= std_logic_vector (sum_b);
+    -- sum_b    <= sum_s + signed(in_bias);
+    out_data <= std_logic_vector (sum_s);
 
     --------------------------------------------------------------------------
     -- DataValid and FlowValid Management :
     --------------------------------------------------------------------------
-    -- out_dv => '1' when all in in_dvs (plural) are at 1
+    -- out_dv => '1' when all in_dvs (plural) are at 1
     -- TODO : Unary operators : Only supported in VHDL-2008
 
     out_dv <= in_dv(0);

@@ -183,7 +183,8 @@ architecture STRUCTURAL of cnn_process is
             NB_OUT_FLOWS  => CONV1_OUT_SIZE,
             KERNEL_SIZE   => CONV1_KERNEL_SIZE,
             W_CONV_PARAMS => CONV1_KERNEL_VALUE,
-            N_CONV_PARAMS => CONV1_KERNEL_NORM
+            N_CONV_PARAMS => CONV1_KERNEL_NORM,
+            B_CONV_PARAMS => CONV1_BIAS_VALUE
         )
         port map(
             clk	          => clk,

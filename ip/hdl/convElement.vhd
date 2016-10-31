@@ -8,8 +8,8 @@ library work;
 entity convElement is
 
     generic(
-        KERNEL_SIZE :    integer;
-        PIXEL_SIZE  :    integer
+        KERNEL_SIZE :   integer;
+        PIXEL_SIZE  :   integer
     );
 
     port(
@@ -87,7 +87,7 @@ architecture bhv of convElement is
     -- Divide by the kernel norm -> Shift
     norm_s      <=  to_integer (unsigned(in_norm));
     res         <=  SHIFT_RIGHT (sums,norm_s)(PIXEL_SIZE-1 downto 0);
-    out_data    <= std_logic_vector (res);
+    out_data    <=  std_logic_vector (res);
 
     --------------------------------------------------------------------------
     -- Manage out_dv and out_fv : for now, only clone in_dv and in_fv
