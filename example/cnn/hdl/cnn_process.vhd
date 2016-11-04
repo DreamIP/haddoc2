@@ -200,128 +200,128 @@ architecture STRUCTURAL of cnn_process is
         );
 
 
-        -- POOL1 -------------------------------------------------------------------
-        pool1: poolLayer
-        generic map(
-            PIXEL_SIZE    => PIXEL_SIZE,
-            IMAGE_WIDTH   => POOL1_IMAGE_WIDTH,
-            NB_OUT_FLOWS  => POOL1_OUT_SIZE,
-            KERNEL_SIZE   => POOL1_KERNEL_SIZE
-        )
-        port map(
-            clk	          => clk,
-            reset_n	      => reset_n,
-            enable        => enable,
-            in_data       => conv1_data,
-            in_dv         => conv1_dv,
-            in_fv         => conv1_fv,
-            out_data      => pool1_data,
-            out_dv        => pool1_dv,
-            out_fv        => pool1_fv
-        );
-
-        -- CONV2 -------------------------------------------------------------------
-        conv2 : convLayer
-        generic map(
-            PIXEL_SIZE    => PIXEL_SIZE,
-            IMAGE_WIDTH   => CONV2_IMAGE_WIDTH,
-            NB_IN_FLOWS   => CONV2_IN_SIZE,
-            NB_OUT_FLOWS  => CONV2_OUT_SIZE,
-            KERNEL_SIZE   => CONV2_KERNEL_SIZE,
-            W_CONV_PARAMS => CONV2_KERNEL_VALUE,
-            N_CONV_PARAMS => CONV2_KERNEL_NORM,
-            B_CONV_PARAMS => CONV2_BIAS_VALUE
-        )
-        port map(
-            clk	          =>  clk,
-            reset_n	      =>  reset_n,
-            enable        =>  enable,
-            in_data       =>  pool1_data,
-            in_dv         =>  pool1_dv,
-            in_fv         =>  pool1_fv,
-            out_data      =>  conv2_data,
-            out_dv        =>  conv2_dv,
-            out_fv        =>  conv2_fv
-        );
-
-        -- POOL2 -------------------------------------------------------------------
-        pool2: poolLayer
-        generic map(
-            PIXEL_SIZE    => PIXEL_SIZE,
-            IMAGE_WIDTH   => POOL2_IMAGE_WIDTH,
-            NB_OUT_FLOWS  => POOL2_OUT_SIZE,
-            KERNEL_SIZE   => POOL2_KERNEL_SIZE
-        )
-        port map(
-            clk	          => clk,
-            reset_n	      => reset_n,
-            enable        => enable,
-            in_data       => conv2_data,
-            in_dv         => conv2_dv,
-            in_fv         => conv2_fv,
-            out_data      => pool2_data,
-            out_dv        => pool2_dv,
-            out_fv        => pool2_fv
-        );
-
-        -- CONV3 -------------------------------------------------------------------
-        conv3 : convLayer
-        generic map(
-            PIXEL_SIZE    => PIXEL_SIZE,
-            IMAGE_WIDTH   => CONV3_IMAGE_WIDTH,
-            NB_IN_FLOWS   => CONV3_IN_SIZE,
-            NB_OUT_FLOWS  => CONV3_OUT_SIZE,
-            KERNEL_SIZE   => CONV3_KERNEL_SIZE,
-            W_CONV_PARAMS => CONV3_KERNEL_VALUE,
-            N_CONV_PARAMS => CONV3_KERNEL_NORM,
-            B_CONV_PARAMS => CONV3_BIAS_VALUE
-        )
-        port map(
-            clk	          =>  clk,
-            reset_n	      =>  reset_n,
-            enable        =>  enable,
-            in_data       =>  pool2_data,
-            in_dv         =>  pool2_dv,
-            in_fv         =>  pool2_fv,
-            out_data      =>  conv3_data,
-            out_dv        =>  conv3_dv,
-            out_fv        =>  conv3_fv
-        );
-
-        -- FC -------------------------------------------------------------------
-        FC : fcLayer
-        generic map(
-            PIXEL_SIZE    => PIXEL_SIZE,
-            IMAGE_WIDTH   => FC_IMAGE_WIDTH,
-            FEATURE_SIZE  => FC_KERNEL_SIZE,
-            NB_IN_FLOWS   => FC_IN_SIZE,
-            NB_OUT_FLOWS  => FC_OUT_SIZE,
-            W_FC_PARAMS   => FC_KERNEL_VALUE,
-            N_FC_PARAMS   => FC_KERNEL_NORM,
-            B_FC_PARAMS   => FC_BIAS_VALUE
-        )
-        port map(
-            clk	          =>  clk,
-            reset_n	      =>  reset_n,
-            enable        =>  enable,
-            in_data       =>  conv3_data,
-            in_dv         =>  conv3_dv,
-            in_fv         =>  conv3_fv,
-            out_data      =>  fc_data,
-            out_dv        =>  fc_dv,
-            out_fv        =>  fc_fv
-        );
-
-
-        -- DISPLAY ONLY : DO NOT GENERATE ------------------------------------------
+--        -- POOL1 -------------------------------------------------------------------
+--        pool1: poolLayer
+--        generic map(
+--            PIXEL_SIZE    => PIXEL_SIZE,
+--            IMAGE_WIDTH   => POOL1_IMAGE_WIDTH,
+--            NB_OUT_FLOWS  => POOL1_OUT_SIZE,
+--            KERNEL_SIZE   => POOL1_KERNEL_SIZE
+--        )
+--        port map(
+--            clk	          => clk,
+--            reset_n	      => reset_n,
+--            enable        => enable,
+--            in_data       => conv1_data,
+--            in_dv         => conv1_dv,
+--            in_fv         => conv1_fv,
+--            out_data      => pool1_data,
+--            out_dv        => pool1_dv,
+--            out_fv        => pool1_fv
+--        );
+--
+--        -- CONV2 -------------------------------------------------------------------
+--        conv2 : convLayer
+--        generic map(
+--            PIXEL_SIZE    => PIXEL_SIZE,
+--            IMAGE_WIDTH   => CONV2_IMAGE_WIDTH,
+--            NB_IN_FLOWS   => CONV2_IN_SIZE,
+--            NB_OUT_FLOWS  => CONV2_OUT_SIZE,
+--            KERNEL_SIZE   => CONV2_KERNEL_SIZE,
+--            W_CONV_PARAMS => CONV2_KERNEL_VALUE,
+--            N_CONV_PARAMS => CONV2_KERNEL_NORM,
+--            B_CONV_PARAMS => CONV2_BIAS_VALUE
+--        )
+--        port map(
+--            clk	          =>  clk,
+--            reset_n	      =>  reset_n,
+--            enable        =>  enable,
+--            in_data       =>  pool1_data,
+--            in_dv         =>  pool1_dv,
+--            in_fv         =>  pool1_fv,
+--            out_data      =>  conv2_data,
+--            out_dv        =>  conv2_dv,
+--            out_fv        =>  conv2_fv
+--        );
+--
+--        -- POOL2 -------------------------------------------------------------------
+--        pool2: poolLayer
+--        generic map(
+--            PIXEL_SIZE    => PIXEL_SIZE,
+--            IMAGE_WIDTH   => POOL2_IMAGE_WIDTH,
+--            NB_OUT_FLOWS  => POOL2_OUT_SIZE,
+--            KERNEL_SIZE   => POOL2_KERNEL_SIZE
+--        )
+--        port map(
+--            clk	          => clk,
+--            reset_n	      => reset_n,
+--            enable        => enable,
+--            in_data       => conv2_data,
+--            in_dv         => conv2_dv,
+--            in_fv         => conv2_fv,
+--            out_data      => pool2_data,
+--            out_dv        => pool2_dv,
+--            out_fv        => pool2_fv
+--        );
+--
+--        -- CONV3 -------------------------------------------------------------------
+--        conv3 : convLayer
+--        generic map(
+--            PIXEL_SIZE    => PIXEL_SIZE,
+--            IMAGE_WIDTH   => CONV3_IMAGE_WIDTH,
+--            NB_IN_FLOWS   => CONV3_IN_SIZE,
+--            NB_OUT_FLOWS  => CONV3_OUT_SIZE,
+--            KERNEL_SIZE   => CONV3_KERNEL_SIZE,
+--            W_CONV_PARAMS => CONV3_KERNEL_VALUE,
+--            N_CONV_PARAMS => CONV3_KERNEL_NORM,
+--            B_CONV_PARAMS => CONV3_BIAS_VALUE
+--        )
+--        port map(
+--            clk	        =>  clk,
+--            reset_n	    =>  reset_n,
+--            enable        =>  enable,
+--            in_data       =>  pool2_data,
+--            in_dv         =>  pool2_dv,
+--            in_fv         =>  pool2_fv,
+--            out_data      =>  conv3_data,
+--            out_dv        =>  conv3_dv,
+--            out_fv        =>  conv3_fv
+--        );
+--
+--        -- FC -------------------------------------------------------------------
+--        FC : fcLayer
+--        generic map(
+--            PIXEL_SIZE    => PIXEL_SIZE,
+--            IMAGE_WIDTH   => FC_IMAGE_WIDTH,
+--            FEATURE_SIZE  => FC_KERNEL_SIZE,
+--            NB_IN_FLOWS   => FC_IN_SIZE,
+--            NB_OUT_FLOWS  => FC_OUT_SIZE,
+--            W_FC_PARAMS   => FC_KERNEL_VALUE,
+--            N_FC_PARAMS   => FC_KERNEL_NORM,
+--            B_FC_PARAMS   => FC_BIAS_VALUE
+--        )
+--        port map(
+--            clk	          =>  clk,
+--            reset_n	      =>  reset_n,
+--            enable        =>  enable,
+--            in_data       =>  conv3_data,
+--            in_dv         =>  conv3_dv,
+--            in_fv         =>  conv3_fv,
+--            out_data      =>  fc_data,
+--            out_dv        =>  fc_dv,
+--            out_fv        =>  fc_fv
+--        );
+--
+--
+--        -- DISPLAY ONLY : DO NOT GENERATE ------------------------------------------
         out1_data <= conv1_data(0);
         out1_dv   <= conv1_dv(0);
         out1_fv   <= conv1_fv(0);
-        out2_data <= conv2_data(0);
-        out2_dv   <= conv2_dv(0);
-        out2_fv   <= conv2_fv(0);
-        out3_data <= fc_data(0);
-        out3_dv   <= fc_dv(0);
-        out3_fv   <= fc_fv(0);
+        out2_data <= conv1_data(1);
+        out2_dv   <= conv1_dv(1);
+        out2_fv   <= conv1_fv(1);
+        out3_data <= conv1_data(2);
+        out3_dv   <= conv1_dv(2);
+        out3_fv   <= conv1_fv(2);
 
 end architecture;

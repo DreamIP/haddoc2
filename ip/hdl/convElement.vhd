@@ -16,15 +16,11 @@ entity convElement is
         clk         :   in  std_logic;
         reset_n     :   in  std_logic;
         enable      :   in  std_logic;
-
-
         in_data     :   in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
         in_dv    	:   in  std_logic;
         in_fv    	:   in  std_logic;
-
         in_kernel   :   in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
         in_norm     :   in  std_logic_vector(PIXEL_SIZE-1 downto 0);
-
         out_data    :   out std_logic_vector(PIXEL_SIZE-1 downto 0);
         out_dv    	:   out std_logic;
         out_fv    	:   out std_logic
@@ -40,8 +36,8 @@ architecture bhv of convElement is
 	signal	data_s	    :	pixel_array_s1 ;
 	signal	kernel_s	:	pixel_array_s1 ;
 	signal	sums		:	signed (3 * PIXEL_SIZE downto 0);
+    signal 	res    		:	signed (3 * PIXEL_SIZE downto 0);
 	signal	norm_s		:	integer range 0 to PIXEL_SIZE-1;
-	signal 	res    		:	signed (PIXEL_SIZE-1 downto 0);
 	-- signal 	res_unsigned:	signed (PIXEL_SIZE-1 downto 0);
     signal  all_valid   :   std_logic;
     begin
@@ -49,8 +45,8 @@ architecture bhv of convElement is
 		all_valid    <=    in_dv and in_fv and enable;
 
         SIGNED_CAST     :   for i in 0 to ( KERNEL_SIZE * KERNEL_SIZE - 1 ) generate
-            data_s(i)      <=  signed('0' & in_data(i));
-            kernel_s(i)    <=  signed(in_kernel(i)(in_kernel(i)'LEFT) & (in_kernel(i)));
+            data_s(i)    <=  signed('0' & in_data(i));
+            kernel_s(i)  <=  signed(in_kernel(i)(in_kernel(i)'LEFT) & (in_kernel(i)));
         end generate;
 
     process(clk)
@@ -76,7 +72,7 @@ architecture bhv of convElement is
                     end loop;
 
                     -- if (sum(sum'left) = '1')	then
-    				--     sum := (others => '0');
+    				--  sum := (others => '0');
     				-- end if;
                     sums <=	sum;
 
@@ -86,8 +82,8 @@ architecture bhv of convElement is
 
     -- Divide by the kernel norm -> Shift
     norm_s      <=  to_integer (unsigned(in_norm));
-    res         <=  SHIFT_RIGHT (sums,norm_s)(PIXEL_SIZE-1 downto 0);
-    out_data    <=  std_logic_vector (res);
+    res         <=  SHIFT_RIGHT (sums,norm_s);
+    out_data    <=  std_logic_vector (res(PIXEL_SIZE-1 downto 0));
 
     --------------------------------------------------------------------------
     -- Manage out_dv and out_fv : for now, only clone in_dv and in_fv

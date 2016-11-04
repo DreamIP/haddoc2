@@ -39,7 +39,7 @@
   <flows>
       <flow name="in"   size="8" type="in" desc="Input image to describe"/>
 
-      <flow name="out1" size="8" type="out" desc="Output 1 - CONV1">
+      <flow name="out1" size="8" type="out" desc="Output 1 - CONV10">
           <properties>
               <property name="datatype" type="flowtype" value="image"/>
               <property name="width"    type="int" value="318"/>
@@ -47,18 +47,18 @@
           </properties>80
       </flow>
 
-      <flow name="out2" size="8" type="out" desc="Output 2 - CONV2">
+      <flow name="out2" size="8" type="out" desc="Output 2 - CONV11">
           <properties>
               <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="157"/>
-	          <property name="height"   type="int" value="157"/>
+              <property name="width"    type="int" value="318"/>
+	          <property name="height"   type="int" value="318"/>
           </properties>
       </flow>
-      <flow name="out3" size="8" type="out" desc="Output 3 - SobelH">
+      <flow name="out3" size="8" type="out" desc="Output 3 - CONV12">
           <properties>
               <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="75"/>
-	          <property name="height"   type="int" value="75"/>
+              <property name="width"    type="int" value="318"/>
+	          <property name="height"   type="int" value="318"/>
           </properties>
       </flow>
   </flows>

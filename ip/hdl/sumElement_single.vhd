@@ -57,7 +57,7 @@ architecture bhv of sumElement_single is
                 if (enable='1') then
                     sum  := signed(in_data) + signed(in_bias);
 
-                    if (sum(sum'left) = '1')	then
+                    if (sum < to_signed(0,PIXEL_SIZE-1))	then
                         sum := (others => '0');
                     end if;
 

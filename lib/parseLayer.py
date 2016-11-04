@@ -2,6 +2,7 @@ import sys
 import os
 import numpy as np
 import math
+import time
 
 def to_shiftNorm(kernel):
     norm  = np.sum(kernel);
@@ -245,6 +246,23 @@ def parse_fcLayer(previous_layer,layer,name,nbits,target,image_width):
     target.write("----------------------------------------------------------")
     target.write("--------------------------------------------------------\n")
 ######################################################################
+def write_fileHead(target):
+    target.write("--------------------------------------------------------\n")
+    target.write("-- This file is generated with Haddoc2 utility \n")
+    target.write("-- Generated on : " + time.ctime() + "\n")
+    target.write("-- Author : Kamel ABDELOUAHAB\n")
+    target.write("-- Institution : Institut Pascal\n")
+    target.write("--------------------------------------------------------\n\n")
+    target.write("library ieee;\n")
+    target.write("	use	ieee.std_logic_1164.all;\n")
+    target.write("library work;\n")
+    target.write("	use	work.cnn_types.all;\n")
+    target.write("package params is\n")
+######################################################################
+def write_fileEnd(target):
+    target.write("end package;")
+######################################################################
+
 
 
 if __name__ == "__main__":
@@ -265,9 +283,11 @@ if __name__ == "__main__":
     s2    = cnn.blobs['s2']
 
     with open (filename,'w') as f:
+        write_fileHead(f)
         parse_convLayer(conv1,'CONV1',8,f,320)
         parse_poolLayer(s1,'POOL1',f,318)
         parse_convLayer(conv2,'CONV2',8,f,159)
         parse_poolLayer(s2,'POOL2',f,157)
         parse_convLayer(conv3,'CONV3',8,f,79)
         parse_fcLayer  (conv3,fc,'FC',8,f,77)
+        write_fileEnd(f)

@@ -6,7 +6,8 @@ import sys
 import subprocess
 
 HOME             = os.environ['HOME']
-CAFFE_PATH       = HOME + '/caffe'
+# CAFFE_PATH       = HOME + '/caffe'
+CAFFE_PATH       = HOME + '/dev/caffe'
 
 
 sys.path.insert(0, CAFFE_PATH +'/python')
