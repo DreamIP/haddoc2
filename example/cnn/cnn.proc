@@ -15,6 +15,8 @@
     <file name="cnn_slave.vhd" type="vhdl" group="hdl" path="hdl/cnn_slave.vhd"/>
 
     <file name="cnn_types.vhd" type="vhdl" group="hdl" path="../../ip/hdl/cnn_types.vhd"/>
+    <file name="to_signedPixel.vhd" type="vhdl" group="hdl" path="../../ip/hdl/to_signedPixel.vhd"/>
+    <file name="to_unsignedPixel.vhd" type="vhdl" group="hdl" path="../../ip/hdl/to_unsignedPixel.vhd"/>
     <file name="params.vhd" type="vhdl" group="hdl" path="hdl/params.vhd"/>
     <file name="taps.vhd" type="vhdl" group="hdl" path="../../ip/hdl/taps.vhd"/>
     <file name="neighExtractor.vhd" type="vhdl" group="hdl" path="../../ip/hdl/neighExtractor.vhd"/>
@@ -42,8 +44,8 @@
       <flow name="out1" size="8" type="out" desc="Output 1 - CONV10">
           <properties>
               <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="318"/>
-	          <property name="height"   type="int" value="318"/>
+              <property name="width"    type="int" value="320"/>
+	          <property name="height"   type="int" value="320"/>
           </properties>80
       </flow>
 

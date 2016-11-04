@@ -113,6 +113,9 @@ architecture STRUCTURAL of firstLayer is
 
     signal tmp_w : pixel_array (0 to NB_OUT_FLOWS * KERNEL_SIZE * KERNEL_SIZE - 1);
 
+    --------------------------------------------------------------------------------
+    -- BEGIN
+    --------------------------------------------------------------------------------
     begin
 
         -- Extract neighborhood

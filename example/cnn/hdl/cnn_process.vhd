@@ -16,19 +16,15 @@ entity cnn_process is
         clk	          : in  std_logic;
         reset_n	      : in  std_logic;
         enable        : in  std_logic;
-
         in_data       : in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
         in_dv         : in  std_logic;
         in_fv         : in  std_logic;
-
         out1_data     : out std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out1_dv       : out std_logic;
         out1_fv       : out std_logic;
-
         out2_data     : out std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out2_dv       : out std_logic;
         out2_fv       : out std_logic;
-
         out3_data     : out std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out3_dv       : out std_logic;
         out3_fv       : out std_logic
@@ -40,6 +36,42 @@ architecture STRUCTURAL of cnn_process is
     --------------------------------------------------------------------------------
     -- COMPONENTS
     --------------------------------------------------------------------------------
+    component to_unsignedPixel is
+    generic(
+        PIXEL_SIZE  :   integer
+    );
+
+    port(
+        clk         :   in  std_logic;
+        reset_n     :   in  std_logic;
+        enable      :   in  std_logic;
+        in_data     :   in  std_logic_vector(PIXEL_SIZE-1 downto 0);
+        in_dv    	:   in  std_logic;
+        in_fv    	:   in  std_logic;
+        out_data    :   out std_logic_vector(PIXEL_SIZE-1 downto 0);
+        out_dv    	:   out std_logic;
+        out_fv    	:   out std_logic
+
+    );
+    end component;
+    component to_signedPixel
+    generic(
+        PIXEL_SIZE  :   integer
+    );
+
+    port(
+        clk           :   in  std_logic;
+        reset_n       :   in  std_logic;
+        enable        :   in  std_logic;
+        in_data       :   in  std_logic_vector(PIXEL_SIZE-1 downto 0);
+        in_dv    	  :   in  std_logic;
+        in_fv    	  :   in  std_logic;
+        out_data      :   out std_logic_vector(PIXEL_SIZE-1 downto 0);
+        out_dv    	  :   out std_logic;
+        out_fv    	  :   out std_logic
+
+    );
+    end component;
 
     component firstLayer is
     generic(
@@ -147,45 +179,43 @@ architecture STRUCTURAL of cnn_process is
     --------------------------------------------------------------------------------
     -- SIGNALS
     --------------------------------------------------------------------------------
-    signal conv1_data : pixel_array      (0 to CONV1_OUT_SIZE - 1);
-    signal conv1_dv   : std_logic_vector (0 to CONV1_OUT_SIZE - 1);
-    signal conv1_fv   : std_logic_vector (0 to CONV1_OUT_SIZE - 1);
+    signal signed_data : std_logic_vector (PIXEL_SIZE-1 downto 0);
+    signal signed_dv   : std_logic;
+    signal signed_fv   : std_logic;
 
-    signal pool1_data : pixel_array      (0 to POOL1_OUT_SIZE - 1);
-    signal pool1_dv   : std_logic_vector (0 to POOL1_OUT_SIZE - 1);
-    signal pool1_fv   : std_logic_vector (0 to POOL1_OUT_SIZE - 1);
+    signal conv1_data  : pixel_array      (0 to CONV1_OUT_SIZE - 1);
+    signal conv1_dv    : std_logic_vector (0 to CONV1_OUT_SIZE - 1);
+    signal conv1_fv    : std_logic_vector (0 to CONV1_OUT_SIZE - 1);
 
-    signal conv2_data : pixel_array      (0 to CONV2_OUT_SIZE - 1);
-    signal conv2_dv   : std_logic_vector (0 to CONV2_OUT_SIZE - 1);
-    signal conv2_fv   : std_logic_vector (0 to CONV2_OUT_SIZE - 1);
+    signal pool1_data  : pixel_array      (0 to POOL1_OUT_SIZE - 1);
+    signal pool1_dv    : std_logic_vector (0 to POOL1_OUT_SIZE - 1);
+    signal pool1_fv    : std_logic_vector (0 to POOL1_OUT_SIZE - 1);
 
-    signal pool2_data : pixel_array      (0 to POOL2_OUT_SIZE - 1);
-    signal pool2_dv   : std_logic_vector (0 to POOL2_OUT_SIZE - 1);
-    signal pool2_fv   : std_logic_vector (0 to POOL2_OUT_SIZE - 1);
+    signal conv2_data  : pixel_array      (0 to CONV2_OUT_SIZE - 1);
+    signal conv2_dv    : std_logic_vector (0 to CONV2_OUT_SIZE - 1);
+    signal conv2_fv    : std_logic_vector (0 to CONV2_OUT_SIZE - 1);
 
-    signal conv3_data : pixel_array      (0 to CONV3_OUT_SIZE - 1);
-    signal conv3_dv   : std_logic_vector (0 to CONV3_OUT_SIZE - 1);
-    signal conv3_fv   : std_logic_vector (0 to CONV3_OUT_SIZE - 1);
+    signal pool2_data  : pixel_array      (0 to POOL2_OUT_SIZE - 1);
+    signal pool2_dv    : std_logic_vector (0 to POOL2_OUT_SIZE - 1);
+    signal pool2_fv    : std_logic_vector (0 to POOL2_OUT_SIZE - 1);
 
-    signal fc_data : pixel_array         (0 to FC_OUT_SIZE - 1);
-    signal fc_dv   : std_logic_vector    (0 to FC_OUT_SIZE - 1);
-    signal fc_fv   : std_logic_vector    (0 to FC_OUT_SIZE - 1);
+    signal conv3_data  : pixel_array      (0 to CONV3_OUT_SIZE - 1);
+    signal conv3_dv    : std_logic_vector (0 to CONV3_OUT_SIZE - 1);
+    signal conv3_fv    : std_logic_vector (0 to CONV3_OUT_SIZE - 1);
+
+    signal fc_data     : pixel_array         (0 to FC_OUT_SIZE - 1);
+    signal fc_dv       : std_logic_vector    (0 to FC_OUT_SIZE - 1);
+    signal fc_fv       : std_logic_vector    (0 to FC_OUT_SIZE - 1);
 
     --------------------------------------------------------------------------------
     -- BEGIN STRUCTURAL DESCRIPTION
     --------------------------------------------------------------------------------
     begin
 
-        -- CONV1 -------------------------------------------------------------------
-        conv1: firstLayer
+        -- CONVERT TO SIGNED ------------------------------------------------------
+        spixel : to_signedPixel
         generic map(
-            PIXEL_SIZE    => PIXEL_SIZE,
-            IMAGE_WIDTH   => CONV1_IMAGE_WIDTH,
-            NB_OUT_FLOWS  => CONV1_OUT_SIZE,
-            KERNEL_SIZE   => CONV1_KERNEL_SIZE,
-            W_CONV_PARAMS => CONV1_KERNEL_VALUE,
-            N_CONV_PARAMS => CONV1_KERNEL_NORM,
-            B_CONV_PARAMS => CONV1_BIAS_VALUE
+            PIXEL_SIZE    => PIXEL_SIZE
         )
         port map(
             clk	          => clk,
@@ -194,10 +224,34 @@ architecture STRUCTURAL of cnn_process is
             in_data       => in_data,
             in_dv         => in_dv,
             in_fv         => in_fv,
-            out_data      => conv1_data,
-            out_dv        => conv1_dv,
-            out_fv        => conv1_fv
+            out_data      => signed_data,
+            out_dv        => signed_dv,
+            out_fv        => signed_fv
         );
+
+       -- CONV1 -------------------------------------------------------------------
+       conv1: firstLayer
+       generic map(
+           PIXEL_SIZE    => PIXEL_SIZE,
+           IMAGE_WIDTH   => CONV1_IMAGE_WIDTH,
+           NB_OUT_FLOWS  => CONV1_OUT_SIZE,
+           KERNEL_SIZE   => CONV1_KERNEL_SIZE,
+           W_CONV_PARAMS => CONV1_KERNEL_VALUE,
+           N_CONV_PARAMS => CONV1_KERNEL_NORM,
+           B_CONV_PARAMS => CONV1_BIAS_VALUE
+       )
+       port map(
+           clk	         => clk,
+           reset_n	     => reset_n,
+           enable        => enable,
+           in_data       => signed_data,
+           in_dv         => signed_dv,
+           in_fv         => signed_fv,
+           out_data      => conv1_data,
+           out_dv        => conv1_dv,
+           out_fv        => conv1_fv
+       );
+
 
 
 --        -- POOL1 -------------------------------------------------------------------
@@ -301,8 +355,8 @@ architecture STRUCTURAL of cnn_process is
 --            B_FC_PARAMS   => FC_BIAS_VALUE
 --        )
 --        port map(
---            clk	          =>  clk,
---            reset_n	      =>  reset_n,
+--            clk	        =>  clk,
+--            reset_n	    =>  reset_n,
 --            enable        =>  enable,
 --            in_data       =>  conv3_data,
 --            in_dv         =>  conv3_dv,
@@ -314,14 +368,53 @@ architecture STRUCTURAL of cnn_process is
 --
 --
 --        -- DISPLAY ONLY : DO NOT GENERATE ------------------------------------------
-        out1_data <= conv1_data(0);
-        out1_dv   <= conv1_dv(0);
-        out1_fv   <= conv1_fv(0);
-        out2_data <= conv1_data(1);
-        out2_dv   <= conv1_dv(1);
-        out2_fv   <= conv1_fv(1);
-        out3_data <= conv1_data(2);
-        out3_dv   <= conv1_dv(2);
-        out3_fv   <= conv1_fv(2);
 
+        -- UNSIGNED PIXELS -------------------------------------------------------
+        upixel_i : to_unsignedPixel
+        generic map(
+            PIXEL_SIZE    => PIXEL_SIZE
+        )
+        port map(
+            clk	          => clk,
+            reset_n	      => reset_n,
+            enable        => enable,
+            in_data       => signed_data,
+            in_dv         => signed_dv,
+            in_fv         => signed_fv,
+            out_data      => out1_data,
+            out_dv        => out1_dv,
+            out_fv        => out1_fv
+        );
+
+        upixel_0 : to_unsignedPixel
+        generic map(
+            PIXEL_SIZE    => PIXEL_SIZE
+        )
+        port map(
+            clk	          => clk,
+            reset_n	      => reset_n,
+            enable        => enable,
+            in_data       => conv1_data(0),
+            in_dv         => conv1_dv(0),
+            in_fv         => conv1_fv(0),
+            out_data      => out2_data,
+            out_dv        => out2_dv,
+            out_fv        => out2_fv
+        );
+
+        upixel_1 : to_unsignedPixel
+        generic map(
+            PIXEL_SIZE    => PIXEL_SIZE
+        )
+        port map(
+            clk	          => clk,
+            reset_n	      => reset_n,
+            enable        => enable,
+            in_data       => conv1_data(1),
+            in_dv         => conv1_dv(1),
+            in_fv         => conv1_fv(1),
+            out_data      => out3_data,
+            out_dv        => out3_dv,
+            out_fv        => out3_fv
+        );
 end architecture;

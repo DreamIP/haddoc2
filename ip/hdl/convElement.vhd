@@ -30,65 +30,82 @@ end convElement;
 
 architecture bhv of convElement is
 
-    -- Signals
-    type	pixel_array_s1 is array (0 to KERNEL_SIZE * KERNEL_SIZE - 1) of signed (PIXEL_SIZE downto 0);
-	type	pixel_array_s2 is array (0 to KERNEL_SIZE * KERNEL_SIZE - 1) of signed (2 * PIXEL_SIZE + 1 downto 0);
-	signal	data_s	    :	pixel_array_s1 ;
-	signal	kernel_s	:	pixel_array_s1 ;
-	signal	sums		:	signed (3 * PIXEL_SIZE downto 0);
-    signal 	res    		:	signed (3 * PIXEL_SIZE downto 0);
-	signal	norm_s		:	integer range 0 to PIXEL_SIZE-1;
-	-- signal 	res_unsigned:	signed (PIXEL_SIZE-1 downto 0);
-    signal  all_valid   :   std_logic;
+    --------------------------------------------------------------------------
+    -- SIGNALS
+    --------------------------------------------------------------------------
+    type   spa_ini is array ( integer range <> ) of signed (   PIXEL_SIZE-1 downto 0);
+    type   spa_mul is array ( integer range <> ) of signed ( 2*PIXEL_SIZE-1 downto 0);
+
+
+    signal s_data    : spa_ini (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
+    signal s_kernel  : spa_ini (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
+    signal s_mul     : spa_mul (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
+
+    signal s_sum     : signed  (3*PIXEL_SIZE downto 0);
+    signal shift_out : signed  (3*PIXEL_SIZE downto 0);
+    signal all_valid : std_logic :='0';
+    signal norm      : natural   := 0 ;
+    --------------------------------------------------------------------------
+    -- ARCHITECTURE
+    --------------------------------------------------------------------------
     begin
-		-- All valid : Logic and
-		all_valid    <=    in_dv and in_fv and enable;
+        -- Cast into signed arrays
+        cast_loop : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) generate
+            s_data(i)   <= signed(in_data(i));
+            s_kernel(i) <= signed(in_kernel(i));
+        end generate cast_loop;
 
-        SIGNED_CAST     :   for i in 0 to ( KERNEL_SIZE * KERNEL_SIZE - 1 ) generate
-            data_s(i)    <=  signed('0' & in_data(i));
-            kernel_s(i)  <=  signed(in_kernel(i)(in_kernel(i)'LEFT) & (in_kernel(i)));
-        end generate;
+        -- all_valid
+        all_valid <= enable and in_dv and in_fv;
 
-    process(clk)
-        -- Variables
-
-        variable mul    :   pixel_array_s2;
-        variable sum    :   signed (3 * PIXEL_SIZE downto 0):= (others=>'0');
-
+        --------------------------------------------------------------------------
+        -- MULTIPLICATION
+        --------------------------------------------------------------------------
+        mul_proc : process(clk)
         begin
+            if(reset_n = '0') then
+                s_mul <= (others=>(others=>'0'));
 
-            if (reset_n ='0') then
-                sum := (others=>'0');
-            elsif (RISING_EDGE(clk)) then
-                if (all_valid='1') then
-
-                    Product : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE-1) loop
-                        mul(i) := data_s(i) * kernel_s(i);
+            else
+                if (all_valid = '1') then
+                    mul_loop : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) loop
+                        s_mul(i) <= s_data(i) * s_kernel(i);
                     end loop;
-
-                    sum     := (others=>'0');
-                    Summation : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE-1) loop
-                        sum := sum + mul(i);
-                    end loop;
-
-                    -- if (sum(sum'left) = '1')	then
-    				--  sum := (others => '0');
-    				-- end if;
-                    sums <=	sum;
-
-                    end if;
+                end if;
             end if;
-    end process;
+        end process;
 
-    -- Divide by the kernel norm -> Shift
-    norm_s      <=  to_integer (unsigned(in_norm));
-    res         <=  SHIFT_RIGHT (sums,norm_s);
-    out_data    <=  std_logic_vector (res(PIXEL_SIZE-1 downto 0));
+        --------------------------------------------------------------------------
+        -- ACCUMULATION
+        --------------------------------------------------------------------------
+        sum_proc : process(clk)
+        variable v_sum : signed  (3*PIXEL_SIZE downto 0) := (others=>'0');
+        begin
+            if(reset_n = '0') then
+                s_sum <= (others=>'0');
+                v_sum := (others=>'0');
+            else
+                if (all_valid = '1') then
+                    sum_loop : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) loop
+                        v_sum := v_sum + s_mul(i);
+                    end loop;
+                    s_sum <= v_sum;
+                    v_sum := (others=>'0');
+                end if;
+            end if;
+        end process;
 
-    --------------------------------------------------------------------------
-    -- Manage out_dv and out_fv : for now, only clone in_dv and in_fv
-    --------------------------------------------------------------------------
-	out_dv <= in_dv;
-	out_fv <= in_fv;
+        --------------------------------------------------------------------------
+        -- NORMALIZATION
+        --------------------------------------------------------------------------
+        norm       <=  to_integer(unsigned (in_norm));
+        shift_out  <=  shift_right(s_sum,norm);
+        out_data   <=  std_logic_vector (shift_out(PIXEL_SIZE-1 downto 0));
+
+        --------------------------------------------------------------------------
+        -- Manage out_dv and out_fv : for now, only clone in_dv and in_fv
+        --------------------------------------------------------------------------
+        out_dv     <=  in_dv;
+        out_fv     <=  in_fv;
 
 end bhv;
