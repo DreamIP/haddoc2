@@ -6,8 +6,8 @@ import sys
 import subprocess
 
 HOME             = os.environ['HOME']
-# CAFFE_PATH       = HOME + '/caffe'
-CAFFE_PATH       = HOME + '/dev/caffe'
+CAFFE_PATH       = HOME + '/caffe'
+# CAFFE_PATH       = HOME + '/dev/caffe'
 
 
 sys.path.insert(0, CAFFE_PATH +'/python')
@@ -46,12 +46,11 @@ def create_solver(solver_prototxt,train_prototxt,test_prototxt):
 		f.write ("gamma: 0.1" + "\n")
 		f.write ("stepsize: 2500" + "\n")
 		f.write ("display: 500" + "\n")
-		f.write ("max_iter: 5000" + "\n")
+		f.write ("max_iter: 1500" + "\n")
 		f.write ("weight_decay: 0.001" + "\n")
 		f.write ("momentum: 0.9" + "\n")
 		f.write ("solver_mode: CPU" + "\n")
 		f.close()
-
 
 #=========================== MAIN ============================#
 CURRENT_PATH	=   os.path.dirname(os.path.realpath(__file__))
@@ -64,6 +63,7 @@ test_dataset	= 	DATASET_PATH  + "/mnist_test"
 solver_prototxt	=	NETWORK_PATH + "/solver.prototxt"
 train_prototxt 	=	NETWORK_PATH + "/train.prototxt"
 test_prototxt	=	NETWORK_PATH + "/test.prototxt"
+DEPLOY_PROTO    =   NETWORK_PATH + "/deploy.prototxt"
 
 os.system("rm -rf " + NETWORK_PATH)
 os.system("mkdir " + NETWORK_PATH)
@@ -72,7 +72,7 @@ create_solver(solver_prototxt,train_prototxt,test_prototxt)
 
 C1	=	3;
 C2	=	5
-C3	=	12;
+C3	=	7;
 
 print '\033[92m' + " Creating Convolutional Neural Network with topology :\n " + '\033[0m'
 
@@ -89,8 +89,8 @@ print "\t Testset at: " + test_dataset + "\n"
 
 with open(train_prototxt, 'w') as f:
     f.write(str(create_Net(train_dataset,64,C1,C2,C3)))
-
+    f.close()
 with open(test_prototxt, 'w') as f:
     f.write(str(create_Net(test_dataset,100,C1,C2,C3)))
-
+    f.close()
 print '\033[92m' + "Succefully generated train and test prototxt files" + '\033[0m'

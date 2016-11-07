@@ -44,8 +44,8 @@
       <flow name="out1" size="8" type="out" desc="Output 1 - CONV10">
           <properties>
               <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="320"/>
-	          <property name="height"   type="int" value="320"/>
+              <property name="width"    type="int" value="318"/>
+	          <property name="height"   type="int" value="318"/>
           </properties>80
       </flow>
 

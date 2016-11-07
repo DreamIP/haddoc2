@@ -1,17 +1,11 @@
-layer {
-  name: "data"
-  type: "Data"
-  top: "data"
-  top: "label"
-  transform_param {
-    scale: 0.00392156862745
-  }
-  data_param {
-    source: "/home/kamel/dev/haddoc2/caffe/dataset/mnist_test"
-    batch_size: 100
-    backend: LMDB
-  }
+input: "data"
+input_shape {
+dim: 1
+dim: 1
+dim: 320
+dim: 320
 }
+
 layer {
   name: "conv1"
   type: "Convolution"
@@ -90,30 +84,4 @@ layer {
   type: "ReLU"
   bottom: "conv3"
   top: "conv3"
-}
-layer {
-  name: "fc"
-  type: "InnerProduct"
-  bottom: "conv3"
-  top: "fc"
-  inner_product_param {
-    num_output: 10
-    weight_filler {
-      type: "xavier"
-    }
-  }
-}
-layer {
-  name: "cla"
-  type: "SoftmaxWithLoss"
-  bottom: "fc"
-  bottom: "label"
-  top: "cla"
-}
-layer {
-  name: "acc"
-  type: "Accuracy"
-  bottom: "fc"
-  bottom: "label"
-  top: "acc"
 }

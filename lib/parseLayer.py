@@ -11,7 +11,7 @@ def to_shiftNorm(kernel):
     else:
         real_shift = math.log(np.abs(norm),2);
         int_shift  = int(real_shift);
-        return int_shift;
+        return int_shift + 1;
         # When using the first option, overflow may occur. If so, uncomment this:
         # if (real_shift == int_shift):
         #     return int_shift;
@@ -96,11 +96,11 @@ def write_kernel_value (layer,name,nbits,target):
     for n in range(out_size):
         for m in range (in_size):
             target.write("(")
-            for i in range(kernel_size):
-                for j in range(kernel_size):
+            for i in range(kernel_size-1,-1,-1):
+                for j in range(kernel_size-1,-1,-1):
                     kernel_bin = np.binary_repr(kernel_fp[n][m][i][j] , width=nbits)
                     target.write ("\"" + kernel_bin + "\"")
-                    if ((i == kernel_size - 1) and (j == kernel_size -1) ):
+                    if ((i == 0) and (j == 0) ):
                         if ((n == out_size - 1) and (m == in_size - 1) ):
                             target.write (")\n")
                         else:
@@ -158,11 +158,11 @@ def write_fc_kernel_value (previous_layer,layer,name,nbits,target):
     for n in range(out_size):
         for m in range (in_size):
             target.write("(")
-            for i in range(kernel_size):
-                for j in range(kernel_size):
+            for i in range(kernel_size-1,-1,-1):
+                for j in range(kernel_size-1,-1,-1):
                     kernel_bin = np.binary_repr(kernel_fp[n][m][i][j] , width=nbits)
                     target.write ("\"" + kernel_bin + "\"")
-                    if ((i == kernel_size - 1) and (j == kernel_size -1) ):
+                    if ((i == 0) and (j == 0) ):
                         if ((n == out_size - 1) and (m == in_size - 1) ):
                             target.write (")\n")
                         else:

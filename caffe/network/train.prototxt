@@ -78,7 +78,7 @@ layer {
   bottom: "s2"
   top: "conv3"
   convolution_param {
-    num_output: 12
+    num_output: 7
     kernel_size: 3
     weight_filler {
       type: "xavier"

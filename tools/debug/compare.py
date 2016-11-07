@@ -2,62 +2,89 @@
 import os
 import sys
 import subprocess
-from scipy.misc import *
-
+from skimage.measure import compare_ssim as ssim
 import matplotlib.pyplot as plt
 import numpy as np
-
+sys.path.append('/usr/local/lib/python2.7/dist-packages')
+import cv2
 HOME        = os.environ['HOME']
 CAFFE_PATH  = HOME + '/caffe'
 sys.path.insert(0, CAFFE_PATH +'/python')
 import caffe
 
+def normalize_image(image,scale_factor=255):
+    if (np.max(image) == 0):
+        return np.array(scale_factor * image,dtype=int);
+    else:
+        return np.array(scale_factor * image/np.max(image),dtype=int);
+
+def mse(imageA, imageB):
+	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
+	err /= float(imageA.shape[0] * imageA.shape[1])
+	return err
+
+def mse(imageA, imageB):
+	# the 'Mean Squared Error' between the two images is the
+	# sum of the squared difference between the two images;
+	# NOTE: the two images must have the same dimension
+	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
+	err /= float(imageA.shape[0] * imageA.shape[1])
+
+	# return the MSE, the lower the error, the more "similar"
+	# the two images are
+	return err
+
+def compare_images(imageA, imageB, title):
+	# compute the mean squared error and structural similarity
+	# index for the images
+	m = mse(imageA, imageB)
+	s = ssim(imageA, imageB)
+
+	# setup the figure
+	fig = plt.figure(title)
+	plt.suptitle("MSE: %.2f, SSIM: %.2f" % (m, s))
+
+	# show first image
+	ax = fig.add_subplot(1, 2, 1)
+	plt.imshow(imageA, cmap = plt.cm.gray)
+	plt.axis("off")
+
+	# show the second image
+	ax = fig.add_subplot(1, 2, 2)
+	plt.imshow(imageB, cmap = plt.cm.gray)
+	plt.axis("off")
+
+	# show the images
+	plt.show()
+
+
+######################## MAIN ########################
 #  Read network
-model   = '../../caffe/network/debug.prototxt'
-weights = '../../caffe/network/network.caffemodel'
-caffe.set_mode_cpu();
-net = caffe.Net(model,weights,caffe.TEST)
-
+model   = '../../caffe/network/deploy.prototxt'
+kernels = '../../caffe/network/network.caffemodel'
+net = caffe.Net(model,kernels,caffe.TEST)
 # Read sample and prepare it to be be loaded in caffe
-image   = imread('./sample.bmp',mode='L');
-in_data = np.array(image,dtype=float)
-in_data = np.reshape(in_data,[1,1,320,320])
+image   = cv2.imread('./sample.png');
+in_data = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-# Forward propagation of sample.bmp
-c0 = net.forward_all(data = in_data)
+# Forward propagation of sample.png
+net.forward_all(data = in_data)
 
 # Read output
-c00 = np.array(c0['conv1'][0][0])
-c01 = np.array(c0['conv1'][0][1])
-c02 = np.array(c0['conv1'][0][2])
+conv1  = net.blobs['conv1'].data[0]
 
 # Normalize image in order to be compared later
-c00_sw = c00 / np.max(c00);
-c01_sw = c01 / np.max(c01);
-c02_sw = c02 / np.max(c02);
+c0_sw = normalize_image(conv1).astype("uint8")
 
-# Read hardware results
-c00_hw   = imread('./c00.bmp',mode='L');
-c01_hw   = imread('./c01.bmp',mode='L');
-c02_hw   = imread('./c02.bmp',mode='L');
+layer_size = conv1.shape[0]
+c0_hw = np.zeros(conv1.shape).astype("uint8");
 
-# Normalize
-c00_hw   = np.array(c00_hw,dtype = float);
-c01_hw   = np.array(c01_hw,dtype = float);
-c02_hw   = np.array(c02_hw,dtype = float);
+# Read hardware results in grayscale
+for i in range(layer_size):
+    name     = './c0' + str(i) +'.png'
+    tmp      = cv2.imread(name)
+    tmp      = cv2.cvtColor(tmp, cv2.COLOR_BGR2GRAY)
+    c0_hw[i,:,:] = tmp;
 
-c00_hw   = np.reshape(c00_hw,[318,318]);
-c01_hw   = np.reshape(c01_hw,[318,318]);
-c02_hw   = np.reshape(c02_hw,[318,318]);
-
-c00_hw = c00_hw / np.max(c00_hw);
-c01_hw = c01_hw / np.max(c01_hw);
-c02_hw = c02_hw / np.max(c02_hw);
-
-d00   = np.mean(np.abs(c01_hw - c02_sw))
-d01   = np.mean(np.abs(c00_hw - c01_sw))
-d02   = np.mean(np.abs(c02_hw - c00_sw))
-
-print "d00 = " + str(d00)
-print "d01 = " + str(d01)
-print "d02 = " + str(d02)
+for i in range(layer_size):
+    compare_images(c0_hw[i],c0_sw[i],"Haddoc2 vs Caffe")
