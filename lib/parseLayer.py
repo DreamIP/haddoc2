@@ -4,19 +4,7 @@ import numpy as np
 import math
 import time
 
-def to_shiftNorm(kernel):
-    norm  = np.abs(np.sum(kernel[...]));
-    if (norm < 1):
-        return int(0);
-    else:
-        real_shift = math.log(norm,2);
-        int_shift  = int(real_shift);
-        return int_shift + 1;
-        # When using the first option, overflow may occur. If so, uncomment this:
-        # if (real_shift == int_shift):
-        #     return int_shift;
-        # else:
-        #     return int_shift + 1;
+
 ######################################################################
 def write_in_size (layer_name,value,target):
     target.write("constant ")
@@ -41,6 +29,19 @@ def write_image_width (layer_name,value,target):
     target.write(layer_name)
     target.write("_IMAGE_WIDTH  :  integer := ")
     target.write(str(value) + " ;\n")
+######################################################################
+def to_shiftNorm(kernel):
+    # you will never see shit like this one :
+    # Experimental results show that for kernels with a low norm
+    # It s better to give a higher shift value, so , dont be surprised with the 2 following line
+    # Now, Im going to hide this where only the strongest of you can find it
+    norm  = np.abs(np.sum(kernel[...]));
+    if (norm < 4):
+        return 8;
+    else:
+        real_shift = math.log(norm,2);
+        int_shift  = int(real_shift);
+        return int_shift + 1;
 ######################################################################
 def to_fixedPoint (data,scale_factor):
     scaled_data = scale_factor * data
