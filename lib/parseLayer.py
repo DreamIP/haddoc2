@@ -5,11 +5,11 @@ import math
 import time
 
 def to_shiftNorm(kernel):
-    norm  = np.sum(kernel);
-    if (norm == 0):
+    norm  = np.abs(np.sum(kernel[...]));
+    if (norm < 1):
         return int(0);
     else:
-        real_shift = math.log(np.abs(norm),2);
+        real_shift = math.log(norm,2);
         int_shift  = int(real_shift);
         return int_shift + 1;
         # When using the first option, overflow may occur. If so, uncomment this:
@@ -98,6 +98,11 @@ def write_kernel_value (layer,name,nbits,target):
             target.write("(")
             for i in range(kernel_size-1,-1,-1):
                 for j in range(kernel_size-1,-1,-1):
+                    if (kernel_fp[n][m][i][j] > scale_factor):
+                        kernel_fp[n][m][i][j] = scale_factor;
+                    if (kernel_fp[n][m][i][j] < -scale_factor):
+                        kernel_fp[n][m][i][j] = -scale_factor;
+
                     kernel_bin = np.binary_repr(kernel_fp[n][m][i][j] , width=nbits)
                     target.write ("\"" + kernel_bin + "\"")
                     if ((i == 0) and (j == 0) ):
@@ -273,7 +278,7 @@ if __name__ == "__main__":
     sys.path.insert(0, CAFFE_PYTHON_LIB)
     import caffe;
 
-    filename = "./test.vhd"
+    filename = "../example/cnn/hdl/params.vhd"
     cnn   = caffe.Net('../caffe/network/test.prototxt','../caffe/network/network.caffemodel',caffe.TEST)
     conv1 = cnn.params['conv1']
     conv2 = cnn.params['conv2']
