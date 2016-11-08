@@ -254,50 +254,50 @@ architecture STRUCTURAL of cnn_process is
 
 
 
---        -- POOL1 -------------------------------------------------------------------
---        pool1: poolLayer
---        generic map(
---            PIXEL_SIZE    => PIXEL_SIZE,
---            IMAGE_WIDTH   => POOL1_IMAGE_WIDTH,
---            NB_OUT_FLOWS  => POOL1_OUT_SIZE,
---            KERNEL_SIZE   => POOL1_KERNEL_SIZE
---        )
---        port map(
---            clk	          => clk,
---            reset_n	      => reset_n,
---            enable        => enable,
---            in_data       => conv1_data,
---            in_dv         => conv1_dv,
---            in_fv         => conv1_fv,
---            out_data      => pool1_data,
---            out_dv        => pool1_dv,
---            out_fv        => pool1_fv
---        );
+       -- POOL1 -------------------------------------------------------------------
+       pool1: poolLayer
+       generic map(
+           PIXEL_SIZE    => PIXEL_SIZE,
+           IMAGE_WIDTH   => POOL1_IMAGE_WIDTH,
+           NB_OUT_FLOWS  => POOL1_OUT_SIZE,
+           KERNEL_SIZE   => POOL1_KERNEL_SIZE
+       )
+       port map(
+           clk	         => clk,
+           reset_n	     => reset_n,
+           enable        => enable,
+           in_data       => conv1_data,
+           in_dv         => conv1_dv,
+           in_fv         => conv1_fv,
+           out_data      => pool1_data,
+           out_dv        => pool1_dv,
+           out_fv        => pool1_fv
+       );
 --
---        -- CONV2 -------------------------------------------------------------------
---        conv2 : convLayer
---        generic map(
---            PIXEL_SIZE    => PIXEL_SIZE,
---            IMAGE_WIDTH   => CONV2_IMAGE_WIDTH,
---            NB_IN_FLOWS   => CONV2_IN_SIZE,
---            NB_OUT_FLOWS  => CONV2_OUT_SIZE,
---            KERNEL_SIZE   => CONV2_KERNEL_SIZE,
---            W_CONV_PARAMS => CONV2_KERNEL_VALUE,
---            N_CONV_PARAMS => CONV2_KERNEL_NORM,
---            B_CONV_PARAMS => CONV2_BIAS_VALUE
---        )
---        port map(
---            clk	          =>  clk,
---            reset_n	      =>  reset_n,
---            enable        =>  enable,
---            in_data       =>  pool1_data,
---            in_dv         =>  pool1_dv,
---            in_fv         =>  pool1_fv,
---            out_data      =>  conv2_data,
---            out_dv        =>  conv2_dv,
---            out_fv        =>  conv2_fv
---        );
---
+       -- CONV2 -------------------------------------------------------------------
+       conv2 : convLayer
+       generic map(
+           PIXEL_SIZE    => PIXEL_SIZE,
+           IMAGE_WIDTH   => CONV2_IMAGE_WIDTH,
+           NB_IN_FLOWS   => CONV2_IN_SIZE,
+           NB_OUT_FLOWS  => CONV2_OUT_SIZE,
+           KERNEL_SIZE   => CONV2_KERNEL_SIZE,
+           W_CONV_PARAMS => CONV2_KERNEL_VALUE,
+           N_CONV_PARAMS => CONV2_KERNEL_NORM,
+           B_CONV_PARAMS => CONV2_BIAS_VALUE
+       )
+       port map(
+           clk	          =>  clk,
+           reset_n	      =>  reset_n,
+           enable        =>  enable,
+           in_data       =>  pool1_data,
+           in_dv         =>  pool1_dv,
+           in_fv         =>  pool1_fv,
+           out_data      =>  conv2_data,
+           out_dv        =>  conv2_dv,
+           out_fv        =>  conv2_fv
+       );
+
 --        -- POOL2 -------------------------------------------------------------------
 --        pool2: poolLayer
 --        generic map(
@@ -378,9 +378,9 @@ architecture STRUCTURAL of cnn_process is
             clk	          => clk,
             reset_n	      => reset_n,
             enable        => enable,
-            in_data       => conv1_data(0),
-            in_dv         => conv1_dv(0),
-            in_fv         => conv1_fv(0),
+            in_data       => conv2_data(0),
+            in_dv         => conv2_dv(0),
+            in_fv         => conv2_fv(0),
             out_data      => out1_data,
             out_dv        => out1_dv,
             out_fv        => out1_fv
@@ -394,9 +394,9 @@ architecture STRUCTURAL of cnn_process is
             clk	          => clk,
             reset_n	      => reset_n,
             enable        => enable,
-            in_data       => conv1_data(1),
-            in_dv         => conv1_dv(1),
-            in_fv         => conv1_fv(1),
+            in_data       => conv2_data(1),
+            in_dv         => conv2_dv(1),
+            in_fv         => conv2_fv(1),
             out_data      => out2_data,
             out_dv        => out2_dv,
             out_fv        => out2_fv
@@ -410,9 +410,9 @@ architecture STRUCTURAL of cnn_process is
             clk	          => clk,
             reset_n	      => reset_n,
             enable        => enable,
-            in_data       => conv1_data(2),
-            in_dv         => conv1_dv(2),
-            in_fv         => conv1_fv(2),
+            in_data       => conv2_data(2),
+            in_dv         => conv2_dv(2),
+            in_fv         => conv2_fv(2),
             out_data      => out3_data,
             out_dv        => out3_dv,
             out_fv        => out3_fv
