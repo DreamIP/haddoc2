@@ -13,9 +13,9 @@ entity fcLayer is
         FEATURE_SIZE  :   integer;
         NB_IN_FLOWS   :   integer;
         NB_OUT_FLOWS  :   integer;
-        W_FC_PARAMS   :   pixel_matrix;
-        N_FC_PARAMS   :   pixel_array;
-        B_FC_PARAMS   :   pixel_array
+        KERNEL_VALUE   :   pixel_matrix;
+        KERNEL_NORM   :   pixel_array;
+        BIAS_VALUE   :   pixel_array
     );
 
     port(
@@ -156,7 +156,7 @@ architecture STRUCTURAL of fcLayer is
 
                 -- Distrib
                  tmp_loop : for j in 0 to (FEATURE_SIZE * FEATURE_SIZE - 1) generate
-                     tmp_w(i*(FEATURE_SIZE * FEATURE_SIZE) + j) <= W_FC_PARAMS(i,j);
+                     tmp_w(i*(FEATURE_SIZE * FEATURE_SIZE) + j) <= KERNEL_VALUE(i,j);
                  end generate tmp_loop;
 
                 CEs_inst : convElement
@@ -172,7 +172,7 @@ architecture STRUCTURAL of fcLayer is
                     in_dv    	=> s_ne_dv(i/NB_OUT_FLOWS),
                     in_fv    	=> s_ne_fv(i/NB_OUT_FLOWS),
                     in_kernel   => tmp_w(i * FEATURE_SIZE* FEATURE_SIZE to FEATURE_SIZE*FEATURE_SIZE*(i+1)-1),
-                    in_norm     => N_FC_PARAMS(i),
+                    in_norm     => KERNEL_NORM(i),
                     out_data    => s_ce_data(i),
                     out_dv    	=> s_ce_dv(i),
                     out_fv    	=> s_ce_fv(i)
@@ -202,7 +202,7 @@ architecture STRUCTURAL of fcLayer is
                 in_data      => ce_data_2d(i),
                 in_dv        => s_ce_dv (0 to (NB_IN_FLOWS-1)),
                 in_fv        => s_ce_fv (0 to (NB_IN_FLOWS-1)),
-                in_bias      => B_FC_PARAMS(i),
+                in_bias      => BIAS_VALUE(i),
                 out_data     => out_data(i),
                 out_dv       => out_dv(i),
                 out_fv       => out_fv(i)

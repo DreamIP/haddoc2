@@ -12,9 +12,9 @@ entity firstLayer is
         IMAGE_WIDTH   :   integer;
         KERNEL_SIZE   :   integer;
         NB_OUT_FLOWS  :   integer;
-        W_CONV_PARAMS :   pixel_matrix;
-        N_CONV_PARAMS :   pixel_array;
-        B_CONV_PARAMS :   pixel_array
+        KERNEL_VALUE :   pixel_matrix;
+        KERNEL_NORM :   pixel_array;
+        BIAS_VALUE :   pixel_array
     );
 
     port(
@@ -142,7 +142,7 @@ architecture STRUCTURAL of firstLayer is
 
             -- Load kernels in array : matrix to tmp array
              tmp_loop : for j in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) generate
-                 tmp_w(i*(KERNEL_SIZE * KERNEL_SIZE) + j) <= W_CONV_PARAMS(i,j);
+                 tmp_w(i*(KERNEL_SIZE * KERNEL_SIZE) + j) <= KERNEL_VALUE(i,j);
              end generate tmp_loop;
 
             -- Inst Conv Element
@@ -159,7 +159,7 @@ architecture STRUCTURAL of firstLayer is
                 in_dv    	=> s_ne_dv,
                 in_fv    	=> s_ne_fv,
                 in_kernel   => tmp_w(i * KERNEL_SIZE* KERNEL_SIZE to KERNEL_SIZE*KERNEL_SIZE*(i+1)-1),
-                in_norm     => N_CONV_PARAMS(i),
+                in_norm     => KERNEL_NORM(i),
                 out_data    => s_ce_data(i),
                 out_dv    	=> s_ce_dv(i),
                 out_fv    	=> s_ce_fv(i)
@@ -179,7 +179,7 @@ architecture STRUCTURAL of firstLayer is
                 in_data      => s_ce_data(i),
                 in_dv        => s_ce_dv(i),
                 in_fv        => s_ce_fv(i),
-                in_bias      => B_CONV_PARAMS(i),
+                in_bias      => BIAS_VALUE(i),
                 out_data     => out_data(i),
                 out_dv       => out_dv(i),
                 out_fv       => out_fv(i)

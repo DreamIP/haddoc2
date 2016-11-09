@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process name="cnn" categ="descriptor" pi_size_addr_rel="2" desc="An example of a CNN">
+<process name="cnn" categ="descriptor" master_count="0" pi_size_addr_rel="2" desc="An example of a CNN">
   <parts>
     <part name="main">
       <svg width="150" height="100">
@@ -8,12 +8,10 @@
       </svg>
     </part>
   </parts>
-
   <files>
     <file name="cnn.vhd" type="vhdl" group="hdl" path="hdl/cnn.vhd"/>
     <file name="cnn_process.vhd" type="vhdl" group="hdl" path="hdl/cnn_process.vhd"/>
     <file name="cnn_slave.vhd" type="vhdl" group="hdl" path="hdl/cnn_slave.vhd"/>
-
     <file name="cnn_types.vhd" type="vhdl" group="hdl" path="../../ip/hdl/cnn_types.vhd"/>
     <file name="to_signedPixel.vhd" type="vhdl" group="hdl" path="../../ip/hdl/to_signedPixel.vhd"/>
     <file name="to_unsignedPixel.vhd" type="vhdl" group="hdl" path="../../ip/hdl/to_unsignedPixel.vhd"/>
@@ -31,52 +29,43 @@
     <file name="poolLayer.vhd" type="vhdl" group="hdl" path="../../ip/hdl/poolLayer.vhd"/>
     <file name="firstLayer.vhd" type="vhdl" group="hdl" path="../../ip/hdl/firstLayer.vhd"/>
     <file name="fcLayer.vhd" type="vhdl" group="hdl" path="../../ip/hdl/fcLayer.vhd"/>
-
-
+    <file name="cnn.proc" type="proc" group="blockdef" path="cnn.proc"/>
   </files>
   <resets>
     <reset name="reset_n" group="reset_n" direction="in"/>
   </resets>
-
   <flows>
-      <flow name="in"   size="8" type="in" desc="Input image to describe"/>
-
-      <flow name="out1" size="8" type="out" desc="Output 1 - CONV10">
-          <properties>
-              <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="157"/>
-	          <property name="height"   type="int" value="157"/>
-          </properties>80
-      </flow>
-
-      <flow name="out2" size="8" type="out" desc="Output 2 - CONV11">
-          <properties>
-              <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="157"/>
-	          <property name="height"   type="int" value="157"/>
-          </properties>
-      </flow>
-      <flow name="out3" size="8" type="out" desc="Output 3 - CONV12">
-          <properties>
-              <property name="datatype" type="flowtype" value="image"/>
-              <property name="width"    type="int" value="157"/>
-	          <property name="height"   type="int" value="157"/>
-          </properties>
-      </flow>
+    <flow name="in" size="8" type="in" desc="Input image to describe"/>
+    <flow name="out1" size="8" type="out" desc="Output 1 - CONV10">
+      <properties>
+        <property name="datatype" type="flowtype" value="image"/>
+        <property name="width" type="int" value="157"/>
+        <property name="height" type="int" value="157"/>
+      </properties>
+    </flow>
+    <flow name="out2" size="8" type="out" desc="Output 2 - CONV11">
+      <properties>
+        <property name="datatype" type="flowtype" value="image"/>
+        <property name="width" type="int" value="157"/>
+        <property name="height" type="int" value="157"/>
+      </properties>
+    </flow>
+    <flow name="out3" size="8" type="out" desc="Output 3 - CONV12">
+      <properties>
+        <property name="datatype" type="flowtype" value="image"/>
+        <property name="width" type="int" value="157"/>
+        <property name="height" type="int" value="157"/>
+      </properties>
+    </flow>
   </flows>
-
   <params>
     <param name="IMAGE_WIDTH" type="int" hard="1" value="320" desc="maximum line width"/>
     <param name="control" regaddr="0" default="0" desc="Status Control Register">
-        <bitfields>
-          <bitfield name="enable" bitfield="0" propertymap="enable.value" desc="On/Off bit"/>
-        </bitfields>
-  </param>
+      <bitfields>
+        <bitfield name="enable" bitfield="0" propertymap="enable.value" desc="On/Off bit"/>
+      </bitfields>
+    </param>
   </params>
-
-
-
-
   <properties>
     <property name="enable" type="bool" value="false" desc="Enable or disable process"/>
   </properties>

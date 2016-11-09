@@ -107,7 +107,7 @@ architecture bhv of convElement is
         out_data   <=   std_logic_vector(to_signed(-127,PIXEL_SIZE))   when (shift_out < to_signed(-127,PIXEL_SIZE)) else
                         std_logic_vector(to_signed( 127,PIXEL_SIZE))   when (shift_out > to_signed( 127,PIXEL_SIZE)) else
                         std_logic_vector(shift_out(PIXEL_SIZE-1 downto 0));
-
+        -- out_data   <=   std_logic_vector(shift_out(PIXEL_SIZE-1 downto 0));
         --------------------------------------------------------------------------
         -- Manage out_dv and out_fv : for now, only clone in_dv and in_fv
         --------------------------------------------------------------------------

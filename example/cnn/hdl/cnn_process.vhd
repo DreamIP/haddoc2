@@ -79,9 +79,9 @@ architecture STRUCTURAL of cnn_process is
         IMAGE_WIDTH   :   integer;
         KERNEL_SIZE   :   integer;
         NB_OUT_FLOWS  :   integer;
-        W_CONV_PARAMS :   pixel_matrix;
-        N_CONV_PARAMS :   pixel_array;
-        B_CONV_PARAMS :   pixel_array
+        KERNEL_VALUE  :   pixel_matrix;
+        KERNEL_NORM   :   pixel_array;
+        BIAS_VALUE    :   pixel_array
     );
 
     port(
@@ -106,9 +106,9 @@ architecture STRUCTURAL of cnn_process is
         KERNEL_SIZE   :   integer;
         NB_IN_FLOWS   :   integer;
         NB_OUT_FLOWS  :   integer;
-        W_CONV_PARAMS :   pixel_matrix;
-        N_CONV_PARAMS :   pixel_array;
-        B_CONV_PARAMS :   pixel_array
+        KERNEL_VALUE  :   pixel_matrix;
+        KERNEL_NORM   :   pixel_array;
+        BIAS_VALUE    :   pixel_array
     );
 
     port(
@@ -156,9 +156,9 @@ architecture STRUCTURAL of cnn_process is
         FEATURE_SIZE  :   integer;
         NB_IN_FLOWS   :   integer;
         NB_OUT_FLOWS  :   integer;
-        W_FC_PARAMS   :   pixel_matrix;
-        N_FC_PARAMS   :   pixel_array;
-        B_FC_PARAMS   :   pixel_array
+        KERNEL_VALUE   :   pixel_matrix;
+        KERNEL_NORM   :   pixel_array;
+        BIAS_VALUE   :   pixel_array
     );
 
     port(
@@ -236,9 +236,9 @@ architecture STRUCTURAL of cnn_process is
            IMAGE_WIDTH   => CONV1_IMAGE_WIDTH,
            NB_OUT_FLOWS  => CONV1_OUT_SIZE,
            KERNEL_SIZE   => CONV1_KERNEL_SIZE,
-           W_CONV_PARAMS => CONV1_KERNEL_VALUE,
-           N_CONV_PARAMS => CONV1_KERNEL_NORM,
-           B_CONV_PARAMS => CONV1_BIAS_VALUE
+           KERNEL_VALUE  => CONV1_KERNEL_VALUE,
+           KERNEL_NORM   => CONV1_KERNEL_NORM,
+           BIAS_VALUE    => CONV1_BIAS_VALUE
        )
        port map(
            clk	         => clk,
@@ -282,13 +282,13 @@ architecture STRUCTURAL of cnn_process is
            NB_IN_FLOWS   => CONV2_IN_SIZE,
            NB_OUT_FLOWS  => CONV2_OUT_SIZE,
            KERNEL_SIZE   => CONV2_KERNEL_SIZE,
-           W_CONV_PARAMS => CONV2_KERNEL_VALUE,
-           N_CONV_PARAMS => CONV2_KERNEL_NORM,
-           B_CONV_PARAMS => CONV2_BIAS_VALUE
+           KERNEL_VALUE  => CONV2_KERNEL_VALUE,
+           KERNEL_NORM   => CONV2_KERNEL_NORM,
+           BIAS_VALUE    => CONV2_BIAS_VALUE
        )
        port map(
-           clk	          =>  clk,
-           reset_n	      =>  reset_n,
+           clk	         =>  clk,
+           reset_n	     =>  reset_n,
            enable        =>  enable,
            in_data       =>  pool1_data,
            in_dv         =>  pool1_dv,
@@ -326,9 +326,9 @@ architecture STRUCTURAL of cnn_process is
 --            NB_IN_FLOWS   => CONV3_IN_SIZE,
 --            NB_OUT_FLOWS  => CONV3_OUT_SIZE,
 --            KERNEL_SIZE   => CONV3_KERNEL_SIZE,
---            W_CONV_PARAMS => CONV3_KERNEL_VALUE,
---            N_CONV_PARAMS => CONV3_KERNEL_NORM,
---            B_CONV_PARAMS => CONV3_BIAS_VALUE
+--            KERNEL_VALUE => CONV3_KERNEL_VALUE,
+--            KERNEL_NORM => CONV3_KERNEL_NORM,
+--            BIAS_VALUE => CONV3_BIAS_VALUE
 --        )
 --        port map(
 --            clk	        =>  clk,
@@ -350,9 +350,9 @@ architecture STRUCTURAL of cnn_process is
 --            FEATURE_SIZE  => FC_KERNEL_SIZE,
 --            NB_IN_FLOWS   => FC_IN_SIZE,
 --            NB_OUT_FLOWS  => FC_OUT_SIZE,
---            W_FC_PARAMS   => FC_KERNEL_VALUE,
---            N_FC_PARAMS   => FC_KERNEL_NORM,
---            B_FC_PARAMS   => FC_BIAS_VALUE
+--            KERNEL_VALUE   => FC_KERNEL_VALUE,
+--            KERNEL_NORM   => FC_KERNEL_NORM,
+--            BIAS_VALUE   => FC_BIAS_VALUE
 --        )
 --        port map(
 --            clk	        =>  clk,

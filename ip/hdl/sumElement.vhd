@@ -2,6 +2,7 @@ library ieee;
 	use	ieee.std_logic_unsigned.all;
 	use	ieee.std_logic_1164.all;
 	use	ieee.numeric_std.all;
+    use ieee.math_real.all;
 
 library work;
 	use work.cnn_types.all;
@@ -64,16 +65,14 @@ architecture bhv of sumElement is
 
 
     process(clk)
-    -- TODO : Overflow management
-        variable sum    :   signed (PIXEL_SIZE - 1  downto 0);
+
+        constant SUMWIDTH :  integer := integer(ceil(log2(real(NB_IN_FLOWS))));
+        variable sum      :  signed  (SUMWIDTH + PIXEL_SIZE - 1 downto 0);
         begin
             if (reset_n ='0') then
                 sum := (others=>'0');
             elsif (RISING_EDGE(clk)) then
                 if (enable='1') then
-
-                    sum     := (others=>'0');
-
                     SUM_LOOP : for i in 0 to (NB_IN_FLOWS - 1) loop
                         sum := sum + data_s(i);
                     end loop;
@@ -82,18 +81,23 @@ architecture bhv of sumElement is
                         sum := sum + signed(in_bias);
 
                     -- Apply Activation function : ReLU = 0 threshold (remove negative pixels)
-                    -- CAUTION : WE SUPPOSE THERE IS NO OVERFLOW HERE
-                    if (sum(sum'left) = '1')	then
+                    if (sum < to_signed(0,sum'LENGTH))	then
                         sum := (others => '0');
                     end if;
 
-                    sum_s	<=	sum;
+                    -- Saturate : if value > 127 then value = 127
+                    if (sum > to_signed(127,sum'LENGTH))	then
+                        sum := to_signed(127,sum'LENGTH);
+                    end if;
 
+                    sum     := SHIFT_RIGHT(sum,SUMWIDTH);
+                    sum_s	<=	sum(PIXEL_SIZE -1 downto 0);
+                    sum     := (others=>'0');
                 end if;
             end if;
         end process;
 
-    -- sum_b    <= sum_s + signed(in_bias);
+
     out_data <= std_logic_vector (sum_s);
 
     --------------------------------------------------------------------------

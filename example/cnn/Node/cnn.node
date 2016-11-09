@@ -10,17 +10,17 @@
           <flow name="out" size="8"/>
         </flows>
         <properties>
-          <property name="enable" value=""/>
+          <property name="enable" value="1"/>
           <property name="roi1" value="">
             <properties>
               <property name="x" value="320"/>
-              <property name="y" value="240"/>
+              <property name="y" value="320"/>
               <property name="w" value="640"/>
-              <property name="h" value="480"/>
+              <property name="h" value="640"/>
             </properties>
           </property>
           <property name="resolution" value=""/>
-          <property name="exposuretime" value="1000"/>
+          <property name="exposuretime" value="600"/>
           <property name="linelenght" value="1650"/>
           <property name="flipx" value=""/>
           <property name="flipy" value=""/>
@@ -89,7 +89,7 @@
         <param name="IMAGE_WIDTH" value="320"/>
       </params>
       <properties>
-        <property name="enable" value="false"/>
+        <property name="enable" value="1"/>
       </properties>
     </process>
   </process>
