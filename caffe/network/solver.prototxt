@@ -8,7 +8,7 @@ lr_policy: "step"
 gamma: 0.1
 stepsize: 2500
 display: 500
-max_iter: 1500
+max_iter: 4000
 weight_decay: 0.001
 momentum: 0.9
 solver_mode: CPU
