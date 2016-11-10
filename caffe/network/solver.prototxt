@@ -1,5 +1,5 @@
-train_net: "/home/kamel/dev/haddoc2/caffe/network/train.prototxt" 
-test_net: "/home/kamel/dev/haddoc2/caffe/network/test.prototxt" 
+train_net: "/home/kamel/Seafile/Kamel/TanH/network/train.prototxt" 
+test_net: "/home/kamel/Seafile/Kamel/TanH/network/test.prototxt" 
 test_iter: 10
 test_interval: 1000
 test_compute_loss: true
@@ -8,7 +8,7 @@ lr_policy: "step"
 gamma: 0.1
 stepsize: 2500
 display: 500
-max_iter: 4000
+max_iter: 1500
 weight_decay: 0.001
 momentum: 0.9
 solver_mode: CPU

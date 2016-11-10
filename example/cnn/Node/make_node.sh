@@ -11,7 +11,7 @@ gpnode setproperty -n mt9.roi1.x -v 320
 gpnode setproperty -n mt9.roi1.y -v 320
 gpnode setproperty -n mt9.roi1.w -v 640
 gpnode setproperty -n mt9.roi1.h -v 640
-gpnode setproperty -n mt9.exposuretime -v 600
+gpnode setproperty -n mt9.exposuretime -v 350
 
 gpnode addprocess -n cnn -d ../cnn.proc
 

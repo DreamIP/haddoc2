@@ -11,4 +11,5 @@ TOOLS=$HOME/caffe/build/tools
 $TOOLS/caffe train \
   --solver=./solver.prototxt $@
 
+rm -rf ./*solverstate
 mv *.caffemodel network.caffemodel

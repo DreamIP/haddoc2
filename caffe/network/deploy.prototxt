@@ -18,8 +18,8 @@ layer {
   }
 }
 layer {
-  name: "Relu1"
-  type: "ReLU"
+  name: "tanh1"
+  type: "TanH"
   bottom: "conv1"
   top: "conv1"
 }
@@ -48,8 +48,8 @@ layer {
   }
 }
 layer {
-  name: "Relu2"
-  type: "ReLU"
+  name: "tanh2"
+  type: "TanH"
   bottom: "conv2"
   top: "conv2"
 }
@@ -78,8 +78,8 @@ layer {
   }
 }
 layer {
-  name: "Relu3"
-  type: "ReLU"
+  name: "tanh3"
+  type: "TanH"
   bottom: "conv3"
   top: "conv3"
 }

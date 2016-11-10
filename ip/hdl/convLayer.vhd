@@ -13,9 +13,9 @@ entity convLayer is
         KERNEL_SIZE   :   integer;
         NB_IN_FLOWS   :   integer;
         NB_OUT_FLOWS  :   integer;
-        KERNEL_VALUE :   pixel_matrix;
-        KERNEL_NORM :   pixel_array;
-        BIAS_VALUE :   pixel_array
+        KERNEL_VALUE  :   pixel_matrix;
+        KERNEL_NORM   :   pixel_array;
+        BIAS_VALUE    :   pixel_array
     );
 
     port(
@@ -61,8 +61,8 @@ architecture STRUCTURAL of convLayer is
     --------------------------------------------------------------------------------
     component convElement
     generic(
-        KERNEL_SIZE :    integer;
-        PIXEL_SIZE  :    integer
+        KERNEL_SIZE :   integer;
+        PIXEL_SIZE  :   integer
     );
 
     port(
@@ -73,8 +73,7 @@ architecture STRUCTURAL of convLayer is
         in_dv    	:   in  std_logic;
         in_fv    	:   in  std_logic;
         in_kernel   :   in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
-        in_norm     :   in  std_logic_vector(PIXEL_SIZE-1 downto 0);
-        out_data    :   out std_logic_vector(PIXEL_SIZE-1 downto 0);
+        out_data    :   out std_logic_vector(SUM_WIDTH - 1 downto 0);
         out_dv    	:   out std_logic;
         out_fv    	:   out std_logic
 
@@ -90,10 +89,10 @@ architecture STRUCTURAL of convLayer is
     );
 
     port(
-        clk	            :	in  std_logic;
-        reset_n	        :	in  std_logic;
-        enable          :	in  std_logic;
-        in_data         :   in  pixel_array      (0 to NB_IN_FLOWS - 1);
+        clk	            :	in 	std_logic;
+        reset_n	        :	in	std_logic;
+        enable          :	in	std_logic;
+        in_data         :   in  sum_array        (0 to NB_IN_FLOWS - 1);
         in_dv           :   in  std_logic_vector (0 to NB_IN_FLOWS - 1);
         in_fv           :   in  std_logic_vector (0 to NB_IN_FLOWS - 1);
         in_bias         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
@@ -116,12 +115,12 @@ architecture STRUCTURAL of convLayer is
     signal s_ne_fv   : std_logic_vector (0 to NB_IN_FLOWS -1);
 
     -- Output of the convElements
-    signal s_ce_data : pixel_array      (0 to NB_IN_FLOWS * NB_OUT_FLOWS -1);   --output the conv element
+    signal s_ce_data : sum_array        (0 to NB_IN_FLOWS * NB_OUT_FLOWS -1);   --output the conv element
     signal s_ce_dv   : std_logic_vector (0 to NB_IN_FLOWS * NB_OUT_FLOWS -1);
     signal s_ce_fv   : std_logic_vector (0 to NB_IN_FLOWS * NB_OUT_FLOWS -1);
 
     -- temporary signal for "easy" indexation purpose
-    type   tmp_array_2d is array ( integer range <> ) of pixel_array (0 to NB_IN_FLOWS - 1);
+    type   tmp_array_2d is array ( integer range <> ) of sum_array (0 to NB_IN_FLOWS - 1);
     signal ce_data_2d: tmp_array_2d (0 to NB_OUT_FLOWS -1);
         -- Each ce_data_2d(i) will contain NB_IN_FLOWS elements
 
@@ -172,7 +171,7 @@ architecture STRUCTURAL of convLayer is
                 in_dv    	=> s_ne_dv(i/NB_OUT_FLOWS),
                 in_fv    	=> s_ne_fv(i/NB_OUT_FLOWS),
                 in_kernel   => tmp_w(i * KERNEL_SIZE* KERNEL_SIZE to KERNEL_SIZE*KERNEL_SIZE*(i+1)-1),
-                in_norm     => KERNEL_NORM(i),
+--                in_norm     => KERNEL_NORM(i),
                 out_data    => s_ce_data(i),
                 out_dv    	=> s_ce_dv(i),
                 out_fv    	=> s_ce_fv(i)

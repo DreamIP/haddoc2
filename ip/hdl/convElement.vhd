@@ -20,8 +20,7 @@ entity convElement is
         in_dv    	:   in  std_logic;
         in_fv    	:   in  std_logic;
         in_kernel   :   in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
-        in_norm     :   in  std_logic_vector(PIXEL_SIZE-1 downto 0);
-        out_data    :   out std_logic_vector(PIXEL_SIZE-1 downto 0);
+        out_data    :   out std_logic_vector(SUM_WIDTH - 1 downto 0);
         out_dv    	:   out std_logic;
         out_fv    	:   out std_logic
 
@@ -41,10 +40,9 @@ architecture bhv of convElement is
     signal s_kernel  : spa_ini (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
     signal s_mul     : spa_mul (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
 
-    signal s_sum     : signed  (3*PIXEL_SIZE downto 0);
-    signal shift_out : signed  (3*PIXEL_SIZE downto 0);
+    signal s_sum     : signed (SUM_WIDTH - 1 downto 0);
     signal all_valid : std_logic :='0';
-    signal norm      : natural   := 0 ;
+
     --------------------------------------------------------------------------
     -- ARCHITECTURE
     --------------------------------------------------------------------------
@@ -79,7 +77,7 @@ architecture bhv of convElement is
         -- ACCUMULATION
         --------------------------------------------------------------------------
         sum_proc : process(clk)
-        variable v_sum : signed  (3*PIXEL_SIZE downto 0) := (others=>'0');
+        variable v_sum : signed  (SUM_WIDTH - 1 downto 0) := (others=>'0');
         begin
             if(reset_n = '0') then
                 s_sum <= (others=>'0');
@@ -95,19 +93,8 @@ architecture bhv of convElement is
             end if;
         end process;
 
-        --------------------------------------------------------------------------
-        -- NORMALIZATION
-        --------------------------------------------------------------------------
-        norm       <=  to_integer(unsigned (in_norm));
-        shift_out  <=  shift_right(s_sum,norm);
+        out_data   <=   std_logic_vector(s_sum);
 
-        --------------------------------------------------------------------------
-        -- SATURATION
-        --------------------------------------------------------------------------
-        out_data   <=   std_logic_vector(to_signed(-127,PIXEL_SIZE))   when (shift_out < to_signed(-127,PIXEL_SIZE)) else
-                        std_logic_vector(to_signed( 127,PIXEL_SIZE))   when (shift_out > to_signed( 127,PIXEL_SIZE)) else
-                        std_logic_vector(shift_out(PIXEL_SIZE-1 downto 0));
-        -- out_data   <=   std_logic_vector(shift_out(PIXEL_SIZE-1 downto 0));
         --------------------------------------------------------------------------
         -- Manage out_dv and out_fv : for now, only clone in_dv and in_fv
         --------------------------------------------------------------------------

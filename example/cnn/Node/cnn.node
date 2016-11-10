@@ -20,7 +20,7 @@
             </properties>
           </property>
           <property name="resolution" value=""/>
-          <property name="exposuretime" value="600"/>
+          <property name="exposuretime" value="350"/>
           <property name="linelenght" value="1650"/>
           <property name="flipx" value=""/>
           <property name="flipy" value=""/>

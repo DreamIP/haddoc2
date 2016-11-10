@@ -2,6 +2,7 @@ library ieee;
 	use	ieee.std_logic_unsigned.all;
 	use	ieee.std_logic_1164.all;
 	use	ieee.numeric_std.all;
+	use	ieee.math_real.all;
 
 library work;
 	use work.cnn_types.all;
@@ -29,12 +30,10 @@ entity sumElement_single is
         clk	            :	in 	std_logic;
         reset_n	        :	in	std_logic;
         enable          :	in	std_logic;
-
-        in_data         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
+        in_data         :   in  std_logic_vector (SUM_WIDTH - 1 downto 0);
         in_dv           :   in  std_logic;
         in_fv           :   in  std_logic;
         in_bias         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
-
         out_data        :   out std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out_dv          :   out std_logic;
         out_fv          :   out std_logic
@@ -43,11 +42,18 @@ end entity;
 --
 architecture bhv of sumElement_single is
 
-    signal  sum_s       :   signed (PIXEL_SIZE-1 downto 0);
+    constant THIS_SUM_WIDTH    :   integer := SUM_WIDTH;
+    constant LOWER_THRESHHOLD  :   integer := -2**(2*PIXEL_SIZE-1) + 1;
+    constant UPPER_THRESHHOLD  :   integer :=  2**(2*PIXEL_SIZE-1) - 1;
+    constant LOWER_TANH_VALUE  :   integer := -2**(  PIXEL_SIZE-1) + 1;
+    constant UPPER_TANH_VALUE  :   integer :=  2**(  PIXEL_SIZE-1) - 1;
+
+
+    signal  sum_s             :   signed (THIS_SUM_WIDTH-1 downto 0);
 
     begin
     process(clk)
-        variable sum    :   signed (PIXEL_SIZE-1 downto 0);
+        variable sum          :   signed (THIS_SUM_WIDTH-1 downto 0);
     -- TODO : Overflow management
 
         begin
@@ -55,19 +61,21 @@ architecture bhv of sumElement_single is
                 sum   := (others=>'0');
             elsif (RISING_EDGE(clk)) then
                 if (enable='1') then
-                    sum  := signed(in_data) + signed(in_bias);
-
-                    if (sum < to_signed(0,PIXEL_SIZE-1))	then
-                        sum := (others => '0');
-                    end if;
-
+                    sum  := signed(signed(in_data) + signed(in_bias));
                     sum_s <= sum;
+                    sum  := (others=>'0');
                 end if;
             end if;
         end process;
 
+    --------------------------------------------------------------------------
+    -- Apply Activation function : TanH (approx)
+    --------------------------------------------------------------------------
 
-    out_data <= std_logic_vector (sum_s);
+    out_data   <=   std_logic_vector(to_signed(LOWER_TANH_VALUE,PIXEL_SIZE))   when (sum_s < to_signed(LOWER_THRESHHOLD,THIS_SUM_WIDTH)) else
+                    std_logic_vector(to_signed(UPPER_TANH_VALUE,PIXEL_SIZE))   when (sum_s > to_signed(UPPER_THRESHHOLD,THIS_SUM_WIDTH)) else
+                    std_logic_vector(SHIFT_RIGHT(sum_s,PIXEL_SIZE)(PIXEL_SIZE-1 downto 0));
+
 
     --------------------------------------------------------------------------
     -- DataValid and FlowValid Management :

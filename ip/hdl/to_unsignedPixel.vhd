@@ -32,7 +32,8 @@ architecture bhv of to_unsignedPixel is
             out_data <= (others=>'0');
         else
             if (enable = '1') then
-                out_data <= in_data(PIXEL_SIZE-2 downto 0) & '0';
+                -- [-127,127] to [0,255]
+                out_data <= std_logic_vector(signed(in_data) + to_signed(127,PIXEL_SIZE));
             end if;
         end if;
     out_dv <= in_dv;

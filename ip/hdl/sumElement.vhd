@@ -36,7 +36,7 @@ entity sumElement is
         reset_n	        :	in	std_logic;
         enable          :	in	std_logic;
 
-        in_data         :   in  pixel_array      (0 to NB_IN_FLOWS - 1);
+        in_data         :   in  sum_array        (0 to NB_IN_FLOWS - 1);
         in_dv           :   in  std_logic_vector (0 to NB_IN_FLOWS - 1);
         in_fv           :   in  std_logic_vector (0 to NB_IN_FLOWS - 1);
         in_bias         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
@@ -49,10 +49,16 @@ end entity;
 --
 architecture bhv of sumElement is
 
-    type pixel_array_signed is array (0 to NB_IN_FLOWS - 1) of signed (PIXEL_SIZE -1 downto 0);
-    signal	data_s	    :	pixel_array_signed ;
-    signal  sum_s       :   signed (PIXEL_SIZE - 1 downto 0);
-    signal  sum_b       :   signed (PIXEL_SIZE - 1 downto 0);
+    type sum_array_signed is array ( integer range <> )  of signed (SUM_WIDTH -1 downto 0);
+
+    constant THIS_SUM_WIDTH    :   integer := integer(ceil(log2(real(NB_IN_FLOWS+ 1)))) + SUM_WIDTH;
+    constant LOWER_THRESHHOLD  :   integer := -2**(2*PIXEL_SIZE-1) + 1;
+    constant UPPER_THRESHHOLD  :   integer :=  2**(2*PIXEL_SIZE-1) - 1;
+    constant LOWER_TANH_VALUE  :   integer := -2**(  PIXEL_SIZE-1) + 1;
+    constant UPPER_TANH_VALUE  :   integer :=  2**(  PIXEL_SIZE-1) - 1;
+
+    signal	data_s	    :	sum_array_signed (0 to NB_IN_FLOWS - 1);
+    signal  sum_s       :   signed (THIS_SUM_WIDTH - 1 downto 0);
     signal  tmp_dv      :   std_logic;
     signal  tmp_fv      :   std_logic;
 
@@ -66,39 +72,33 @@ architecture bhv of sumElement is
 
     process(clk)
 
-        constant SUMWIDTH :  integer := integer(ceil(log2(real(NB_IN_FLOWS))));
-        variable sum      :  signed  (SUMWIDTH + PIXEL_SIZE - 1 downto 0);
+        variable sum    :  signed  (THIS_SUM_WIDTH - 1 downto 0);
         begin
             if (reset_n ='0') then
                 sum := (others=>'0');
             elsif (RISING_EDGE(clk)) then
                 if (enable='1') then
+
+                    -- Compute sum
                     SUM_LOOP : for i in 0 to (NB_IN_FLOWS - 1) loop
                         sum := sum + data_s(i);
                     end loop;
 
                     -- Add bias term
-                        sum := sum + signed(in_bias);
+                    sum := sum + signed(in_bias);
+                    sum_s <= sum;
 
-                    -- Apply Activation function : ReLU = 0 threshold (remove negative pixels)
-                    if (sum < to_signed(0,sum'LENGTH))	then
-                        sum := (others => '0');
-                    end if;
-
-                    -- Saturate : if value > 127 then value = 127
-                    if (sum > to_signed(127,sum'LENGTH))	then
-                        sum := to_signed(127,sum'LENGTH);
-                    end if;
-
-                    sum     := SHIFT_RIGHT(sum,SUMWIDTH);
-                    sum_s	<=	sum(PIXEL_SIZE -1 downto 0);
-                    sum     := (others=>'0');
+                    sum := (others=>'0');
                 end if;
             end if;
         end process;
 
-
-    out_data <= std_logic_vector (sum_s);
+    --------------------------------------------------------------------------
+    -- Apply Activation function : TanH (approx)
+    --------------------------------------------------------------------------
+    out_data   <=   std_logic_vector(to_signed(LOWER_TANH_VALUE,PIXEL_SIZE))   when (sum_s < to_signed(LOWER_THRESHHOLD,THIS_SUM_WIDTH)) else
+                    std_logic_vector(to_signed(UPPER_TANH_VALUE,PIXEL_SIZE))   when (sum_s > to_signed(UPPER_THRESHHOLD,THIS_SUM_WIDTH)) else
+                    std_logic_vector(SHIFT_RIGHT(sum_s,PIXEL_SIZE)(PIXEL_SIZE-1 downto 0));
 
     --------------------------------------------------------------------------
     -- DataValid and FlowValid Management :

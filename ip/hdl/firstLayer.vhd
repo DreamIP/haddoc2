@@ -12,20 +12,18 @@ entity firstLayer is
         IMAGE_WIDTH   :   integer;
         KERNEL_SIZE   :   integer;
         NB_OUT_FLOWS  :   integer;
-        KERNEL_VALUE :   pixel_matrix;
-        KERNEL_NORM :   pixel_array;
-        BIAS_VALUE :   pixel_array
+        KERNEL_VALUE  :   pixel_matrix;
+        KERNEL_NORM   :   pixel_array;
+        BIAS_VALUE    :   pixel_array
     );
 
     port(
         clk	          :   in  std_logic;
         reset_n	      :   in  std_logic;
         enable        :   in  std_logic;
-
         in_data       :   in  std_logic_vector (0 to PIXEL_SIZE - 1);
         in_dv         :   in  std_logic;
         in_fv         :   in  std_logic;
-
         out_data      :   out pixel_array      (0 to NB_OUT_FLOWS - 1);
         out_dv        :   out std_logic_vector (0 to NB_OUT_FLOWS - 1);
         out_fv        :   out std_logic_vector (0 to NB_OUT_FLOWS - 1)
@@ -59,8 +57,8 @@ architecture STRUCTURAL of firstLayer is
     --------------------------------------------------------------------------------
     component convElement
     generic(
-        KERNEL_SIZE :    integer;
-        PIXEL_SIZE  :    integer
+        KERNEL_SIZE :   integer;
+        PIXEL_SIZE  :   integer
     );
 
     port(
@@ -71,8 +69,7 @@ architecture STRUCTURAL of firstLayer is
         in_dv    	:   in  std_logic;
         in_fv    	:   in  std_logic;
         in_kernel   :   in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
-        in_norm     :   in  std_logic_vector(PIXEL_SIZE-1 downto 0);
-        out_data    :   out std_logic_vector(PIXEL_SIZE-1 downto 0);
+        out_data    :   out std_logic_vector(SUM_WIDTH - 1 downto 0);
         out_dv    	:   out std_logic;
         out_fv    	:   out std_logic
 
@@ -89,7 +86,7 @@ architecture STRUCTURAL of firstLayer is
         clk	            :	in  std_logic;
         reset_n	        :	in  std_logic;
         enable          :	in  std_logic;
-        in_data         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
+        in_data         :   in  std_logic_vector (SUM_WIDTH - 1 downto 0);
         in_dv           :   in  std_logic;
         in_fv           :   in  std_logic;
         in_bias         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
@@ -107,7 +104,7 @@ architecture STRUCTURAL of firstLayer is
     signal s_ne_dv   : std_logic;
     signal s_ne_fv   : std_logic;
 
-    signal s_ce_data : pixel_array      (0 to NB_OUT_FLOWS - 1);
+    signal s_ce_data : sum_array        (0 to NB_OUT_FLOWS - 1);
     signal s_ce_dv   : std_logic_vector (0 to NB_OUT_FLOWS - 1);
     signal s_ce_fv   : std_logic_vector (0 to NB_OUT_FLOWS - 1);
 
@@ -159,7 +156,7 @@ architecture STRUCTURAL of firstLayer is
                 in_dv    	=> s_ne_dv,
                 in_fv    	=> s_ne_fv,
                 in_kernel   => tmp_w(i * KERNEL_SIZE* KERNEL_SIZE to KERNEL_SIZE*KERNEL_SIZE*(i+1)-1),
-                in_norm     => KERNEL_NORM(i),
+--                in_norm     => KERNEL_NORM(i),
                 out_data    => s_ce_data(i),
                 out_dv    	=> s_ce_dv(i),
                 out_fv    	=> s_ce_fv(i)
