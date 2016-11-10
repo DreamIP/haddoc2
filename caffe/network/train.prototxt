@@ -104,6 +104,12 @@ layer {
   }
 }
 layer {
+  name: "tanh4"
+  type: "TanH"
+  bottom: "fc"
+  top: "fc"
+}
+layer {
   name: "cla"
   type: "SoftmaxWithLoss"
   bottom: "fc"

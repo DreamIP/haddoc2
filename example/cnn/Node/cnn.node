@@ -81,9 +81,16 @@
       </parts>
       <flows>
         <flow name="in" size="8"/>
+        <flow name="out0" size="8"/>
         <flow name="out1" size="8"/>
         <flow name="out2" size="8"/>
         <flow name="out3" size="8"/>
+        <flow name="out4" size="8"/>
+        <flow name="out5" size="8"/>
+        <flow name="out6" size="8"/>
+        <flow name="out7" size="8"/>
+        <flow name="out8" size="8"/>
+        <flow name="out9" size="8"/>
       </flows>
       <params>
         <param name="IMAGE_WIDTH" value="320"/>
@@ -97,9 +104,16 @@
     <connects>
       <connect fromblock="mt9" fromflow="out" toblock="usb" toflow="in0" order="msb"/>
       <connect fromblock="mt9" fromflow="out" toblock="cnn" toflow="in" order="msb"/>
+      <connect fromblock="cnn" fromflow="out0" toblock="usb" toflow="in1" order="msb"/>
       <connect fromblock="cnn" fromflow="out1" toblock="usb" toflow="in1" order="msb"/>
-      <connect fromblock="cnn" fromflow="out2" toblock="usb" toflow="in2" order="msb"/>
-      <connect fromblock="cnn" fromflow="out3" toblock="usb" toflow="in3" order="msb"/>
+      <connect fromblock="cnn" fromflow="out2" toblock="usb" toflow="in1" order="msb"/>
+      <connect fromblock="cnn" fromflow="out3" toblock="usb" toflow="in1" order="msb"/>
+      <connect fromblock="cnn" fromflow="out4" toblock="usb" toflow="in1" order="msb"/>
+      <connect fromblock="cnn" fromflow="out5" toblock="usb" toflow="in1" order="msb"/>
+      <connect fromblock="cnn" fromflow="out6" toblock="usb" toflow="in1" order="msb"/>
+      <connect fromblock="cnn" fromflow="out7" toblock="usb" toflow="in1" order="msb"/>
+      <connect fromblock="cnn" fromflow="out8" toblock="usb" toflow="in1" order="msb"/>
+      <connect fromblock="cnn" fromflow="out9" toblock="usb" toflow="in1" order="msb"/>
     </connects>
   </flow_interconnect>
   <clock_interconnect>

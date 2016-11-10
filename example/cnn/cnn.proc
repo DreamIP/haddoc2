@@ -2,12 +2,13 @@
 <process name="cnn" categ="descriptor" master_count="0" pi_size_addr_rel="2" desc="An example of a CNN">
   <parts>
     <part name="main">
-      <svg width="150" height="100">
-        <rect width="150" height="100" x="0" y="0" fill="lightgray"/>
-        <text x="50" y="50">CNN</text>
+      <svg width="200" height="400">
+        <rect width="200" height="400" x="0" y="0" fill="lightgray"/>
+        <text x="10" y="200">LeNet5 Light</text>
       </svg>
     </part>
   </parts>
+
   <files>
     <file name="cnn.vhd" type="vhdl" group="hdl" path="hdl/cnn.vhd"/>
     <file name="cnn_process.vhd" type="vhdl" group="hdl" path="hdl/cnn_process.vhd"/>
@@ -31,33 +32,97 @@
     <file name="fcLayer.vhd" type="vhdl" group="hdl" path="../../ip/hdl/fcLayer.vhd"/>
     <file name="cnn.proc" type="proc" group="blockdef" path="cnn.proc"/>
   </files>
+
   <resets>
     <reset name="reset_n" group="reset_n" direction="in"/>
   </resets>
+
   <flows>
     <flow name="in" size="8" type="in" desc="Input image to describe"/>
-    <flow name="out1" size="8" type="out" desc="Output 1 - CONV10">
+
+    <flow name="out0" size="8" type="out" desc="FC0">
       <properties>
         <property name="datatype" type="flowtype" value="image"/>
-        <property name="width" type="int"  value="318"/>
-        <property name="height" type="int" value="318"/>
+        <property name="width" type="int"  value="74"/>
+        <property name="height" type="int" value="74"/>
       </properties>
     </flow>
-    <flow name="out2" size="8" type="out" desc="Output 2 - CONV11">
+
+    <flow name="out1" size="8" type="out" desc="FC1">
       <properties>
         <property name="datatype" type="flowtype" value="image"/>
-        <property name="width" type="int"  value="318"/>
-        <property name="height" type="int" value="318"/>
+        <property name="width" type="int"  value="74"/>
+        <property name="height" type="int" value="74"/>
       </properties>
     </flow>
-    <flow name="out3" size="8" type="out" desc="Output 3 - CONV12">
+
+    <flow name="out2" size="8" type="out" desc="FC2">
       <properties>
         <property name="datatype" type="flowtype" value="image"/>
-        <property name="width" type="int"  value="318"/>
-        <property name="height" type="int" value="318"/>
+        <property name="width" type="int"  value="74"/>
+        <property name="height" type="int" value="74"/>
+      </properties>
+    </flow>
+
+
+    <flow name="out3" size="8" type="out" desc="FC3">
+      <properties>
+        <property name="datatype" type="flowtype" value="image"/>
+        <property name="width" type="int"  value="74"/>
+        <property name="height" type="int" value="74"/>
+      </properties>
+    </flow>
+
+
+    <flow name="out4" size="8" type="out" desc="FC4">
+      <properties>
+        <property name="datatype" type="flowtype" value="image"/>
+        <property name="width" type="int"  value="74"/>
+        <property name="height" type="int" value="74"/>
+      </properties>
+    </flow>
+
+    <flow name="out5" size="8" type="out" desc="FC5">
+      <properties>
+        <property name="datatype" type="flowtype" value="image"/>
+        <property name="width" type="int"  value="74"/>
+        <property name="height" type="int" value="74"/>
+      </properties>
+    </flow>
+
+    <flow name="out6" size="8" type="out" desc="FC6">
+      <properties>
+        <property name="datatype" type="flowtype" value="image"/>
+        <property name="width" type="int"  value="74"/>
+        <property name="height" type="int" value="74"/>
+      </properties>
+    </flow>
+
+    <flow name="out7" size="8" type="out" desc="FC7">
+      <properties>
+        <property name="datatype" type="flowtype" value="image"/>
+        <property name="width" type="int"  value="74"/>
+        <property name="height" type="int" value="74"/>
+      </properties>
+    </flow>
+
+    <flow name="out8" size="8" type="out" desc="FC8">
+      <properties>
+        <property name="datatype" type="flowtype" value="image"/>
+        <property name="width" type="int"  value="74"/>
+        <property name="height" type="int" value="74"/>
+      </properties>
+    </flow>
+
+    <flow name="out9" size="8" type="out" desc="FC9">
+      <properties>
+        <property name="datatype" type="flowtype" value="image"/>
+        <property name="width" type="int"  value="74"/>
+        <property name="height" type="int" value="74"/>
       </properties>
     </flow>
   </flows>
+
   <params>
     <param name="IMAGE_WIDTH" type="int" hard="1" value="320" desc="maximum line width"/>
     <param name="control" regaddr="0" default="0" desc="Status Control Register">
@@ -66,7 +131,9 @@
       </bitfields>
     </param>
   </params>
+
   <properties>
     <property name="enable" type="bool" value="false" desc="Enable or disable process"/>
   </properties>
+
 </process>
