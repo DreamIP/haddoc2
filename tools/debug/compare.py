@@ -1,13 +1,15 @@
 # coding: utf8
 import os
 import sys
-import subprocess
-from skimage.measure import compare_ssim as ssim
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
+
+from skimage.measure import compare_ssim as ssim
+
 from scipy.misc import imread as sc_imread
 sys.path.append('/usr/local/lib/python2.7/dist-packages')
 import cv2
+
 HOME        = os.environ['HOME']
 CAFFE_PATH  = HOME + '/caffe'
 sys.path.insert(0, CAFFE_PATH +'/python')
