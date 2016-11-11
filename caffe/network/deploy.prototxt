@@ -1,8 +1,8 @@
 input: "data"
 input_dim: 1
 input_dim: 1
-input_dim: 320
-input_dim: 320
+input_dim: 30
+input_dim: 30
 
 layer {
   name: "conv1"
@@ -82,4 +82,22 @@ layer {
   type: "TanH"
   bottom: "conv3"
   top: "conv3"
+}
+layer {
+  name: "fc"
+  type: "InnerProduct"
+  bottom: "conv3"
+  top: "fc"
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+  }
+}
+layer {
+  name: "tanh4"
+  type: "TanH"
+  bottom: "fc"
+  top: "fc"
 }
