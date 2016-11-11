@@ -31,7 +31,7 @@ The `example/cnn/Node` directory presents an implementation example of the CNN o
 A first parameter parser can be found at `lib/` and contains scripts to generate `params.vhd`. This file contains the transcription of the CNN topology and parameters as VHDL constants. Theses will be affected will parametrize the instantiated layers of the CNN.
 
 # TODO 
-- Validate the layer parser functionnally. 
-- Add Bias support in the first convLayer (firstLayer) and fix bug as in b7dc7828b38f3f03668c28d55c56232b2b2e7982
 - Add a softmax deisgn file to perform the last classification stage
-- Add Network parser 
+- Add Network parser
+- Improve FC layer computations
+- Optimize convElement, convLayer and fcLayer code 
