@@ -7,7 +7,7 @@ layer {
     scale: 0.00392156862745
   }
   data_param {
-    source: "/home/kamel/Seafile/Kamel/TanH/dataset/mnist_train"
+    source: "/home/kamel/Seafile/Kamel/Benchmark/Compare/sw/dataset/mnist_train"
     batch_size: 64
     backend: LMDB
   }

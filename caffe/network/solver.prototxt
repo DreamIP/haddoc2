@@ -1,5 +1,5 @@
-train_net: "/home/kamel/Seafile/Kamel/TanH/network/train.prototxt"
-test_net: "/home/kamel/Seafile/Kamel/TanH/network/test.prototxt"
+train_net: "/home/kamel/Seafile/Kamel/Benchmark/Compare/sw/network/train.prototxt" 
+test_net: "/home/kamel/Seafile/Kamel/Benchmark/Compare/sw/network/test.prototxt" 
 test_iter: 10
 test_interval: 1000
 test_compute_loss: true
