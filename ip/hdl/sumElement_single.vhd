@@ -43,15 +43,28 @@ end entity;
 architecture bhv of sumElement_single is
 
     constant THIS_SUM_WIDTH    :   integer := SUM_WIDTH;
-    constant LOWER_THRESHHOLD  :   integer := -2**(2*PIXEL_SIZE-1) + 1;
-    constant UPPER_THRESHHOLD  :   integer :=  2**(2*PIXEL_SIZE-1) - 1;
-    constant LOWER_TANH_VALUE  :   integer := -2**(  PIXEL_SIZE-1) + 1;
-    constant UPPER_TANH_VALUE  :   integer :=  2**(  PIXEL_SIZE-1) - 1;
+    constant LOWER_THRESHHOLD  :   integer := -32258;
+    constant UPPER_THRESHHOLD  :   integer :=  32258;
+    constant LOWER_TANH_VALUE  :   integer := -127;
+    constant UPPER_TANH_VALUE  :   integer :=  127;
 
+    constant T2  :   integer := 24193;
+    constant T1  :   integer := 8065;
+    constant V2  :   integer := 127;
+    constant V1  :   integer := 32;
+    constant A1  :   integer := PIXEL_SIZE - 1;
+    constant A2  :   integer := PIXEL_SIZE;
 
     signal  sum_s             :   signed (THIS_SUM_WIDTH-1 downto 0);
+    signal  s_bias128         :   signed (THIS_SUM_WIDTH-1 downto 0);
+    signal  s_bias            :   signed (2*PIXEL_SIZE-1   downto 0);
+    signal  tmp_bias          :   std_logic_vector (THIS_SUM_WIDTH-1 downto 0);
 
     begin
+    tmp_bias  <= std_logic_vector(resize(signed(in_bias), tmp_bias'length));
+    -- s_bias    <= SHIFT_LEFT(signed(tmp_bias),PIXEL_SIZE-1);
+    s_bias    <= signed(in_bias)*127;
+
     process(clk)
         variable sum          :   signed (THIS_SUM_WIDTH-1 downto 0);
     -- TODO : Overflow management
@@ -61,7 +74,7 @@ architecture bhv of sumElement_single is
                 sum   := (others=>'0');
             elsif (RISING_EDGE(clk)) then
                 if (enable='1') then
-                    sum  := signed(signed(in_data) + signed(in_bias));
+                    sum  := signed(signed(in_data) + signed(s_bias));
                     sum_s <= sum;
                     sum  := (others=>'0');
                 end if;
@@ -72,9 +85,15 @@ architecture bhv of sumElement_single is
     -- Apply Activation function : TanH (approx)
     --------------------------------------------------------------------------
 
-    out_data   <=   std_logic_vector(to_signed(LOWER_TANH_VALUE,PIXEL_SIZE))   when (sum_s < to_signed(LOWER_THRESHHOLD,THIS_SUM_WIDTH)) else
-                    std_logic_vector(to_signed(UPPER_TANH_VALUE,PIXEL_SIZE))   when (sum_s > to_signed(UPPER_THRESHHOLD,THIS_SUM_WIDTH)) else
-                    std_logic_vector(SHIFT_RIGHT(sum_s,PIXEL_SIZE)(PIXEL_SIZE-1 downto 0));
+    -- out_data   <=   std_logic_vector(to_signed(LOWER_TANH_VALUE,PIXEL_SIZE))   when (sum_s < to_signed(LOWER_THRESHHOLD,THIS_SUM_WIDTH)) else
+    --                 std_logic_vector(to_signed(UPPER_TANH_VALUE,PIXEL_SIZE))   when (sum_s > to_signed(UPPER_THRESHHOLD,THIS_SUM_WIDTH)) else
+    --                 std_logic_vector(SHIFT_RIGHT(sum_s,PIXEL_SIZE)(PIXEL_SIZE-1 downto 0));
+    --
+    out_data   <=   std_logic_vector(to_signed(-V2,PIXEL_SIZE))                                                    when ( sum_s <= to_signed(-T2,THIS_SUM_WIDTH)) else
+                    std_logic_vector(to_signed(-V1,PIXEL_SIZE) + (SHIFT_RIGHT(sum_s,A2)(PIXEL_SIZE-1 downto 0)))   when ((sum_s >  to_signed(-T2,THIS_SUM_WIDTH)) and (sum_s <  to_signed(-T1,THIS_SUM_WIDTH))) else
+                    std_logic_vector((SHIFT_RIGHT(sum_s,A1)(PIXEL_SIZE-1 downto 0)))                               when ((sum_s >= to_signed(-T1,THIS_SUM_WIDTH)) and (sum_s <= to_signed( T1,THIS_SUM_WIDTH))) else
+                    std_logic_vector(to_signed( V1,PIXEL_SIZE) + (SHIFT_RIGHT(sum_s,A2)(PIXEL_SIZE-1 downto 0)))   when ((sum_s >  to_signed( T1,THIS_SUM_WIDTH)) and (sum_s <  to_signed( T2,THIS_SUM_WIDTH))) else
+                    std_logic_vector(to_signed( V2,PIXEL_SIZE));
 
 
     --------------------------------------------------------------------------
