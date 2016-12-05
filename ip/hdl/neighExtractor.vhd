@@ -19,6 +19,8 @@
 --          		       |		          |
 --	                        ------------------
 
+
+
 --                        out_data(0)      out_data(1)      out_data(2)
 --                           ^                 ^                 ^
 --                           |                 |                 |
@@ -63,11 +65,9 @@ entity neighExtractor is
 	    clk	        :	in 	std_logic;
         reset_n	    :	in	std_logic;
         enable	    :	in	std_logic;
-
         in_data     :	in 	std_logic_vector((PIXEL_SIZE-1) downto 0);
         in_dv	    :	in	std_logic;
         in_fv	    :	in	std_logic;
-
         out_data    :	out	pixel_array (0 to (KERNEL_SIZE * KERNEL_SIZE)- 1);
         out_dv		:	out std_logic;
         out_fv		:	out std_logic
@@ -77,7 +77,14 @@ end neighExtractor;
 architecture rtl of neighExtractor is
 
     -- signals
-    signal pixel_out    :   pixel_array(0 to KERNEL_SIZE-1);
+    signal pixel_out   :   pixel_array(0 to KERNEL_SIZE-1);
+    signal all_valid   :  std_logic;
+    signal s_valid     :  std_logic;
+    signal buffer_fv   :  std_logic_vector(KERNEL_SIZE-1 downto 0);
+    signal tmp_dv      :  std_logic;
+    signal tmp_fv      :  std_logic;
+    signal delay_dv    :  std_logic;
+    signal delay_fv    :  std_logic;
 
     -- components
     component taps
@@ -112,10 +119,6 @@ architecture rtl of neighExtractor is
 		);
 	end component;
 
-	signal all_valid    :  std_logic;
-	signal s_valid      :  std_logic;
-	signal tmp_dv       :  std_logic;
-	signal tmp_fv       :  std_logic;
 
     begin
 
@@ -191,13 +194,14 @@ architecture rtl of neighExtractor is
     dv_proc : process(clk)
     -- 12 bits is enought to count until 4096
     constant NBITS_DELAY : integer := 20;
-    variable delay_cmp : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
-    variable edge_cmp  : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
+    variable delay_cmp   : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
+    variable x_cmp       : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
+    variable y_cmp       : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
 
     begin
         if (reset_n = '0') then
             delay_cmp := (others => '0');
-            edge_cmp  := (others => '0');
+            x_cmp  := (others => '0');
             tmp_dv    <='0';
             tmp_fv    <='0';
 
@@ -205,35 +209,59 @@ architecture rtl of neighExtractor is
             if(enable = '1') then
                 if (in_fv = '1') then
                     if(in_dv = '1') then
-
-                        -- Initial delay : Wait until there is data in all the taps
-                        if (delay_cmp >= to_unsigned((KERNEL_SIZE-1)*IMAGE_WIDTH + KERNEL_SIZE - 1 , NBITS_DELAY)) then
-                            -- Taps are full : Frame can start
+                        if (delay_cmp < to_unsigned((KERNEL_SIZE-1)*IMAGE_WIDTH + KERNEL_SIZE - 1, NBITS_DELAY)) then
+                        -- Initial delay : flow is NOT valid
+                             delay_cmp := delay_cmp + to_unsigned(1,NBITS_DELAY);
+                             tmp_dv <= '0';
+                             tmp_fv <= '0';
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+                        else
+                        -- Taps are full : Start of Frame
                             tmp_fv <= '1';
+                            if ( y_cmp = to_unsigned (IMAGE_WIDTH - KERNEL_SIZE + 1, NBITS_DELAY)) then
 
-                            if ( edge_cmp > to_unsigned (IMAGE_WIDTH - KERNEL_SIZE, NBITS_DELAY)) then
-                            -- If at edge : data is NOT valid
-                                if ( edge_cmp  = to_unsigned (IMAGE_WIDTH - 1, NBITS_DELAY)) then
-                                    edge_cmp  := (others => '0');
+                                -- Last line :
+                                if ( x_cmp > to_unsigned (IMAGE_WIDTH - KERNEL_SIZE, NBITS_DELAY)) then
+                                    -- at x edge : dv = 0
                                     tmp_dv <= '0';
+                                    if ( x_cmp  = to_unsigned (IMAGE_WIDTH - 1, NBITS_DELAY)) then
+                                    -- Last pixel : End of Frame
+                                        x_cmp     := (others => '0');
+                                        y_cmp     := (others => '0');
+                                        tmp_fv    <= '0';
+                                    else
+                                        x_cmp := x_cmp + to_unsigned(1,NBITS_DELAY);
+                                    end if;
+
                                 else
-                                    edge_cmp := edge_cmp + to_unsigned(1,NBITS_DELAY);
+                                    x_cmp := x_cmp + to_unsigned(1,NBITS_DELAY);
                                     tmp_dv <= '0';
                                 end if;
 
-                            -- Else : Data is valid
+
+
                             else
-                                    edge_cmp := edge_cmp + to_unsigned(1,NBITS_DELAY);
+
+
+                                if ( x_cmp > to_unsigned (IMAGE_WIDTH - KERNEL_SIZE, NBITS_DELAY)) then
+                                    -- at x edge : dv = 0
+                                    tmp_dv <= '0';
+                                    if ( x_cmp  = to_unsigned (IMAGE_WIDTH - 1, NBITS_DELAY)) then
+                                    -- Last pixel of line : End of Line
+                                        x_cmp  := (others => '0');
+                                        y_cmp  := y_cmp + to_unsigned(1,NBITS_DELAY);
+                                    else
+                                        x_cmp := x_cmp + to_unsigned(1,NBITS_DELAY);
+                                    end if;
+
+                                else
+                                    -- Valid data :
+                                    x_cmp := x_cmp + to_unsigned(1,NBITS_DELAY);
                                     tmp_dv <= '1';
+                                end if;
+
                             end if;
-
-
-                        -- When taps are nor full : Frame is not valid , neither is data
-                        else
-                                delay_cmp := delay_cmp + to_unsigned(1,NBITS_DELAY);
-                                tmp_dv <= '0';
-                                tmp_fv <= '0';
-
+---------------------------------------------------------------------------------------------------------------------------------------------------------
                         end if;
 
                     else
@@ -243,24 +271,36 @@ architecture rtl of neighExtractor is
                 -- When Fv = 0 (New frame comming): reset counters
                 else
                     delay_cmp := (others => '0');
-                    edge_cmp  := (others => '0');
+                    x_cmp  := (others => '0');
+                    y_cmp  := (others => '0');
                     tmp_dv <= '0';
                     tmp_fv <= '0';
                 end if;
 
             -- When enable = 0
             else
-
                 delay_cmp := (others => '0');
-                edge_cmp  := (others => '0');
+                x_cmp  := (others => '0');
+                y_cmp  := (others => '0');
                 tmp_dv <= '0';
                 tmp_fv <= '0';
             end if;
-        end if;
-
+		end if;
     end process;
 
+
+	 delay : process(clk)
+	 begin
+	    if (reset_n = '0') then
+			 delay_fv <= '0';
+			buffer_fv <= (others=>'0');
+       elsif (rising_edge(clk)) then
+			 buffer_fv   <= buffer_fv(buffer_fv'HIGH -1 downto 0) & tmp_fv;
+			  delay_fv   <= buffer_fv(buffer_fv'HIGH);
+	    end if;
+	 end process;
+
     out_dv <= tmp_dv;
-    out_fv <= tmp_fv;
+    out_fv <= delay_fv;
 
 end architecture;
