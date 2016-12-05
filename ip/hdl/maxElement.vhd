@@ -35,23 +35,23 @@ architecture bhv of maxElement is
     -------------------------------------------
     -- SIGNALS
     -------------------------------------------
-    type    pixel_array_unsigned is array ( integer range <> ) of unsigned ( PIXEL_SIZE-1 downto 0 );
+    type   pixel_array_signed is array ( integer range <> ) of signed ( PIXEL_SIZE-1 downto 0 );
     signal	unsigned_data	:	pixel_array_unsigned (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
-    signal  s_max           :   std_logic_vector(PIXEL_SIZE-1 downto 0);
+    signal s_max           :   std_logic_vector(PIXEL_SIZE-1 downto 0);
 
 
 
 
-    -- Cast data to unsigned
+    -- Cast data as signed
     begin
     CAST : for i in 0 to (KERNEL_SIZE - 1) generate
-        unsigned_data(i)      <=  unsigned(in_data(i));
+        unsigned_data(i)      <=  signed(in_data(i));
     end generate;
 
 
     -- Compute Max of neighborhood
     process(clk)
-        variable v_max  : unsigned (PIXEL_SIZE - 1 downto 0);
+        variable v_max  : signed (PIXEL_SIZE - 1 downto 0);
         begin
 
             if (reset_n ='0') then
@@ -64,10 +64,10 @@ architecture bhv of maxElement is
                     if(in_fv  = '1') then
                         if(in_dv  = '1') then
                                 -- compute MAX
-                                v_max := unsigned_data(0);
+                                v_max := signed_data(0);
                                 MAX_LOOP : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) loop
-                                    if (unsigned_data(i) > v_max) then
-                                        v_max := unsigned_data(i);
+                                    if (signed_data(i) > v_max) then
+                                        v_max := signed_data(i);
                                     end if;
                                 end loop;
                                 s_max <= std_logic_vector(v_max);
@@ -81,14 +81,9 @@ architecture bhv of maxElement is
 
     end process;
 
-
- 
-
-    -- Out flow :
     out_data <= s_max;
     out_dv   <= in_dv;
     out_fv   <= in_fv;
-
 
 
 end bhv;
