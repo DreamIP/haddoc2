@@ -26,7 +26,7 @@
 --                           |                 |                 |
 --               -------     |     -------     |     -------     |    ---------------------------
 --              |        |   |    |        |   |    |        |   |   |                           |
---  in_data --->|        |---|--> |        |---|--> |        |---|-->|          BUFFER           |---> to_P1
+--  in_data --->|  p22   |---|--> |  p21   |---|--> |  p20   |---|-->|          BUFFER           |---> to_P1
 --              |        |        |        |        |        |       |                           |
 --               -------           -------           -------          ---------------------------
 --                        out_data(3)      out_data(4)      out_data(5)
@@ -34,7 +34,7 @@
 --                           |                 |                 |
 --               -------     |     -------     |     -------     |    ---------------------------
 --              |        |   |    |        |   |    |        |   |   |                           |
---  P1      --->|        |---|--> |        |---|--> |        |---|-->|          BUFFER           |---> to_P2
+--  P1      --->|  p12   |---|--> |  p11   |---|--> |  p10   |---|-->|          BUFFER           |---> to_P2
 --              |        |        |        |        |        |       |                           |
 --               -------           -------           -------          ---------------------------
 --                        out_data(6)      out_data(7)      out_data(8)
@@ -42,7 +42,7 @@
 --                           |                 |                 |
 --               -------     |     -------     |     -------     |
 --              |        |   |    |        |   |    |        |   |
---  P2      --->|        |---|--> |        |---|--> |        |---|
+--  P2      --->|   p02  |---|--> |  p01   |---|--> |  p00   |---|
 --              |        |        |        |        |        |
 --               -------           -------           -------
 
@@ -77,7 +77,8 @@ end neighExtractor;
 architecture rtl of neighExtractor is
 
     -- signals
-    signal pixel_out   :   pixel_array(0 to KERNEL_SIZE-1);
+    signal pixel_out   :  pixel_array(0 to KERNEL_SIZE-1);
+    signal tmp_data    :  pixel_array (0 to (KERNEL_SIZE * KERNEL_SIZE)- 1);
     signal all_valid   :  std_logic;
     signal s_valid     :  std_logic;
     signal buffer_fv   :  std_logic_vector(KERNEL_SIZE-1 downto 0);
@@ -126,7 +127,7 @@ architecture rtl of neighExtractor is
     all_valid    <=    in_dv and in_fv;
     s_valid      <=    all_valid and enable;
     ----------------------------------------------------
-    -- SUPER FOR GENERATE : GO
+    -- Instantiates taps
     ----------------------------------------------------
 
 
@@ -136,7 +137,7 @@ architecture rtl of neighExtractor is
                 gen1_inst : taps
                 generic map(
                     PIXEL_SIZE  => PIXEL_SIZE,
-                    TAPS_WIDTH  => IMAGE_WIDTH ,
+                    TAPS_WIDTH  => IMAGE_WIDTH-1,
                     KERNEL_SIZE => KERNEL_SIZE
                 )
                 port map(
@@ -144,7 +145,7 @@ architecture rtl of neighExtractor is
                     reset_n	    => reset_n,
                     enable	    => s_valid,
                     in_data	    => in_data,
-                    taps_data	=> out_data(0 to KERNEL_SIZE-1),
+                    taps_data	=> tmp_data(0 to KERNEL_SIZE-1),
                     out_data	=> pixel_out(0)
                 );
             end generate gen_1;
@@ -154,7 +155,7 @@ architecture rtl of neighExtractor is
                 geni_inst : taps
                 generic map(
                     PIXEL_SIZE   => PIXEL_SIZE,
-                    TAPS_WIDTH   => IMAGE_WIDTH,
+                    TAPS_WIDTH   => IMAGE_WIDTH-1,
                     KERNEL_SIZE  => KERNEL_SIZE
                 )
                 port map(
@@ -162,7 +163,7 @@ architecture rtl of neighExtractor is
                     reset_n	    => reset_n,
                     enable	    => s_valid,
                     in_data	    => pixel_out(i-1),
-                    taps_data	=> out_data(i * KERNEL_SIZE to KERNEL_SIZE*(i+1)-1),
+                    taps_data	=> tmp_data(i * KERNEL_SIZE to KERNEL_SIZE*(i+1)-1),
                     out_data	=> pixel_out(i)
                 );
             end generate gen_i;
@@ -180,7 +181,7 @@ architecture rtl of neighExtractor is
                     reset_n		=> reset_n,
                     enable		=> s_valid,
                     in_data		=> pixel_out(i-1),
-                    taps_data	=> out_data((KERNEL_SIZE-1) * KERNEL_SIZE to KERNEL_SIZE*KERNEL_SIZE - 1),
+                    taps_data	=> tmp_data((KERNEL_SIZE-1) * KERNEL_SIZE to KERNEL_SIZE*KERNEL_SIZE - 1),
                     out_data	=> OPEN
                 );
             end generate gen_last;
@@ -206,71 +207,61 @@ architecture rtl of neighExtractor is
             tmp_fv    <='0';
 
         elsif (rising_edge(clk)) then
+
+            out_data <= tmp_data;
+            delay_fv <= in_fv;
+
             if(enable = '1') then
                 if (in_fv = '1') then
                     if(in_dv = '1') then
-                        if (delay_cmp < to_unsigned((KERNEL_SIZE-1)*IMAGE_WIDTH + KERNEL_SIZE - 1, NBITS_DELAY)) then
-                        -- Initial delay : flow is NOT valid
-                             delay_cmp := delay_cmp + to_unsigned(1,NBITS_DELAY);
-                             tmp_dv <= '0';
-                             tmp_fv <= '0';
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
-                        else
-                        -- Taps are full : Start of Frame
-                            tmp_fv <= '1';
-                            if ( y_cmp = to_unsigned (IMAGE_WIDTH - KERNEL_SIZE + 1, NBITS_DELAY)) then
-
-                                -- Last line :
-                                if ( x_cmp > to_unsigned (IMAGE_WIDTH - KERNEL_SIZE, NBITS_DELAY)) then
-                                    -- at x edge : dv = 0
-                                    tmp_dv <= '0';
-                                    if ( x_cmp  = to_unsigned (IMAGE_WIDTH - 1, NBITS_DELAY)) then
-                                    -- Last pixel : End of Frame
-                                        x_cmp     := (others => '0');
-                                        y_cmp     := (others => '0');
-                                        tmp_fv    <= '0';
-                                    else
-                                        x_cmp := x_cmp + to_unsigned(1,NBITS_DELAY);
-                                    end if;
-
-                                else
-                                    x_cmp := x_cmp + to_unsigned(1,NBITS_DELAY);
-                                    tmp_dv <= '0';
-                                end if;
-
-
-
+                        if ( y_cmp = to_unsigned (IMAGE_WIDTH - 1, NBITS_DELAY)) then
+                            if ( x_cmp = to_unsigned (IMAGE_WIDTH, NBITS_DELAY)) then
+                                tmp_dv <='0';
+                                x_cmp  := (others => '0');
+                                y_cmp  := (others => '0');
+                            -- elsif(x_cmp< to_unsigned (KERNEL_SIZE - 1, NBITS_DELAY)) then
+                            --     tmp_dv <='0';
+                            --     x_cmp := x_cmp + to_unsigned(1,NBITS_DELAY);
                             else
+                                tmp_dv <='1';
+                                x_cmp := x_cmp + to_unsigned(1,NBITS_DELAY);
+                            end if;
 
 
-                                if ( x_cmp > to_unsigned (IMAGE_WIDTH - KERNEL_SIZE, NBITS_DELAY)) then
-                                    -- at x edge : dv = 0
-                                    tmp_dv <= '0';
-                                    if ( x_cmp  = to_unsigned (IMAGE_WIDTH - 1, NBITS_DELAY)) then
-                                    -- Last pixel of line : End of Line
-                                        x_cmp  := (others => '0');
-                                        y_cmp  := y_cmp + to_unsigned(1,NBITS_DELAY);
-                                    else
-                                        x_cmp := x_cmp + to_unsigned(1,NBITS_DELAY);
-                                    end if;
+                        elsif ( y_cmp < to_unsigned (KERNEL_SIZE-1, NBITS_DELAY)) then
+                                tmp_fv <='0';
+                                tmp_dv <='0';
 
+                                if ( x_cmp = to_unsigned (IMAGE_WIDTH, NBITS_DELAY)) then
+                                    x_cmp  := (others => '0');
+                                    y_cmp  := y_cmp + to_unsigned(1,NBITS_DELAY);
                                 else
-                                    -- Valid data :
                                     x_cmp := x_cmp + to_unsigned(1,NBITS_DELAY);
-                                    tmp_dv <= '1';
                                 end if;
 
+                        else
+                            -- Start of frame
+                            if ( x_cmp = to_unsigned (IMAGE_WIDTH-1, NBITS_DELAY)) then
+                                tmp_dv <='1';
+                                x_cmp  := (others => '0');
+                                y_cmp  := y_cmp + to_unsigned(1,NBITS_DELAY);
+                            elsif ( x_cmp  < to_unsigned (KERNEL_SIZE - 1, NBITS_DELAY)) then
+                                tmp_dv <= '0';
+                                x_cmp := x_cmp + to_unsigned(1,NBITS_DELAY);
+                            else
+                                tmp_fv <= '1';
+                                tmp_dv <= '1';
+                                x_cmp := x_cmp + to_unsigned(1,NBITS_DELAY);
                             end if;
----------------------------------------------------------------------------------------------------------------------------------------------------------
-                        end if;
 
+                        end if;
+---------------------------------------------------------------------------------------------------------------------------------------------------------
                     else
                         tmp_dv <= '0';
                     end if;
 
-                -- When Fv = 0 (New frame comming): reset counters
                 else
-                    delay_cmp := (others => '0');
                     x_cmp  := (others => '0');
                     y_cmp  := (others => '0');
                     tmp_dv <= '0';
@@ -285,22 +276,9 @@ architecture rtl of neighExtractor is
                 tmp_dv <= '0';
                 tmp_fv <= '0';
             end if;
-		end if;
-    end process;
-
-
-	 delay : process(clk)
-	 begin
-	    if (reset_n = '0') then
-			 delay_fv <= '0';
-			buffer_fv <= (others=>'0');
-       elsif (rising_edge(clk)) then
-			 buffer_fv   <= buffer_fv(buffer_fv'HIGH -1 downto 0) & tmp_fv;
-			  delay_fv   <= buffer_fv(buffer_fv'HIGH);
 	    end if;
-	 end process;
+    end process;
 
     out_dv <= tmp_dv;
     out_fv <= delay_fv;
-
 end architecture;

@@ -1,6 +1,8 @@
 library ieee;
 	use	ieee.std_logic_1164.all;
 	use	ieee.numeric_std.all;
+    use ieee.math_real.all;
+
 
 library work;
 	use work.cnn_types.all;
@@ -36,11 +38,10 @@ architecture bhv of convElement is
     type   spa_mul is array ( integer range <> ) of signed ( 2*PIXEL_SIZE-1 downto 0);
 
 
-    signal s_data    : spa_ini (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
-    signal s_kernel  : spa_ini (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
-    signal s_mul     : spa_mul (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
+    signal s_data    : spa_ini (0 to KERNEL_SIZE * KERNEL_SIZE - 1) := (others=>(others=>'0'));
+    signal s_kernel  : spa_ini (0 to KERNEL_SIZE * KERNEL_SIZE - 1) := (others=>(others=>'0'));
 
-    signal s_sum     : signed (SUM_WIDTH - 1 downto 0);
+    signal s_sum     : signed (SUM_WIDTH - 1 downto 0) := (others=>'0');
     signal all_valid : std_logic :='0';
 
     --------------------------------------------------------------------------
@@ -57,48 +58,41 @@ architecture bhv of convElement is
         all_valid <= enable and in_dv and in_fv;
 
         --------------------------------------------------------------------------
-        -- MULTIPLICATION
+        -- MULTIPLICATION ACCUMULATION
         --------------------------------------------------------------------------
-        mul_proc : process(clk)
-        begin
-            if(reset_n = '0') then
-                s_mul <= (others=>(others=>'0'));
-
-            else
-                if (all_valid = '1') then
-                    mul_loop : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) loop
-                        s_mul(i) <= s_data(i) * s_kernel(i);
-                    end loop;
-                end if;
-            end if;
-        end process;
-
-        --------------------------------------------------------------------------
-        -- ACCUMULATION
-        --------------------------------------------------------------------------
-        sum_proc : process(clk)
+        mac_proc : process(clk)
         variable v_sum : signed  (SUM_WIDTH - 1 downto 0) := (others=>'0');
+        variable v_mul :  spa_mul (0 to KERNEL_SIZE * KERNEL_SIZE - 1) := (others=>(others=>'0'));
         begin
             if(reset_n = '0') then
-                s_sum <= (others=>'0');
+                v_mul := (others=>(others=>'0'));
                 v_sum := (others=>'0');
-            else
+                s_sum <= (others=>'0');
+            elsif(rising_edge(clk)) then
                 if (all_valid = '1') then
-                    sum_loop : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) loop
-                        v_sum := v_sum + s_mul(i);
+
+                    -- Multiplication
+                    mul_loop : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) loop
+                        v_mul(i) := s_data(i) * s_kernel(i);
                     end loop;
+
+                    -- Accumulation
+                    sum_loop : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) loop
+                        v_sum := v_sum + v_mul(i);
+                    end loop;
+
+                    -- Write in reg
                     s_sum <= v_sum;
                     v_sum := (others=>'0');
+
                 end if;
+                -- Manage out_dv and out_fv : Synchronize with process
+                out_dv <= in_dv;
+                out_fv <= in_fv;
             end if;
         end process;
-
+        --------------------------------------------------------------------------
         out_data   <=   std_logic_vector(s_sum);
 
-        --------------------------------------------------------------------------
-        -- Manage out_dv and out_fv : for now, only clone in_dv and in_fv
-        --------------------------------------------------------------------------
-        out_dv     <=  in_dv;
-        out_fv     <=  in_fv;
 
 end bhv;
