@@ -1,8 +1,10 @@
 import sys
 import os
+import io
 import numpy as np
 import math
 import time
+import contextlib
 
 # Import parseLayer libary
 from parseLayer import *
@@ -13,6 +15,13 @@ CAFFE_DIRNAME       = HOME + '/caffe'
 CAFFE_PYTHON_LIB    = CAFFE_DIRNAME+'/python'
 sys.path.insert(0, CAFFE_PYTHON_LIB)
 import caffe;
+
+@contextlib.contextmanager
+def nostdout():
+    save_stdout = sys.stdout
+    sys.stdout = io.BytesIO()
+    yield
+    sys.stdout = save_stdout
 
 def main(vhdFile, protoFile, modelFile,pixel_width,image_width):
     cnn   = caffe.Net(protoFile,modelFile,caffe.TEST)
@@ -45,19 +54,54 @@ def main(vhdFile, protoFile, modelFile,pixel_width,image_width):
                 layer = cnn.params[b];
                 parse_fcLayer(previous_layer=previousLayer,layer=layer,name=b.upper(),nbits=pixel_width,target=f,image_width=image_width);
                 image_width = cnn.blobs[b].data.shape[2]
-            else:
-                "This shouldnt be displayed anyway"
         write_fileEnd(f)
 
 
 
 if __name__ == '__main__':
-    print ">> This is Haddoc2 Network Parser utility"
-    # Backdoor
-    testDir   = HOME + '/Seafile/Kamel/alexNet'
-    vhdFile   = testDir + '/params.vhd'
-    protoFile = testDir + '/deploy.prototxt'
-    modelFile = testDir + '/bvlc_alexnet.caffemodel'
-    pixWidth = 8;
-    imWidth  = 227;
-    main(vhdFile, protoFile, modelFile,pixWidth,imWidth)
+    # Default config
+    pixWidth = 8;       # Fixed point representation at 8 bits
+    imWidth  = 320;     # Initial Image width at 227 (ImageNet like)
+    green = '\033[92m'
+    white = '\033[0m'
+
+    if (len(sys.argv) == 2):
+        arg = sys.argv[1];
+        if (arg =="--help"):
+            print "HADDOC2 - Hardware Automated Data-flow Description of CNNs"
+            print "Institut Pascal - DREAM - 2017 \n"
+            print "parseNet -  Extacts weights from a learned caffemodel and casts them into 8-bits fixed-point VHDL generics" + white
+            print "How to use: parseNet [.prototxt] [.caffemodel] [output]"
+        else:
+            if (arg=="--backdoor"):# Backdoor
+                print ">> BACKDOOR : Using AlexNet Model at ~/caffe/models"
+                testDir   = HOME + '/Seafile/Kamel/alexNet'
+                # vhdFile   = testDir + '/hdl/params.vhd'
+                vhdFile   = 'params.vhd'
+                protoFile = testDir + '/caffe/deploy.prototxt'
+                modelFile = testDir + '/caffe/bvlc_alexnet.caffemodel'
+                with nostdout():
+                    main(vhdFile, protoFile, modelFile,pixWidth,imWidth)
+                print ">> Succefully generated params.vhd"
+            else:
+                print 'Not enought arguments, use parseNet --help'
+
+    else:
+        if (len(sys.argv) == 4):
+            print green + " >> Running Haddoc2 Parameter Parser utility" + white
+            print( "\033[92m >> Fixed point representation size set at %d bits\033[0m" %pixWidth)
+            protoFile = sys.argv[1]
+            modelFile = sys.argv[2]
+            vhdFile   = sys.argv[3]
+            with nostdout():
+                main(vhdFile, protoFile, modelFile,pixWidth,imWidth)
+            print( "\033[92mSuccefully generated params file at %s" %vhdFile)
+        else:
+            if (len(sys.argv) == 3):
+                protoFile = sys.argv[1]
+                modelFile = sys.argv[2]
+                vhdFile = "params.vhd"
+                with nostdout():
+                    main(vhdFile, protoFile, modelFile,pixWidth,imWidth)
+            else:
+                print 'Not enought arguments, use: parseNet --help'
