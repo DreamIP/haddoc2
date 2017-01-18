@@ -24,5 +24,5 @@ Todo : LNR hardware implementation for AlexNet fanboys :)
 
 
 ## VHDL Generator
-A first parameter parser can be found at `lib/` and contains scripts to generate `params.vhd`. This file contains the transcription of the CNN topology and parameters as VHDL constants. Theses will be affected will parametrize the instantiated layers of the CNN.
-The TopLevel HDL file is generated using the `.prototxt` description of the CNN.
+A first version of parsers can be found at `lib/` and are used to generate `params.vhd`. This file details a transcription of the CNN topology and list its parameters VHDL constants. Theses generics will parametrize the instantiated layers of the CNN.
+The TopLevel HDL file is generated using the `.prototxt` description CNN using the `mk_cnn` bytecode.
