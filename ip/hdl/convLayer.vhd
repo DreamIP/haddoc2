@@ -1,6 +1,8 @@
 library ieee;
 	use	ieee.std_logic_1164.all;
 	use	ieee.numeric_std.all;
+    use ieee.math_real.all;
+
 
 library work;
 	use work.cnn_types.all;
@@ -111,20 +113,20 @@ architecture STRUCTURAL of convLayer is
 
     -- Output of the neighborhood extractors (in one array of pixel_array)
     signal s_ne_data : pixel_array_2d   (0 to NB_IN_FLOWS -1);
-    signal s_ne_dv   : std_logic_vector (0 to NB_IN_FLOWS -1);
-    signal s_ne_fv   : std_logic_vector (0 to NB_IN_FLOWS -1);
+    signal s_ne_dv   : std_logic_vector (0 to NB_IN_FLOWS -1):= (others=>'0');
+    signal s_ne_fv   : std_logic_vector (0 to NB_IN_FLOWS -1):= (others=>'0');
 
     -- Output of the convElements
-    signal s_ce_data : sum_array        (0 to NB_IN_FLOWS * NB_OUT_FLOWS -1);   --output the conv element
-    signal s_ce_dv   : std_logic_vector (0 to NB_IN_FLOWS * NB_OUT_FLOWS -1);
-    signal s_ce_fv   : std_logic_vector (0 to NB_IN_FLOWS * NB_OUT_FLOWS -1);
+    signal s_ce_data : sum_array        (0 to NB_IN_FLOWS * NB_OUT_FLOWS -1);
+    signal s_ce_dv   : std_logic_vector (0 to NB_IN_FLOWS * NB_OUT_FLOWS -1):= (others=>'0');
+    signal s_ce_fv   : std_logic_vector (0 to NB_IN_FLOWS * NB_OUT_FLOWS -1):= (others=>'0');
 
     -- temporary signal for "easy" indexation purpose
     type   tmp_array_2d is array ( integer range <> ) of sum_array (0 to NB_IN_FLOWS - 1);
     signal ce_data_2d: tmp_array_2d (0 to NB_OUT_FLOWS -1);
         -- Each ce_data_2d(i) will contain NB_IN_FLOWS elements
 
-    signal tmp_w : pixel_array (0 to NB_IN_FLOWS * NB_OUT_FLOWS * KERNEL_SIZE * KERNEL_SIZE - 1);
+    signal tmp_w : pixel_array (0 to NB_IN_FLOWS * NB_OUT_FLOWS * KERNEL_SIZE * KERNEL_SIZE - 1):= (others=>(others=>'0'));
     --------------------------------------------------------------------------------
     begin
 

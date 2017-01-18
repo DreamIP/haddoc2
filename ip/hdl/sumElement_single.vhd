@@ -63,6 +63,9 @@ architecture bhv of sumElement_single is
                     sum_s <= sum;
                     sum  := (others=>'0');
                 end if;
+                --------------------------------------------------------------------------
+                -- DataValid and FlowValid Management :
+                --------------------------------------------------------------------------
                 out_dv <= in_dv;
                 out_fv <= in_fv;
             end if;
@@ -85,12 +88,8 @@ architecture bhv of sumElement_single is
                     std_logic_vector(tmp2(PIXEL_SIZE-1 downto 0))                       when ((sum_s >  to_signed( T1,THIS_SUM_WIDTH)) and (sum_s <= to_signed( T2,THIS_SUM_WIDTH))) else
                     std_logic_vector( to_signed( V2,PIXEL_SIZE));
 
-    --------------------------------------------------------------------------
-    -- DataValid and FlowValid Management :
-    --------------------------------------------------------------------------
-    -- out_dv => '1' when all in_dvs (plural) are at 1
     -- TODO : Unary operators : Only supported in VHDL-2008
 
-    -- out_dv <= in_dv;
-    -- out_fv <= in_fv;
+    -- out_dv <= and (in_dv);
+    -- out_fv <= and (in_fv);
     end bhv;

@@ -1,9 +1,8 @@
 library ieee;
 	use	ieee.std_logic_1164.all;
 	use	ieee.numeric_std.all;
+    use ieee.math_real.all;
 
-library work;
-	use work.cnn_types.all;
 
 entity poolH is
 
@@ -24,34 +23,88 @@ entity poolH is
         out_dv          :   out std_logic;
         out_fv          :   out std_logic
     );
-
 end entity;
 
-architecture bhv of poolH is
-    signal tmp_dv : std_logic := '0';
+architecture rtl of poolH is
+    --------------------------------------------------------------------------
+    -- Signals
+    --------------------------------------------------------------------------
+    type   buffer_data_type is array ( integer range <> ) of signed (PIXEL_SIZE-1 downto 0);
+
+    signal buffer_data       : buffer_data_type (KERNEL_SIZE - 1 downto 0);
+    signal max_value_signal  : signed(PIXEL_SIZE-1 downto 0);
+    signal buffer_fv         : std_logic_vector(KERNEL_SIZE downto 0);
+    signal delay_fv          : std_logic := '0';
+    signal tmp_dv            : std_logic := '0';
+
+
 
     begin
 
         process (clk)
+        variable x_cmp : unsigned (15 downto 0) := (others=>'0');
         begin
             if (reset_n = '0') then
                 tmp_dv <='0';
-
+                buffer_data        <= (others=>(others=>'0'));
+                max_value_signal   <= (others=>'0');
+                x_cmp              := (others=>'0');
             elsif (rising_edge(clk)) then
                 if (enable = '1') then
                     if (in_fv = '1') then
                         if (in_dv = '1') then
-                            -- KERNEL_SIZE  = 2
-                            tmp_dv <= NOT(tmp_dv);
+                            -- Bufferize data --------------------------------------------------------
+                            buffer_data(KERNEL_SIZE - 1) <= signed(in_data);
+                            BUFFER_LOOP : for i in (KERNEL_SIZE - 1) downto 1 loop
+                                buffer_data(i-1) <= buffer_data(i);
+                            end loop;
+
+                            -- Compute max -----------------------------------------------------------
+                            if (buffer_data(0) > buffer_data(1)) then
+                                max_value_signal <= buffer_data(0);
+                            else
+                                max_value_signal <= buffer_data(1);
+                            end if;
+
+                            -- H Subsample -------------------------------------------------------------
+                            if (x_cmp = to_unsigned(KERNEL_SIZE, 16)) then
+                                tmp_dv <= '1';
+                                x_cmp := to_unsigned(1, 16);
+                            else
+                                tmp_dv <= '0';
+                                x_cmp := x_cmp + to_unsigned(1, 16);
+                            end if;
+                            --------------------------------------------------------------------------
+                        else
+                            -- Data is not valid
+                            tmp_dv <= '0';
                         end if;
+
+                    else
+                        -- Frame is not valid
+                        tmp_dv <= '0';
+                        buffer_data        <= (others=>(others=>'0'));
+                        max_value_signal   <= (others=>'0');
+                        x_cmp              := (others=>'0');
                     end if;
                 end if;
             end if;
         end process;
+        --------------------------------------------------------------------------
+        delay : process(clk)
+   	    begin
+   	        if (reset_n = '0') then
+   			     delay_fv <= '0';
+   			    buffer_fv <= (others=>'0');
+            elsif (rising_edge(clk)) then
+                if (enable = '1') then
+   			        buffer_fv   <= buffer_fv(buffer_fv'HIGH -1 downto 0) & in_fv;
+   			         delay_fv   <= buffer_fv(buffer_fv'HIGH);
+                end if;
+   	        end if;
+   	    end process;
 
-        out_data <= in_data;
-        out_fv   <= in_fv;
-        out_dv   <= in_dv and tmp_dv;
-        -- out_dv   <= tmp_dv ;
-
-end bhv;
+     out_data <= std_logic_vector(max_value_signal);
+     out_fv   <= delay_fv;
+     out_dv   <= tmp_dv;
+    end architecture;

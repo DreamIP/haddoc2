@@ -1,6 +1,8 @@
 library ieee;
 	use	ieee.std_logic_1164.all;
 	use	ieee.numeric_std.all;
+    use ieee.math_real.all;
+
 
 library work;
 	use work.cnn_types.all;
@@ -100,15 +102,15 @@ architecture STRUCTURAL of firstLayer is
     -- SIGNALS
     --------------------------------------------------------------------------------
     -- Output of the neighborhood extractor
-    signal s_ne_data : pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
+    signal s_ne_data : pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1):= (others=>(others=>'0'));
     signal s_ne_dv   : std_logic;
     signal s_ne_fv   : std_logic;
 
-    signal s_ce_data : sum_array        (0 to NB_OUT_FLOWS - 1);
-    signal s_ce_dv   : std_logic_vector (0 to NB_OUT_FLOWS - 1);
-    signal s_ce_fv   : std_logic_vector (0 to NB_OUT_FLOWS - 1);
+    signal s_ce_data : sum_array        (0 to NB_OUT_FLOWS - 1):= (others=>(others=>'0'));
+    signal s_ce_dv   : std_logic_vector (0 to NB_OUT_FLOWS - 1):= (others=>'0');
+    signal s_ce_fv   : std_logic_vector (0 to NB_OUT_FLOWS - 1):= (others=>'0');
 
-    signal tmp_w : pixel_array (0 to NB_OUT_FLOWS * KERNEL_SIZE * KERNEL_SIZE - 1);
+    signal tmp_w : pixel_array (0 to NB_OUT_FLOWS * KERNEL_SIZE * KERNEL_SIZE - 1):= (others=>(others=>'0'));
 
     --------------------------------------------------------------------------------
     -- BEGIN
@@ -163,7 +165,7 @@ architecture STRUCTURAL of firstLayer is
             );
         end generate CEs_loop;
 
-        -- Apply bias
+        -- Apply bias and Activation
         SEs_loop : for i in 0 to (NB_OUT_FLOWS - 1) generate
             SEs_inst : sumElement_single
             generic map (

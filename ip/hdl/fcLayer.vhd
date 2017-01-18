@@ -1,6 +1,8 @@
 library ieee;
-	use	ieee.std_logic_1164.all;
+    use	ieee.std_logic_1164.all;
 	use	ieee.numeric_std.all;
+    use ieee.math_real.all;
+
 
 library work;
 	use work.cnn_types.all;
@@ -13,9 +15,9 @@ entity fcLayer is
         FEATURE_SIZE  :   integer;
         NB_IN_FLOWS   :   integer;
         NB_OUT_FLOWS  :   integer;
-        KERNEL_VALUE   :   pixel_matrix;
+        KERNEL_VALUE  :   pixel_matrix;
         KERNEL_NORM   :   pixel_array;
-        BIAS_VALUE   :   pixel_array
+        BIAS_VALUE    :   pixel_array
     );
 
     port(
@@ -148,7 +150,7 @@ architecture STRUCTURAL of fcLayer is
                 );
             end generate NEs_loop;
 
-        --------------------------------------------------------------KERNEL_SIZE------------------
+        --------------------------------------------------------------------------------
 
             CEs_loop : for i in 0 to (NB_OUT_FLOWS * NB_IN_FLOWS - 1) generate
 
