@@ -1,6 +1,6 @@
 # HADDoC2 :  Hardware Automated Dataflow Description of CNNs
 HADDoC is a tool to generate hardware description (VHDL) of a neural network (CNN) respecting the dataflow semantics. 
-We recommend to first install the Caffe Framework to design CNNs, GPStudio-FPGA to create nodes and coms for your CNN process and Quartus synthesis tool compile and synthesize your project. (Even if haddoc's generated hdl is hardware independent)
+We recommend to first install the Caffe Framework to design CNNs, GPStudio-FPGA to create nodes and coms for your CNN process and Quartus synthesis tool to compile and synthesize your project. (Even if haddoc's generated hdl is hardware independent)
 
 
 ## IP Catalog
@@ -9,8 +9,9 @@ We recommend to first install the Caffe Framework to design CNNs, GPStudio-FPGA 
 - `hdl/poolLayer.vhd` : Performs subsampling (max pool) on generic neighborhood of input images.
 - `hdl/fcLayer.vhd`   : Fully connected layer. Output a genetic number of maps where each pixel corresponds to a region in the input image of the CNN.
 
-Components required to implement these layers can be found at `hdl/` directory
-todo : LNR layers for AlexNet fanboys :)
+Components required to implement these layers can be found at `hdl/` directory.
+
+Todo : LNR hardware implementation for AlexNet fanboys :)
 
 
 
