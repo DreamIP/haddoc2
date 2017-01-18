@@ -2,7 +2,8 @@
 HADDoC is a tool to generate hardware description (VHDL) of a neural network (CNN) respecting the dataflow semantics. 
 We recommend to first install the Caffe Framework to design CNNs, GPStudio-FPGA to create nodes and coms for your CNN process and Quartus synthesis tool to compile and synthesize your project. (Even if haddoc's generated hdl is hardware independent)
 
-To run haddoc2, please use the binders in `bin/` directory
+To run haddoc2, please use the binders in `bin/` directory:
+
 `haddoc2 [.prototxt] [.caffemodel] [tagetDirectory]`
 
 ## IP Catalog
