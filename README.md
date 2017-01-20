@@ -14,7 +14,7 @@ To run haddoc2, please use the binders in `bin/` directory:
 
 Components required to implement these layers can be found at `hdl/` directory.
 
-Todo : Add a hardware implementation of LNR layer for AlexNet fanboys :)
+Todo : Add a hardware implementation of LRN layer for AlexNet fanboys :)
 
 
 
