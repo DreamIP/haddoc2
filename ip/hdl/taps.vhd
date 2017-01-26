@@ -1,7 +1,5 @@
 ---------------------------------------------------------------------------------
--- Design Name 	: neighExtractor
--- File Name   	: neighExtractor.vhd
--- Function    	: Extracts a generic neighborhood from serial in_data
+-- Design Name 	: taps - Shift registers with port access
 -- Coder       	: Kamel Eddine ABDELOUAHAB
 -- Institution 	: Institut Pascal
 ---------------------------------------------------------------------------------

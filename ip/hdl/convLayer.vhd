@@ -156,6 +156,11 @@ architecture STRUCTURAL of convLayer is
 
 
             -- Distrib
+            -- Thats a usefull comment :
+            -- Dear future me : When I wrote this, only God and I knew what we were doing.
+            -- Now, only god knows.
+            -- Dear code reader : I apology  for this ...
+
              tmp_loop : for j in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) generate
                  tmp_w(i*(KERNEL_SIZE * KERNEL_SIZE) + j) <= KERNEL_VALUE(i,j);
              end generate tmp_loop;
@@ -173,7 +178,6 @@ architecture STRUCTURAL of convLayer is
                 in_dv    	=> s_ne_dv(i/NB_OUT_FLOWS),
                 in_fv    	=> s_ne_fv(i/NB_OUT_FLOWS),
                 in_kernel   => tmp_w(i * KERNEL_SIZE* KERNEL_SIZE to KERNEL_SIZE*KERNEL_SIZE*(i+1)-1),
---                in_norm     => KERNEL_NORM(i),
                 out_data    => s_ce_data(i),
                 out_dv    	=> s_ce_dv(i),
                 out_fv    	=> s_ce_fv(i)
@@ -183,14 +187,14 @@ architecture STRUCTURAL of convLayer is
     --------------------------------------------------------------------------------
 
       -- Reorganize data : Each ce_data_2d(i) will contain NB_IN_FLOWS elements
+      -- Same as line 159
         reorg_i : for i in 0 to (NB_OUT_FLOWS - 1) generate
             reorg_j : for j in 0 to (NB_IN_FLOWS - 1) generate
-                --VHDL 2008 only
+                --VHDL 2008 only (NOPE !)
                 ce_data_2d(i)(j) <= s_ce_data( i + NB_OUT_FLOWS * j);
             end generate reorg_j;
         end generate reorg_i;
 
-      -- GO :
         SEs_loop : for i in 0 to (NB_OUT_FLOWS - 1) generate
             SEs_inst : sumElement
             generic map (

@@ -1,3 +1,9 @@
+---------------------------------------------------------------------------------
+-- Design Name 	: cnn_types
+-- Coder       	: Kamel ABDELOUAHAB
+-- Institution 	: Institut Pascal  - 2016
+---------------------------------------------------------------------------------
+
 library ieee;
 	use	ieee.std_logic_1164.all;
 	use	ieee.numeric_std.all;

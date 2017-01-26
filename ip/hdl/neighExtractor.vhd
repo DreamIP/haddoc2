@@ -191,6 +191,7 @@ architecture rtl of neighExtractor is
     --------------------------------------------------------------------------
     -- Manage out_dv and out_fv
     --------------------------------------------------------------------------
+    -- Embrace your self : Managing the image borders is quite a pain in the ****
 
     dv_proc : process(clk)
     -- 12 bits is enought to count until 4096

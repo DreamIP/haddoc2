@@ -1,3 +1,10 @@
+---------------------------------------------------------------------------------
+-- Design Name 	: convElement : A parrellel MAC unit
+-- Coder       	: Kamel ABDELOUAHAB
+-- Institution 	: Institut Pascal  - 2016
+---------------------------------------------------------------------------------
+
+
 library ieee;
 	use	ieee.std_logic_1164.all;
 	use	ieee.numeric_std.all;
