@@ -72,7 +72,7 @@ def write_bias_value (layer,name,nbits,target):
         else:
             target.write(",")
 ######################################################################
-def write_kernel_value (layer,name,nbits,target):
+def write_kernel_value (previous_layer,layer,name,nbits,target):
 
     layer_name   = name;
     kernel_data  = layer[0].data
@@ -81,7 +81,8 @@ def write_kernel_value (layer,name,nbits,target):
     out_size     = kernel_data.shape[0]
     in_size      = kernel_data.shape[1]
     kernel_size  = kernel_data.shape[2]
-
+    previous_layer_size = previous_layer[0].data.shape[0]
+    isGroup      = (previous_layer_size != in_size and name != 'CONV1')
     # constant CONV1_KERNEL_VALUE : pixel_matrix
     target.write("constant ")
     target.write(layer_name)
@@ -92,28 +93,73 @@ def write_kernel_value (layer,name,nbits,target):
     target.write(" :=\n")
 
     kernel_fp    = to_fixedPoint(kernel_data,scale_factor)
-
     target.write(" (")
-    for n in range(out_size):
-        for m in range (in_size):
-            target.write("(")
-            for i in range(kernel_size-1,-1,-1):
-                for j in range(kernel_size-1,-1,-1):
-                    if (kernel_fp[n][m][i][j] > scale_factor):
-                        kernel_fp[n][m][i][j] = scale_factor;
-                    if (kernel_fp[n][m][i][j] < -scale_factor):
-                        kernel_fp[n][m][i][j] = -scale_factor;
 
-                    kernel_bin = np.binary_repr(kernel_fp[n][m][i][j] , width=nbits)
-                    target.write ("\"" + kernel_bin + "\"")
-                    if ((i == 0) and (j == 0) ):
-                        if ((n == out_size - 1) and (m == in_size - 1) ):
-                            target.write (")\n")
+    # In some Networks, such AlexNet, neurons from layer l are not totally connected to layer l+1
+    # But only a group is connected. We manage this as follows:
+    if (not(isGroup)):
+        for n in range(out_size):
+            for m in range (in_size):
+                target.write("(")
+                for i in range(kernel_size-1,-1,-1):
+                    for j in range(kernel_size-1,-1,-1):
+                        if (kernel_fp[n][m][i][j] > scale_factor):
+                            kernel_fp[n][m][i][j] = scale_factor;
+                        if (kernel_fp[n][m][i][j] < -scale_factor):
+                            kernel_fp[n][m][i][j] = -scale_factor;
+                        kernel_bin = np.binary_repr(kernel_fp[n][m][i][j] , width=nbits)
+                        target.write ("\"" + kernel_bin + "\"")
+                        if ((i == 0) and (j == 0) ):
+                            if ((n == out_size - 1) and (m == in_size - 1) ):
+                                target.write (")\n")
+                            else:
+                                target.write("),\n  ")
                         else:
-                            target.write("),\n  ")
+                            target.write(",")
+        target.write(" );\n")
+    else:
+        n = 0;
+        dm = 0;
+        # while (n<out_size):
+        for n in range(out_size):
+            m = 0;
+            target.write("-- Neuron : %d \n" %n)
+            while (m < previous_layer_size):
+                # if ((n<=out_size/2 and m>=in_size)):
+                if ((n<=out_size/2 and m>=in_size) or (n>out_size/2 and m<=in_size)):
+                    #target.write("-- Group : We put some zeros here : %d \n" %m)
+                    if (n>out_size/2):
+                        dm = in_size-m;
                     else:
-                        target.write(",")
-    target.write(" );\n")
+                        dm = m;
+                        end = ",\n"
+                    target.write("  (others =>(others=> \'0\'))" + end)
+
+                else:
+                    if (n>out_size/2):
+                        dm = in_size-m;
+                    else:
+                        dm = m;
+                    # print str(n) + " " + str(m)
+                    target.write("  (")
+                    for i in range(kernel_size-1,-1,-1):
+                        for j in range(kernel_size-1,-1,-1):
+                            if (kernel_fp[n][dm][i][j] > scale_factor):
+                                kernel_fp[n][dm][i][j] = scale_factor;
+                            if (kernel_fp[n][dm][i][j] < -scale_factor):
+                                kernel_fp[n][dm][i][j] = -scale_factor;
+                            kernel_bin = np.binary_repr(kernel_fp[n][dm][i][j] , width=nbits)
+                            target.write ("\"" + kernel_bin + "\"")
+                            if ((i == 0) and (j == 0) ):
+                                if ((n == out_size - 1) and (m == previous_layer_size - 1) ):
+                                    target.write (")\n")
+                                else:
+                                    target.write("),\n")
+                            else:
+                                target.write(",")
+                m = m+1;
+
+        target.write(" );\n")
 ######################################################################
 def write_kernel_norm (layer,name,nbits,target):
     layer_name   = name;
@@ -128,16 +174,16 @@ def write_kernel_norm (layer,name,nbits,target):
     target.write("   (0 to " + layer_name + "_IN_SIZE * "+ layer_name + "_OUT_SIZE - 1 ) := \n")
 
     kernel_fp    = to_fixedPoint(kernel_data,scale_factor)
-    target.write(" (")
-    for n in range(out_size):
-        for m in range (in_size):
-            shift_norm = to_shiftNorm(kernel_fp[n][m]);
-            shift_norm_bin = np.binary_repr(shift_norm , width=nbits);
-            target.write ("\"" + shift_norm_bin + "\"")
-            if ((n == out_size - 1) and (m == in_size - 1) ):
-                target.write (");\n")
-            else:
-                target.write(",")
+    target.write("  (others =>(others=> \'0\'));\n")
+    # for n in range(out_size):
+    #     for m in range (in_size):
+    #         shift_norm = to_shiftNorm(kernel_fp[n][m]);
+    #         shift_norm_bin = np.binary_repr(shift_norm , width=nbits);
+    #         target.write ("\"" + shift_norm_bin + "\"")
+    #         if ((n == out_size - 1) and (m == in_size - 1) ):
+    #             target.write (");\n")
+    #         else:
+    #             target.write(",")
 
 ######################################################################
 def write_fc_kernel_value (previous_layer,layer,name,nbits,target):
@@ -203,21 +249,30 @@ def write_fc_kernel_norm (previous_layer,layer,name,nbits,target):
             else:
                 target.write(",")
 ######################################################################
-def parse_convLayer (layer,name,nbits,target,image_width):
+def parse_convLayer (previous_layer,layer,name,nbits,target,image_width):
     layer_name   = name;
     kernel_data  = layer[0].data
     out_size     = kernel_data.shape[0]
-    in_size      = kernel_data.shape[1]
+    if (layer_name == 'conv1'):
+        in_size = 3; # Lets say it's color
+    else:
+        in_size      = kernel_data.shape[1]
     kernel_size  = kernel_data.shape[2]
+    previous_layer_size = previous_layer[0].data.shape[0]
+    ## Test if layer is with group :
+    if(previous_layer_size != in_size and name != 'CONV1'):
+        print "Potential group in layer " + layer_name + ": " + str(in_size) + " vs " + str(previous_layer_size)
+        nb_group = in_size / previous_layer_size;
+
     ## Write layer params ##
     target.write("--" + layer_name + "\n")
     write_image_width (layer_name,image_width,target);
-    write_in_size (layer_name,in_size,target);
+    write_in_size (layer_name,previous_layer_size,target);
     write_out_size (layer_name,out_size,target);
     write_kernel_size (layer_name,kernel_size,target);
     write_bias_value (layer,name,nbits,target);
     write_kernel_norm (layer,name,nbits,target);
-    write_kernel_value (layer,name,nbits,target);
+    write_kernel_value (previous_layer,layer,name,nbits,target);
     target.write("----------------------------------------------------------")
     target.write("--------------------------------------------------------\n")
 ######################################################################
@@ -269,31 +324,31 @@ def write_fileEnd(target):
     target.write("end package;")
 ######################################################################
 
-
-
-if __name__ == "__main__":
-
-    HOME                = os.environ['HOME']
-    CAFFE_DIRNAME       = HOME + '/caffe'
-    CAFFE_PYTHON_LIB    = CAFFE_DIRNAME+'/python'
-    sys.path.insert(0, CAFFE_PYTHON_LIB)
-    import caffe;
-
-    filename = "../example/cnn/hdl/params.vhd"
-    cnn   = caffe.Net('../caffe/network/test.prototxt','../caffe/network/network.caffemodel',caffe.TEST)
-    conv1 = cnn.params['conv1']
-    conv2 = cnn.params['conv2']
-    conv3 = cnn.params['conv3']
-    fc    = cnn.params['fc']
-    s1    = cnn.blobs['s1']
-    s2    = cnn.blobs['s2']
-
-    with open (filename,'w') as f:
-        write_fileHead(f)
-        parse_convLayer(conv1,'CONV1',8,f,320)
-        parse_poolLayer(s1,'POOL1',f,318)
-        parse_convLayer(conv2,'CONV2',8,f,159)
-        parse_poolLayer(s2,'POOL2',f,157)
-        parse_convLayer(conv3,'CONV3',8,f,79)
-        parse_fcLayer  (conv3,fc,'FC',8,f,77)
-        write_fileEnd(f)
+#
+#
+# if __name__ == "__main__":
+#
+#     HOME                = os.environ['HOME']
+#     CAFFE_DIRNAME       = HOME + '/caffe'
+#     CAFFE_PYTHON_LIB    = CAFFE_DIRNAME+'/python'
+#     sys.path.insert(0, CAFFE_PYTHON_LIB)
+#     import caffe;
+#
+#     filename = "../example/cnn/hdl/params.vhd"
+#     cnn   = caffe.Net('../caffe/network/test.prototxt','../caffe/network/network.caffemodel',caffe.TEST)
+#     conv1 = cnn.params['conv1']
+#     conv2 = cnn.params['conv2']
+#     conv3 = cnn.params['conv3']
+#     fc    = cnn.params['fc']
+#     s1    = cnn.blobs['s1']
+#     s2    = cnn.blobs['s2']
+#
+#     with open (filename,'w') as f:
+#         write_fileHead(f)
+#         parse_convLayer(conv1,'CONV1',8,f,320)
+#         parse_poolLayer(s1,'POOL1',f,318)
+#         parse_convLayer(conv2,'CONV2',8,f,159)
+#         parse_poolLayer(s2,'POOL2',f,157)
+#         parse_convLayer(conv3,'CONV3',8,f,79)
+#         parse_fcLayer  (conv3,fc,'FC',8,f,77)
+#         write_fileEnd(f)
