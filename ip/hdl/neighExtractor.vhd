@@ -49,7 +49,7 @@
 library ieee;
 	use	ieee.std_logic_1164.all;
 	use	ieee.numeric_std.all;
-
+   use   ieee.math_real.all;
 library work;
 	use work.cnn_types.all;
 
@@ -191,18 +191,16 @@ architecture rtl of neighExtractor is
     --------------------------------------------------------------------------
     -- Manage out_dv and out_fv
     --------------------------------------------------------------------------
-    -- Embrace your self : Managing the image borders is quite a pain in the ****
+    -- Embrace your self : Managing the image borders is quite a pain
 
     dv_proc : process(clk)
-    -- 12 bits is enought to count until 4096
-    constant NBITS_DELAY : integer := 20;
-    variable delay_cmp   : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
+
+    constant NBITS_DELAY : integer  := integer(ceil(log2(real(IMAGE_WIDTH))));
     variable x_cmp       : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
     variable y_cmp       : unsigned (NBITS_DELAY-1 downto 0) :=(others => '0');
 
     begin
         if (reset_n = '0') then
-            delay_cmp := (others => '0');
             x_cmp  := (others => '0');
             tmp_dv    <='0';
             tmp_fv    <='0';
@@ -271,7 +269,6 @@ architecture rtl of neighExtractor is
 
             -- When enable = 0
             else
-                delay_cmp := (others => '0');
                 x_cmp  := (others => '0');
                 y_cmp  := (others => '0');
                 tmp_dv <= '0';
