@@ -31,7 +31,7 @@ def write_image_width (layer_name,value,target):
     target.write(str(value) + " ;\n")
 ######################################################################
 def to_shiftNorm(kernel):
-    # you will never see shit like this one :
+    ### DEPRECATED ###
     # Experimental results show that for kernels with a low norm
     # It s better to give a higher shift value, so , dont be surprised with the 2 following line
     # Now, Im going to hide this where only the strongest of you can find it
@@ -254,11 +254,12 @@ def parse_convLayer (previous_layer,layer,name,nbits,target,image_width):
     kernel_data  = layer[0].data
     out_size     = kernel_data.shape[0]
     if (layer_name == 'conv1'):
-        in_size = 3; # Lets say it's color
+        in_size = 3;
+        previous_layer_size = 3 # Lets say it's color
     else:
-        in_size      = kernel_data.shape[1]
+        in_size             = kernel_data.shape[1]
+        previous_layer_size = previous_layer[0].data.shape[0]
     kernel_size  = kernel_data.shape[2]
-    previous_layer_size = previous_layer[0].data.shape[0]
     ## Test if layer is with group :
     if(previous_layer_size != in_size and name != 'CONV1'):
         print "Potential group in layer " + layer_name + ": " + str(in_size) + " vs " + str(previous_layer_size)

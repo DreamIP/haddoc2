@@ -36,10 +36,10 @@ if __name__ == '__main__':
             modelFile  = sys.argv[2]
             targetDir  = sys.argv[3]
             paramFile  = targetDir + '/params.vhd'
-            topFile    = targetDir + '/cnn_generated.vhd'
+            topFile    = targetDir + '/cnn_process.vhd'
             os.system("rm -rf " + targetDir)
             os.system("mkdir "  + targetDir)
-            os.system("python"   + space + file_path+ "/parseNet.py" + space + protoFile + space + modelFile + space + paramFile)
-            os.system("ocamlrun" + space + file_path+ "/mk_cnn" + space + protoFile + ' -o ' + topFile)
+            os.system("python"   + space + file_path + "/python/parseNet.py" + space + protoFile + space + modelFile + space + paramFile)
+            os.system("ocamlrun" + space + file_path + "/mk_cnn" + space + protoFile + ' -o ' + topFile)
         else:
             print 'Not enought arguments, use: haddoc2 --help'

@@ -96,7 +96,7 @@ if __name__ == '__main__':
             vhdFile   = sys.argv[3]
             main(vhdFile, protoFile, modelFile,pixWidth,imWidth)
             # NOTE : This is a temporary bug fix. Sorry :(
-            debug_mux(vhdFile)
+            # debug_mux(vhdFile)
             print( "\033[92mSuccefully generated params file at %s" %vhdFile)
         else:
             if (len(sys.argv) == 3):
