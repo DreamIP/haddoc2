@@ -1,10 +1,10 @@
-name: "custom_Net"
+name: "LeNet"
 layer {
   name: "data"
   type: "Input"
   top: "data"
-  input_param { shape: {dim: 1 dim: 1 dim: 320 dim: 320 } }
- }
+  input_param { shape: { dim: 1 dim: 1 dim: 28 dim: 28 } }
+}
 
 layer {
   name: "conv1"
@@ -12,7 +12,7 @@ layer {
   bottom: "data"
   top: "conv1"
   convolution_param {
-    num_output: 3
+    num_output: 6
     kernel_size: 3
     weight_filler {
       type: "xavier"
@@ -26,10 +26,10 @@ layer {
   top: "conv1"
 }
 layer {
-  name: "s1"
+  name: "pool1"
   type: "Pooling"
   bottom: "conv1"
-  top: "s1"
+  top: "pool1"
   pooling_param {
     pool: MAX
     kernel_size: 2
@@ -39,10 +39,10 @@ layer {
 layer {
   name: "conv2"
   type: "Convolution"
-  bottom: "s1"
+  bottom: "pool1"
   top: "conv2"
   convolution_param {
-    num_output: 5
+    num_output: 16
     kernel_size: 3
     weight_filler {
       type: "xavier"
@@ -56,10 +56,10 @@ layer {
   top: "conv2"
 }
 layer {
-  name: "s2"
+  name: "pool2"
   type: "Pooling"
   bottom: "conv2"
-  top: "s2"
+  top: "pool2"
   pooling_param {
     pool: MAX
     kernel_size: 2
@@ -69,10 +69,10 @@ layer {
 layer {
   name: "conv3"
   type: "Convolution"
-  bottom: "s2"
+  bottom: "pool2"
   top: "conv3"
   convolution_param {
-    num_output: 7
+    num_output: 120
     kernel_size: 3
     weight_filler {
       type: "xavier"
