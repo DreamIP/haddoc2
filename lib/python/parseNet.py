@@ -51,15 +51,6 @@ def main(vhdFile, protoFile, modelFile,pixel_width,image_width):
                 image_width = cnn.blobs[b].data.shape[2]
         write_fileEnd(f)
 
-def debug_mux(vhdFile):
-    f = open(vhdFile,'r')
-    filedata = f.read()
-    f.close()
-    newdata = filedata.replace("display_mux:","display_mux_inst:")
-    f = open(vhdFile,'w')
-    f.write(newdata)
-    f.close()
-
 if __name__ == '__main__':
     # Default config
     pixWidth = 8;       # Fixed point representation at 8 bits
