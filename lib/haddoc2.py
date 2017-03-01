@@ -25,7 +25,7 @@ if __name__ == '__main__':
         else:
             if (arg=="--backdoor"):# Backdoor
                 print "\t >> BACKDOOR : Using AlexNet Model at ~/caffe/models"
-                os.system("python parseNet.py --backdoor")
+                os.system("python python/parseNet.py --backdoor")
             else:
                 print 'Not enought arguments, use parseNet --help'
 
