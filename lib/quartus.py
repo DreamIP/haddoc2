@@ -55,6 +55,11 @@ def main(qsfFilename,qpfFilename):
 
 
 if __name__ == '__main__':
-    qsfFilename = "../example/hdl_generated/cnn_process.qsf";
-    qpfFilename = "../example/hdl_generated/cnn_process.qpf";
-    main(qsfFilename,qpfFilename)
+    if (len(sys.argv) == 2):
+        targetDir = sys.argv[1];
+        qsfFilename = targetDir + "/cnn_process.qsf";
+        qpfFilename = targetDir + "/cnn_process.qpf";
+        main(qsfFilename,qpfFilename);
+    else:
+        print 'Not enought arguments'
+        print 'python quartus.py <hdl_directory>'
