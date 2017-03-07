@@ -5,25 +5,28 @@ layer {
   top: "data"
   input_param { shape: { dim: 1 dim: 1 dim: 28 dim: 28 } }
 }
-
 layer {
   name: "conv1"
   type: "Convolution"
   bottom: "data"
   top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
   convolution_param {
-    num_output: 6
-    kernel_size: 3
+    num_output: 20
+    kernel_size: 5
+    stride: 1
     weight_filler {
       type: "xavier"
     }
+    bias_filler {
+      type: "constant"
+    }
   }
-}
-layer {
-  name: "tanh1"
-  type: "TanH"
-  bottom: "conv1"
-  top: "conv1"
 }
 layer {
   name: "pool1"
@@ -41,19 +44,23 @@ layer {
   type: "Convolution"
   bottom: "pool1"
   top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
   convolution_param {
-    num_output: 16
-    kernel_size: 3
+    num_output: 50
+    kernel_size: 5
+    stride: 1
     weight_filler {
       type: "xavier"
     }
+    bias_filler {
+      type: "constant"
+    }
   }
-}
-layer {
-  name: "tanh2"
-  type: "TanH"
-  bottom: "conv2"
-  top: "conv2"
 }
 layer {
   name: "pool2"
@@ -65,23 +72,4 @@ layer {
     kernel_size: 2
     stride: 2
   }
-}
-layer {
-  name: "conv3"
-  type: "Convolution"
-  bottom: "pool2"
-  top: "conv3"
-  convolution_param {
-    num_output: 120
-    kernel_size: 3
-    weight_filler {
-      type: "xavier"
-    }
-  }
-}
-layer {
-  name: "tanh3"
-  type: "TanH"
-  bottom: "conv3"
-  top: "conv3"
 }
