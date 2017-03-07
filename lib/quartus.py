@@ -60,6 +60,7 @@ if __name__ == '__main__':
         qsfFilename = targetDir + "/cnn_process.qsf";
         qpfFilename = targetDir + "/cnn_process.qpf";
         main(qsfFilename,qpfFilename);
+        print 'Succefully generated quartus project'
     else:
         print 'Not enought arguments'
         print 'python quartus.py <hdl_directory>'
