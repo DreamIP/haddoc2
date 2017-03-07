@@ -254,7 +254,6 @@ def parse_convLayer (previous_layer,layer,name,nbits,target,image_width):
     kernel_data  = layer[0].data
     out_size     = kernel_data.shape[0]
     if (layer_name == 'CONV1'):
-        print layer[0].data.shape
         in_size = layer[0].data.shape[1];
         previous_layer_size =  layer[0].data.shape[1];
     else:
@@ -321,6 +320,9 @@ def write_fileHead(target):
     target.write("library work;\n")
     target.write("	use	work.cnn_types.all;\n")
     target.write("package params is\n")
+######################################################################
+def write_pixelWidth(target,pixelWidth):
+    target.write("constant PIXEL_CONST	: integer :=" + str(pixelWidth) + ";\n")
 ######################################################################
 def write_fileEnd(target):
     target.write("end package;")

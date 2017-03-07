@@ -33,7 +33,6 @@ def main(vhdFile, protoFile, modelFile,pixel_width):
             if 'conv' in b:
                 layer = cnn.params[b];
                 parse_convLayer(previous_layer = previousLayer, layer=layer,name=b.upper(),nbits=pixel_width,target=f,image_width=image_width);
-                print b.upper()
                 image_width = cnn.blobs[b].data.shape[2]
                 previousLayer = cnn.params[b];
             if 'pool' in b:
