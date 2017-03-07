@@ -253,11 +253,13 @@ def parse_convLayer (previous_layer,layer,name,nbits,target,image_width):
     layer_name   = name;
     kernel_data  = layer[0].data
     out_size     = kernel_data.shape[0]
-    if (layer_name == 'conv1'):
+    if (layer_name == 'CONV1'):
         in_size = 3;
+        print in_size
         previous_layer_size = 3 # Lets say it's color
     else:
         in_size             = kernel_data.shape[1]
+        print in_size
         previous_layer_size = previous_layer[0].data.shape[0]
     kernel_size  = kernel_data.shape[2]
     ## Test if layer is with group :
