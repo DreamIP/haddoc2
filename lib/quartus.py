@@ -8,8 +8,8 @@ def gen_qsf (qsfFilename,haddoc_lib_dir,vhdlTarget):
          f.write("set_global_assignment -name DEVICE 5CGXFC9E7F35C8\n");
          f.write("set_global_assignment -name ORIGINAL_QUARTUS_VERSION 15.1\n");
          f.write("set_global_assignment -name TOP_LEVEL_ENTITY cnn_process\n");
-         f.write("set_global_assignment -name MIN_CORE_JUNCTION_TEMP \"-40\"\n");
-         f.write("set_global_assignment -name MAX_CORE_JUNCTION_TEMP 100\n");
+         f.write("set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0\n");
+         f.write("set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85\n");
          f.write("set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top\n");
          f.write("set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top\n");
          f.write("set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top\n");
