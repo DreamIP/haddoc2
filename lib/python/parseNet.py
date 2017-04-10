@@ -35,7 +35,7 @@ def main(vhdFile, protoFile, modelFile,pixel_width):
                 parse_convLayer(previous_layer = previousLayer, layer=layer,name=b.upper(),nbits=pixel_width,target=f,image_width=image_width);
                 image_width = cnn.blobs[b].data.shape[2]
                 previousLayer = cnn.params[b];
-            if 'pool' in b:
+            if 'pool' or 'out'in b:
                 blob  = cnn.blobs[b];
                 parse_poolLayer(blob=blob,name=b.upper(),target=f,image_width=image_width);
                 image_width = cnn.blobs[b].data.shape[2]
@@ -56,7 +56,6 @@ if __name__ == '__main__':
         if (arg =="--help"):
             print "HADDOC2 - Hardware Automated Data-flow Description of CNNs"
             print "Institut Pascal - DREAM - 2017 \n"
-            print "parseNet -  Extacts weights from a learned caffemodel and casts them into 8-bits fixed-point VHDL generics" + white
             print "How to use: parseNet [.prototxt] [.caffemodel] [output]"
         else:
             print 'Not enought arguments, use parseNet --help'
