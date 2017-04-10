@@ -137,12 +137,12 @@ architecture STRUCTURAL of firstLayer is
         );
 
         -- Process Convolutions
-        CEs_loop : for i in 0 to (NB_OUT_FLOWS - 1) generate
+        CEs_loop : for flowIndex in 0 to (NB_OUT_FLOWS - 1) generate
 
             -- Load kernels in array : matrix to tmp array
-             tmp_loop : for j in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) generate
-                 tmp_w(i*(KERNEL_SIZE * KERNEL_SIZE) + j) <= KERNEL_VALUE(i,j);
-             end generate tmp_loop;
+             --tmp_loop : for j in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) generate
+            --     tmp_w(i*(KERNEL_SIZE * KERNEL_SIZE) + j) <= KERNEL_VALUE(i,j);
+             --end generate tmp_loop;
 
             -- Inst Conv Element
             CEs_inst : convElement
@@ -157,13 +157,34 @@ architecture STRUCTURAL of firstLayer is
                 in_data     => s_ne_data,
                 in_dv    	=> s_ne_dv,
                 in_fv    	=> s_ne_fv,
-                in_kernel   => tmp_w(i * KERNEL_SIZE* KERNEL_SIZE to KERNEL_SIZE*KERNEL_SIZE*(i+1)-1),
---                in_norm     => KERNEL_NORM(i),
-                out_data    => s_ce_data(i),
-                out_dv    	=> s_ce_dv(i),
-                out_fv    	=> s_ce_fv(i)
+                in_kernel   => extractVector(flowIndex,
+                                             NB_OUT_FLOWS,
+                                             KERNEL_SIZE*KERNEL_SIZE,
+                                             KERNEL_VALUE),
+                out_data    => s_ce_data (flowIndex),
+                out_dv    	=> s_ce_dv   (flowIndex),
+                out_fv    	=> s_ce_fv   (flowIndex)
             );
         end generate CEs_loop;
+
+            -- Version 0 :
+            -- in_kernel   => KERNEL_VALUE(i,0 to KERNEL_VALUE'range(1)),
+
+            -- Version 1 :
+            -- in_kernel   => tmp_w(i * KERNEL_SIZE* KERNEL_SIZE to KERNEL_SIZE*KERNEL_SIZE*(i+1)-1),
+
+            -- Version 2 : Hardcode
+            -- in_kernel(0)=> KERNEL_VALUE(i,0),
+            -- in_kernel(1)=> KERNEL_VALUE(i,1),
+            -- in_kernel(2)=> KERNEL_VALUE(i,2),
+            -- in_kernel(3 to KERNEL_SIZE* KERNEL_SIZE-1) => (others=>(others=>'0')),
+
+            -- Version 3 : For loop ?
+            -- for i in 1 to KERNEL_SIZE* KERNEL_SIZE -1 loop
+            --     in_kernel(j) => KERNEL_VALUE(i,j),
+            -- end loop;
+
+            -- Version 4 : with the extractVector function
 
         -- Apply bias and Activation
         SEs_loop : for i in 0 to (NB_OUT_FLOWS - 1) generate
