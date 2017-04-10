@@ -4,8 +4,8 @@ import os
 def gen_qsf (qsfFilename,haddoc_lib_dir,vhdlTarget):
      with open (qsfFilename,'w') as f:
          # Device
-         f.write("set_global_assignment -name FAMILY \"Stratix V\"\n");
-         f.write("set_global_assignment -name DEVICE 5SEEBF45I4\n");
+         f.write("set_global_assignment -name FAMILY \"CYCLONE V\"\n");
+         f.write("set_global_assignment -name DEVICE 5CGXFC9E7F35C8\n");
          f.write("set_global_assignment -name ORIGINAL_QUARTUS_VERSION 15.1\n");
          f.write("set_global_assignment -name TOP_LEVEL_ENTITY cnn_process\n");
          f.write("set_global_assignment -name MIN_CORE_JUNCTION_TEMP \"-40\"\n");
