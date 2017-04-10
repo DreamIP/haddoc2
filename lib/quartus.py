@@ -1,7 +1,7 @@
 import sys
 import os
 
-def gen_qsf (qsfFilename,haddoc_lib_dir):
+def gen_qsf (qsfFilename,haddoc_lib_dir,vhdlTarget):
      with open (qsfFilename,'w') as f:
          # Device
          f.write("set_global_assignment -name FAMILY \"Stratix V\"\n");
@@ -15,14 +15,15 @@ def gen_qsf (qsfFilename,haddoc_lib_dir):
          f.write("set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top\n");
          f.write("set_global_assignment -name POWER_PRESET_COOLING_SOLUTION \"23 MM HEAT SINK WITH 200 LFPM AIRFLOW\"\n");
          f.write("set_global_assignment -name POWER_BOARD_THERMAL_MODEL \"NONE (CONSERVATIVE)\"\n");
+         f.write("set_global_assignment -name PROJECT_OUTPUT_DIRECTORY build\n");
 
          # Logic Elements Based arithmetic
          f.write("set_global_assignment -name DSP_BLOCK_BALANCING \"LOGIC ELEMENTS\"\n");
          f.write("set_global_assignment -name AUTO_DSP_RECOGNITION OFF\n");
 
          # Haddoc lib
-         f.write("set_global_assignment -name VHDL_FILE cnn_process.vhd\n");
-         f.write("set_global_assignment -name VHDL_FILE params.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + vhdlTarget     + "/cnn_process.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + vhdlTarget     + "/params.vhd\n");
          f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/cnn_types.vhd\n");
          f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/convElement.vhd\n");
          f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/to_signedPixel.vhd\n");
@@ -48,8 +49,8 @@ def gen_qpf(qpfFilename):
         f.write("PROJECT_REVISION = \"cnn_process\"\n");
         f.close();
 
-def main(qsfFilename,qpfFilename,haddoc_lib_dir):
-    gen_qsf (qsfFilename,haddoc_lib_dir);
+def main(qsfFilename,qpfFilename,haddoc_lib_dir,target_dir):
+    gen_qsf (qsfFilename,haddoc_lib_dir,target_dir);
     gen_qpf (qpfFilename);
 
 
@@ -60,10 +61,11 @@ if __name__ == '__main__':
         haddoc_lib_dir = file_path + '/hdl'
         print "Haddoc2 lib in " + haddoc_lib_dir
         targetDir = sys.argv[1];
-        qsfFilename = targetDir + "/cnn_process.qsf";
-        qpfFilename = targetDir + "/cnn_process.qpf";
+        vhdlTarget =  targetDir + 'hdl_generated';
+        qsfFilename = targetDir + "cnn_process.qsf";
+        qpfFilename = targetDir + "cnn_process.qpf";
 
-        main(qsfFilename,qpfFilename,haddoc_lib_dir);
+        main(qsfFilename,qpfFilename,haddoc_lib_dir,vhdlTarget);
         print 'Succefully generated quartus project'
     else:
         print 'Not enought arguments'
