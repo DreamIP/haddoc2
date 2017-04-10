@@ -16,6 +16,7 @@ def gen_qsf (qsfFilename,haddoc_lib_dir,vhdlTarget):
          f.write("set_global_assignment -name POWER_PRESET_COOLING_SOLUTION \"23 MM HEAT SINK WITH 200 LFPM AIRFLOW\"\n");
          f.write("set_global_assignment -name POWER_BOARD_THERMAL_MODEL \"NONE (CONSERVATIVE)\"\n");
          f.write("set_global_assignment -name PROJECT_OUTPUT_DIRECTORY build\n");
+         f.write("set_global_assignment -name NUM_PARALLEL_PROCESSORS 4\n");
 
          # Logic Elements Based arithmetic
          f.write("set_global_assignment -name DSP_BLOCK_BALANCING \"LOGIC ELEMENTS\"\n");
@@ -45,7 +46,7 @@ def gen_qsf (qsfFilename,haddoc_lib_dir,vhdlTarget):
 
 def gen_qpf(qpfFilename):
     with open (qpfFilename,'w') as f:
-        f.write("QUARTUS_VERSION = \"15.1\"\n");
+        f.write("QUARTUS_VERSION = \"16.1\"\n");
         f.write("PROJECT_REVISION = \"cnn_process\"\n");
         f.close();
 

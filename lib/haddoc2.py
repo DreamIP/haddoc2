@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     if (len(sys.argv) == 4):
         print green + " >> This is Haddoc2 HLS tool" + white
-        pixWidth   = 8;
+        pixWidth   = 5;
         protoFile  = sys.argv[1]
         modelFile  = sys.argv[2]
         targetDir  = sys.argv[3]

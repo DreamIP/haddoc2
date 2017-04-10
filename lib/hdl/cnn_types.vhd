@@ -12,7 +12,7 @@ library ieee;
 
 
 package	cnn_types is
-	constant PIXEL_CONST	: integer := 8;
+	constant PIXEL_CONST	: integer := 5;
     constant SUM_WIDTH      : integer := 3*PIXEL_CONST;
 
 	type	 pixel_array    is array ( integer range <> ) of std_logic_vector (PIXEL_CONST-1 downto 0);

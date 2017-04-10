@@ -2,6 +2,10 @@ all: haddoc2 quartus_proj
 
 clean:
 	rm -rf ./hdl_generated
+	rm -rf ./build
+	rm -rf ./db
+	rm -rf ./incremental_db
+
 	rm -f ./cnn_process.qsf
 	rm -f ./cnn_process.qpf
 	rm -f ./*.rpt
