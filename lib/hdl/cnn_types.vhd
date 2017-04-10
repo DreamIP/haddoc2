@@ -19,11 +19,6 @@ package	cnn_types is
 	type	 sum_array      is array ( integer range <> ) of std_logic_vector (SUM_WIDTH-1 downto 0);
 	type	 pixel_matrix   is array ( integer range <> ,  integer range <>) of std_logic_vector (PIXEL_CONST-1 downto 0);
 
-    constant LOWER_THRESHHOLD  :   integer := -32258;
-    constant UPPER_THRESHHOLD  :   integer :=  32258;
-    constant LOWER_TANH_VALUE  :   integer := -127;
-    constant UPPER_TANH_VALUE  :   integer :=  127;
-
     constant SCALE_FACTOR      :   integer := 2 **(PIXEL_CONST-1) - 1;
     constant A1                :   integer := PIXEL_CONST - 1;
     constant A2                :   integer := PIXEL_CONST;
