@@ -16,6 +16,8 @@
 *.qtl
 *_vmake
 *_info
+*.qsf
+*.qpf
 
 # texmaker rules
 *.out
