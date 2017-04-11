@@ -37,7 +37,7 @@
 *.pyc
 
 # examples
-*/example/*
+example/hdl_generated/*
 
 # Caffe
 caffe/dataset/*
