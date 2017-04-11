@@ -157,7 +157,7 @@ architecture STRUCTURAL of firstLayer is
                 in_data     => s_ne_data,
                 in_dv    	=> s_ne_dv,
                 in_fv    	=> s_ne_fv,
-                in_kernel   => extractVector(flowIndex,
+                in_kernel   => extractRow(flowIndex,
                                              NB_OUT_FLOWS,
                                              KERNEL_SIZE*KERNEL_SIZE,
                                              KERNEL_VALUE),
@@ -184,7 +184,7 @@ architecture STRUCTURAL of firstLayer is
             --     in_kernel(j) => KERNEL_VALUE(i,j),
             -- end loop;
 
-            -- Version 4 : with the extractVector function
+            -- Version 4 : with the extractRow function
 
         -- Apply bias and Activation
         SEs_loop : for i in 0 to (NB_OUT_FLOWS - 1) generate

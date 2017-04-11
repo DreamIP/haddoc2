@@ -28,7 +28,7 @@ package	cnn_types is
     constant V1                :   integer := SCALE_FACTOR / 4;
     constant V2                :   integer := SCALE_FACTOR - 10;
 
-    function extractVector( target_row :  integer;
+    function extractRow( target_row :  integer;
                             nb_row     :  integer;
                             nb_col     :  integer;
                             in_matrix  :  pixel_matrix (integer range <>  , integer range <> ))
@@ -36,7 +36,7 @@ package	cnn_types is
 end cnn_types;
 
 package body cnn_types is
-    function extractVector( target_row :  integer;
+    function extractRow( target_row :  integer;
                             nb_row     :  integer;
                             nb_col     :  integer;
                             in_matrix  :  pixel_matrix (integer range <> , integer range <> ))
@@ -47,6 +47,6 @@ package body cnn_types is
             out_vec(index_col) := in_matrix(target_row,index_col);
         end loop;
         return out_vec;
-    end extractVector;
+    end extractRow;
 
 end cnn_types;
