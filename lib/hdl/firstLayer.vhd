@@ -58,25 +58,24 @@ architecture STRUCTURAL of firstLayer is
 
     --------------------------------------------------------------------------------
     component convElement
-    generic(
-        KERNEL_SIZE :   integer;
-        PIXEL_SIZE  :   integer
+    generic (
+      PIXEL_SIZE   : integer;
+      KERNEL_SIZE  : integer;
+      KERNEL_VALUE : pixel_array
     );
-
-    port(
-        clk         :   in  std_logic;
-        reset_n     :   in  std_logic;
-        enable      :   in  std_logic;
-        in_data     :   in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
-        in_dv    	:   in  std_logic;
-        in_fv    	:   in  std_logic;
-        in_kernel   :   in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
-        out_data    :   out std_logic_vector(SUM_WIDTH - 1 downto 0);
-        out_dv    	:   out std_logic;
-        out_fv    	:   out std_logic
-
+    port (
+      clk      : in  std_logic;
+      reset_n  : in  std_logic;
+      enable   : in  std_logic;
+      in_data  : in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
+      in_dv    : in  std_logic;
+      in_fv    : in  std_logic;
+      out_data : out std_logic_vector(SUM_WIDTH - 1 downto 0);
+      out_dv   : out std_logic;
+      out_fv   : out std_logic
     );
-    end component;
+    end component convElement;
+
     --------------------------------------------------------------------------------
 
     component sumElement_single
@@ -147,8 +146,12 @@ architecture STRUCTURAL of firstLayer is
             -- Inst Conv Element
             CEs_inst : convElement
             generic map(
-                KERNEL_SIZE => KERNEL_SIZE,
-                PIXEL_SIZE  => PIXEL_SIZE
+                PIXEL_SIZE   => PIXEL_SIZE,
+                KERNEL_SIZE  => KERNEL_SIZE,
+                KERNEL_VALUE => extractRow(flowIndex,
+                                             NB_OUT_FLOWS,
+                                             KERNEL_SIZE*KERNEL_SIZE,
+                                             KERNEL_VALUE)
             )
             port map(
                 clk         => clk,
@@ -157,10 +160,6 @@ architecture STRUCTURAL of firstLayer is
                 in_data     => s_ne_data,
                 in_dv    	=> s_ne_dv,
                 in_fv    	=> s_ne_fv,
-                in_kernel   => extractRow(flowIndex,
-                                             NB_OUT_FLOWS,
-                                             KERNEL_SIZE*KERNEL_SIZE,
-                                             KERNEL_VALUE),
                 out_data    => s_ce_data (flowIndex),
                 out_dv    	=> s_ce_dv   (flowIndex),
                 out_fv    	=> s_ce_fv   (flowIndex)
