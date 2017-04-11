@@ -12,7 +12,7 @@ library ieee;
 
 
 package	cnn_types is
-	constant PIXEL_CONST	    : integer := 5;
+	constant PIXEL_CONST	    : integer := 8;
     constant SUM_WIDTH          : integer := 3*PIXEL_CONST;
     constant MAX_KERNEL_SIZE	: integer := 11;
 
@@ -31,7 +31,7 @@ package	cnn_types is
     function extractRow( target_row :  integer;
                             nb_row     :  integer;
                             nb_col     :  integer;
-                            in_matrix  :  pixel_matrix (integer range <>  , integer range <> ))
+                            in_matrix  :  pixel_matrix )
                             return        pixel_array;
 end cnn_types;
 
@@ -39,7 +39,7 @@ package body cnn_types is
     function extractRow( target_row :  integer;
                             nb_row     :  integer;
                             nb_col     :  integer;
-                            in_matrix  :  pixel_matrix (integer range <> , integer range <> ))
+                            in_matrix  :  pixel_matrix )
                             return        pixel_array is
     variable out_vec : pixel_array  (0 to nb_col - 1);
     begin
