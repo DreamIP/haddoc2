@@ -98,8 +98,8 @@ def write_kernel_value (previous_layer,layer,name,nbits,target):
     # In some Networks, such AlexNet, neurons from layer l are not totally connected to layer l+1
     # But only a group is connected. We manage this as follows:
     if (not(isGroup)):
-        for n in range(out_size):
-            for m in range (in_size):
+        for m in range (in_size):
+            for n in range(out_size):
                 target.write("(")
                 for i in range(kernel_size-1,-1,-1):
                     for j in range(kernel_size-1,-1,-1):
@@ -121,10 +121,10 @@ def write_kernel_value (previous_layer,layer,name,nbits,target):
         n = 0;
         dm = 0;
         # while (n<out_size):
-        for n in range(out_size):
+        while (m < previous_layer_size):
             m = 0;
             target.write("-- Neuron : %d \n" %n)
-            while (m < previous_layer_size):
+            for n in range(out_size):
                 # if ((n<=out_size/2 and m>=in_size)):
                 if ((n<=out_size/2 and m>=in_size) or (n>out_size/2 and m<=in_size)):
                     #target.write("-- Group : We put some zeros here : %d \n" %m)
