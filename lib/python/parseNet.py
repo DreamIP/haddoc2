@@ -34,9 +34,6 @@ def main(vhdFile, protoFile, modelFile,pixel_width):
                 image_width = cnn.blobs[b].data.shape[2]
 
             if (cnn.layers[layer_id].type == 'Convolution'):
-                print b
-                print cnn.layers[layer_id].type
-                print '\n'
                 layer = cnn.params[b];
                 parse_convLayer(previous_layer = previousLayer, layer=layer,name=b.upper(),nbits=pixel_width,target=f,image_width=image_width);
                 image_width = cnn.blobs[b].data.shape[2]
@@ -46,9 +43,6 @@ def main(vhdFile, protoFile, modelFile,pixel_width):
 
             if (cnn.layers[layer_id].type == 'Pooling'):
                 blob  = cnn.blobs[b];
-                print b
-                print cnn.layers[layer_id].type
-                print '\n'
                 parse_poolLayer(blob=blob,name=b.upper(),target=f,image_width=image_width);
                 image_width = cnn.blobs[b].data.shape[2]
 
@@ -58,12 +52,6 @@ def main(vhdFile, protoFile, modelFile,pixel_width):
                 parse_fcLayer(previous_layer=previousLayer,layer=layer,name=b.upper(),nbits=pixel_width,target=f,image_width=image_width);
                 image_width = cnn.blobs[b].data.shape[2]
                 layer_id +=1;
-
-            # if (cnn.layers[layer_id].type == 'TanH'):
-            #     layer_id +=1;
-            #     print b
-            #     print cnn.layers[layer_id].type
-            #     print '\n'
 
             layer_id +=1;
         write_fileEnd(f)
