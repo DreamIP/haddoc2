@@ -73,7 +73,6 @@ def write_bias_value (layer,name,nbits,target):
             target.write(",")
 ######################################################################
 def write_kernel_value (previous_layer,layer,name,nbits,target):
-
     layer_name   = name;
     kernel_data  = layer[0].data
 
@@ -121,10 +120,10 @@ def write_kernel_value (previous_layer,layer,name,nbits,target):
         n = 0;
         dm = 0;
         # while (n<out_size):
-        while (m < previous_layer_size):
+        for n in range(out_size):
             m = 0;
             target.write("-- Neuron : %d \n" %n)
-            for n in range(out_size):
+            while (m < previous_layer_size):
                 # if ((n<=out_size/2 and m>=in_size)):
                 if ((n<=out_size/2 and m>=in_size) or (n>out_size/2 and m<=in_size)):
                     #target.write("-- Group : We put some zeros here : %d \n" %m)
