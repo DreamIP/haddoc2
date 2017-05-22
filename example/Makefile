@@ -1,4 +1,4 @@
-all: haddoc2 quartus_proj
+all: hdl quartus_proj
 
 clean:
 	rm -rf ./hdl_generated
@@ -10,8 +10,8 @@ clean:
 	rm -f ./cnn_process.qpf
 	rm -f ./*.rpt
 
-haddoc2:
-	../bin/haddoc2  ./caffe/lenet.prototxt ./caffe/lenet.caffemodel ./hdl_generated
+hdl:
+	python ../lib/haddoc2.py  --proto=./caffe/lenet.prototxt --model=./caffe/lenet.caffemodel --out=./hdl_generated
 
 quartus_proj:
 	python ../lib/quartus.py ./
