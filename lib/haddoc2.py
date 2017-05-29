@@ -14,6 +14,7 @@ HADDOC2_ROOT = os.environ['HADDOC2_ROOT']
 HADDOC2_LIB  = HADDOC2_ROOT + '/lib/python'
 sys.path.insert(0, HADDOC2_LIB)
 import parseNetParams
+import genBitwidths
 
 green = '\033[92m'
 white = '\033[0m'
@@ -21,13 +22,15 @@ red   = '\033[91m'
 def main(protoFile,modelFile,targetDir,bitWidth):
     paramFile     = targetDir + '/params.vhd'      # Configuration VHDL output
     topFile       = targetDir + '/cnn_process.vhd' # Top level VHDL output
+    bitwidthFile  = targetDir + '/bitwidths.vhd' # Top level VHDL output
 
     if not os.path.exists(targetDir):
         os.makedirs(targetDir)
 
     # Generate config vhdl output
     parseNetParams.main(paramFile, protoFile, modelFile, bitWidth)
-
+    genBitwidths.main(bitwidthFile,bitWidth)
+    
     # Generate toplevel vhdl output
     # TODO: Replace with python version : parseNetTopology.py
     print green

@@ -22,10 +22,13 @@ def gen_qsf (qsfFilename,haddoc_lib_dir,vhdlTarget):
          f.write("set_global_assignment -name DSP_BLOCK_BALANCING \"LOGIC ELEMENTS\"\n");
          f.write("set_global_assignment -name AUTO_DSP_RECOGNITION OFF\n");
 
-         # Haddoc lib
-         f.write("set_global_assignment -name VHDL_FILE " + vhdlTarget     + "/cnn_process.vhd\n");
-         f.write("set_global_assignment -name VHDL_FILE " + vhdlTarget     + "/params.vhd\n");
+         # Generated files
+         f.write("set_global_assignment -name VHDL_FILE " + vhdlTarget     + "/bitwidths.vhd\n");
          f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/cnn_types.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + vhdlTarget     + "/params.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + vhdlTarget     + "/cnn_process.vhd\n");
+
+         # Haddoc2 lib
          f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/convElement.vhd\n");
          f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/to_signedPixel.vhd\n");
          f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/maxPool.vhd\n");

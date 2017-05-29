@@ -5,6 +5,7 @@ library ieee;
 
 library work;
 	use work.cnn_types.all;
+	use work.bitwidths.all;
 
 --
 --                    ----------------
