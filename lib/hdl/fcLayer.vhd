@@ -3,6 +3,20 @@
 -- Coder       	: Kamel ABDELOUAHAB
 -- Institution 	: Institut Pascal  - 2016
 ---------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+-- Title      : fcLayer
+-- Project    : Haddoc2
+------------------------------------------------------------------------------
+-- File       : fcLayer.vhd
+-- Author     : K. Abdelouahab
+-- Company    : Institut Pascal
+-- Last update: 07-07-2017
+------------------------------------------------------------------------------
+-- Description: A fully pipelined implementation of FcLayers of a CNN. FcLayers
+--				are processed in a same way as convolutions in convLayers.
+--				FcLayer can be seen as a convlayer that applies kernels with the
+--				size of image width (K = Ix)
+-----------------------------------------------------------------------------
 
 library ieee;
     use	ieee.std_logic_1164.all;

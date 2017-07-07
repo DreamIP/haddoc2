@@ -1,3 +1,16 @@
+------------------------------------------------------------------------------
+-- Title      : display_mux
+-- Project    : Haddoc2
+------------------------------------------------------------------------------
+-- File       : display_mux.vhd
+-- Author     : K. Abdelouahab
+-- Company    : Institut Pascal
+-- Last update: 07-07-2017
+------------------------------------------------------------------------------
+-- Description: A design of a multiplexer to be used at the end of a CNN. Can
+--              be used for display puposes
+------------------------------------------------------------------------------
+
 library ieee;
 	use	ieee.std_logic_1164.all;
 	use	ieee.numeric_std.all;

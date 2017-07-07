@@ -1,3 +1,19 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
+##----------------------------------------------------------------------------
+## Title      : quartus
+## Project    : Haddoc2
+##----------------------------------------------------------------------------
+## File       : quartus.py
+## Author     : K. Abdelouahab
+## Company    : Institut Pascal
+## Last update: 07-07-2017
+##----------------------------------------------------------------------------
+## Description: Script to create a Quartus project using generated Haddoc2 VHDL
+##				and Haddoc2 IP library. FPGA here is Intel's Cyclone V 5CGXFC9E7F35C8
+##----------------------------------------------------------------------------
+
 import sys
 import os
 

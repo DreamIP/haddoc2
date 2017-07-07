@@ -1,27 +1,32 @@
----------------------------------------------------------------------------------
--- Design Name 	: sumElement - Genericly sized adder 
--- Coder       	: Kamel ABDELOUAHAB
--- Institution 	: Institut Pascal  - 2016
----------------------------------------------------------------------------------
-
-
+------------------------------------------------------------------------------
+-- Title      : sumElement
+-- Project    : Haddoc2
+------------------------------------------------------------------------------------------------------------
+-- File       : sumElement.vhd
+-- Author     : K. Abdelouahab
+-- Company    : Institut Pascal
+-- Last update: 07-07-2017
+-------------------------------------------------------------------------------------------------------------
+-- Description: Genericly sized adder. Accumulation of KxK inputs followed by the application
+--              of apprximate TanH function
+-------------------------------------------------------------------------------------------------------------
 library ieee;
-	use	ieee.std_logic_1164.all;
-	use	ieee.numeric_std.all;
+    use ieee.std_logic_1164.all;
+    use ieee.numeric_std.all;
     use ieee.math_real.all;
 
 library work;
-	use work.cnn_types.all;
-	use work.bitwidths.all;
+    use work.cnn_types.all;
+    use work.bitwidths.all;
 
 --
 --                    ----------------
 --                   |                |
 -- in_data(0)________|                |______ out_data
 -- in_data(1)________|                |______ out_dv
--- in_data(2)________|                |______ ou_fv
+-- in_data(2)________|   sumElement   |______ ou_fv
 --   ...             |                |
---                   |       SE       |
+--                   |   sum + TanH   |
 -- in_dv(0)__________|                |
 -- in_dv(1)__________|                |
 -- ...               |                |
@@ -39,9 +44,9 @@ entity sumElement is
     );
 
     port(
-        clk	            :	in 	std_logic;
-        reset_n	        :	in	std_logic;
-        enable          :	in	std_logic;
+        clk             :   in  std_logic;
+        reset_n         :   in  std_logic;
+        enable          :   in  std_logic;
 
         in_data         :   in  sum_array        (0 to NB_IN_FLOWS - 1);
         in_dv           :   in  std_logic_vector (0 to NB_IN_FLOWS - 1);
@@ -60,7 +65,7 @@ architecture bhv of sumElement is
 
     constant THIS_SUM_WIDTH    :   integer := integer(ceil(log2(real(NB_IN_FLOWS+ 1)))) + SUM_WIDTH;
 
-    signal	data_s	    :	sum_array_signed (0 to NB_IN_FLOWS - 1) := (others=>(others=>'0'));
+    signal  data_s      :   sum_array_signed (0 to NB_IN_FLOWS - 1) := (others=>(others=>'0'));
     signal  sum_s       :   signed (THIS_SUM_WIDTH - 1 downto 0):= (others=>'0');
     signal  tmp_dv      :   std_logic := '0';
     signal  tmp_fv      :   std_logic := '0';

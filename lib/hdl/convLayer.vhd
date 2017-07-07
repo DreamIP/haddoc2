@@ -1,3 +1,26 @@
+------------------------------------------------------------------------------
+-- Title      : convElement
+-- Project    : Haddoc2
+------------------------------------------------------------------------------
+-- File       : convElement.vhd
+-- Author     : K. Abdelouahab
+-- Company    : Institut Pascal
+-- Last update: 07-07-2017
+------------------------------------------------------------------------------
+-- Description: A fully pipelined implementation of CNN layers that is able to process
+--              one pixel/clock cycle. Each actors of a CNN graph are directly mapped
+--				on the hardware following the principals of DHM and DataFlow processing
+--									______
+--                                |       |
+--								  |       |-- output_streams-->
+--				input_streams---->| conv  |-- output_streams-->
+--				input_streams---->| Layer |-- output_streams-->
+--				input_streams---->|       |-- output_streams-->
+--				input_streams---->|       |-- output_streams-->
+--								  |       |-- output_streams-->
+--								  |       |
+--									______
+-----------------------------------------------------------------------------
 library ieee;
 	use	ieee.std_logic_1164.all;
 	use	ieee.numeric_std.all;
@@ -126,6 +149,7 @@ architecture STRUCTURAL of convLayer is
 
     signal tmp_w : pixel_array (0 to NB_IN_FLOWS * NB_OUT_FLOWS * KERNEL_SIZE * KERNEL_SIZE - 1):= (others=>(others=>'0'));
     --------------------------------------------------------------------------------
+	-- Generate N neighborhood extractors
     begin
 
         NEs_loop : for i in 0 to (NB_IN_FLOWS - 1) generate
@@ -149,21 +173,11 @@ architecture STRUCTURAL of convLayer is
         end generate NEs_loop;
 
     --------------------------------------------------------------------------------
+	-- Generate (N x C) convElements
+	-- extractRow function used to extract each (K x K) kernel from  KERNEL_VALUE matrix as a vector
 
         CEs_loop : for flowIndex in 0 to (NB_OUT_FLOWS * NB_IN_FLOWS - 1) generate
 
-
-            -- Distrib
-            -- Thats a usefull comment :
-            -- Dear future me : When I wrote this, only God and I knew what we were doing.
-            -- Now, only god knows.
-            -- Dear code reader : I apology  for this ...
-
-            --  tmp_loop : for j in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) generate
-            --      tmp_w(i*(KERNEL_SIZE * KERNEL_SIZE) + j) <= KERNEL_VALUE(i,j);
-            --  end generate tmp_loop;
-
-            -- Inst Conv Element
             CEs_inst : convElement
             generic map(
                 PIXEL_SIZE   => PIXEL_SIZE,
@@ -188,34 +202,35 @@ architecture STRUCTURAL of convLayer is
 
 
     --------------------------------------------------------------------------------
-
-      -- Reorganize data : Each ce_data_2d(i) will contain NB_IN_FLOWS elements
-      -- Same as line 159
+    -- Reorganize data : Each ce_data_2d(i) will contain C elements
         reorg_i : for i in 0 to (NB_OUT_FLOWS - 1) generate
             reorg_j : for j in 0 to (NB_IN_FLOWS - 1) generate
-                --VHDL 2008 only (NOPE !)
+
                 ce_data_2d(i)(j) <= s_ce_data( i + NB_OUT_FLOWS * j);
             end generate reorg_j;
         end generate reorg_i;
 
-        SEs_loop : for i in 0 to (NB_OUT_FLOWS - 1) generate
-            SEs_inst : sumElement
-            generic map (
-                PIXEL_SIZE   => PIXEL_SIZE,
-                NB_IN_FLOWS  => NB_IN_FLOWS
-            )
-            port map(
-                clk          => clk,
-                reset_n      => reset_n,
-                enable       => enable,
-                in_data      => ce_data_2d(i),
-                in_dv        => s_ce_dv (0 to (NB_IN_FLOWS-1)),
-                in_fv        => s_ce_fv (0 to (NB_IN_FLOWS-1)),
-                in_bias      => BIAS_VALUE(i),
-                out_data     => out_data(i),
-                out_dv       => out_dv(i),
-                out_fv       => out_fv(i)
-            );
-        end generate SEs_loop;
+	--------------------------------------------------------------------------------
+	-- Generate N addition blocks (With TanH Activation)
+
+    SEs_loop : for i in 0 to (NB_OUT_FLOWS - 1) generate
+        SEs_inst : sumElement
+        generic map (
+            PIXEL_SIZE   => PIXEL_SIZE,
+            NB_IN_FLOWS  => NB_IN_FLOWS
+        )
+        port map(
+            clk          => clk,
+            reset_n      => reset_n,
+            enable       => enable,
+            in_data      => ce_data_2d(i),
+            in_dv        => s_ce_dv (0 to (NB_IN_FLOWS-1)),
+            in_fv        => s_ce_fv (0 to (NB_IN_FLOWS-1)),
+            in_bias      => BIAS_VALUE(i),
+            out_data     => out_data(i),
+            out_dv       => out_dv(i),
+            out_fv       => out_fv(i)
+        );
+    end generate SEs_loop;
 
     end architecture;

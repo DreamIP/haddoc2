@@ -1,8 +1,13 @@
----------------------------------------------------------------------------------
--- Design Name 	: taps - Shift registers with port access
--- Coder       	: Kamel Eddine ABDELOUAHAB
--- Institution 	: Institut Pascal
----------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+-- Title      : taps
+-- Project    : Haddoc2
+------------------------------------------------------------------------------
+-- File       : taps.vhd
+-- Author     : K. Abdelouahab
+-- Company    : Institut Pascal
+-- Last update: 07-07-2017
+------------------------------------------------------------------------------
+-- Description: Shift registers used in neighExtractor design.
 
 --                        taps_data(0)                            taps_data(KERNEL_SIZE-1)
 --                           ^                                       ^
@@ -13,6 +18,7 @@
 --              |        |        |        |            |        |       |  SIZE =(TAPS_WIDTH-KERNEL)|
 --              |        |        |        |            |        |       |                           |
 --               -------           -------               -------          ---------------------------
+------------------------------------------------------------------------------
 
 library ieee;
 	use	ieee.std_logic_1164.all;

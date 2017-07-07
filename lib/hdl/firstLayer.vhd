@@ -1,3 +1,14 @@
+------------------------------------------------------------------------------
+-- Title      : firstLayer
+-- Project    : Haddoc2
+------------------------------------------------------------------------------
+-- File       : firstLayer.vhd
+-- Author     : K. Abdelouahab
+-- Company    : Institut Pascal
+-- Last update: 07-07-2017
+------------------------------------------------------------------------------
+-- Description: Implementation of the first convolutional layer of a CNN
+-----------------------------------------------------------------------------
 library ieee;
 	use	ieee.std_logic_1164.all;
 	use	ieee.numeric_std.all;

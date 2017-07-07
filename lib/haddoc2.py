@@ -1,6 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+##----------------------------------------------------------------------------
+## Title      : haddoc2
+## Project    : Haddoc2
+##----------------------------------------------------------------------------
+## File       : haddoc2.py
+## Author     : K. Abdelouahab
+## Company    : Institut Pascal
+## Last update: 07-07-2017
+##----------------------------------------------------------------------------
+## Description: Main python script of the Haddoc2 tool:
+##              - Run the parseNetParams to generate VHDL configuration file
+##              - Run the genBitwidths to define fixed point format during inference
+##              - Run mkcnn executable to generate the top
+##				- TODO: Replace mkcnn Caml with python version : parseNetTopology.py
+##              Technical details can be found in the technical report submitted here:
+##              https://arxiv.org/abs/1705.04543
+##----------------------------------------------------------------------------
+
+
 import sys
 import os
 import io
@@ -22,7 +41,7 @@ red   = '\033[91m'
 def main(protoFile,modelFile,targetDir,bitWidth):
     paramFile     = targetDir + '/params.vhd'      # Configuration VHDL output
     topFile       = targetDir + '/cnn_process.vhd' # Top level VHDL output
-    bitwidthFile  = targetDir + '/bitwidths.vhd' # Top level VHDL output
+    bitwidthFile  = targetDir + '/bitwidths.vhd'   # Bitwidth  VHDL output
 
     if not os.path.exists(targetDir):
         os.makedirs(targetDir)
@@ -30,11 +49,11 @@ def main(protoFile,modelFile,targetDir,bitWidth):
     # Generate config vhdl output
     parseNetParams.main(paramFile, protoFile, modelFile, bitWidth)
     genBitwidths.main(bitwidthFile,bitWidth)
-    
+
     # Generate toplevel vhdl output
     # TODO: Replace with python version : parseNetTopology.py
     print green
-    parseNetTopology = "ocamlrun " +  HADDOC2_ROOT + "/lib/mk_cnn " +  protoFile + ' -o ' + topFile
+    parseNetTopology = "ocamlrun " +  HADDOC2_ROOT + "/bin/mk_cnn " +  protoFile + ' -o ' + topFile
     os.system(parseNetTopology)
     print white
 
@@ -70,18 +89,3 @@ if __name__ == '__main__':
     print white
 
     main(protoFile,modelFile,targetDir,bitWidth)
-    #
-    # if (len(sys.argv) == 4):
-    #     print green + " >> This is Haddoc2 HLS tool" + white
-    #     pixWidth   = 8;
-    #     protoFile  = sys.argv[1]
-    #     modelFile  = sys.argv[2]
-    #     targetDir  = sys.argv[3]
-    #     paramFile  = targetDir + '/params.vhd'
-    #     topFile    = targetDir + '/cnn_process.vhd'
-    #     os.system("rm -rf " + targetDir)
-    #     os.system("mkdir "  + targetDir)
-    #     os.system("python"   + space + file_path + "/python/parseNet.py" + space + protoFile + space + modelFile + space + paramFile + space + str(pixWidth))
-    #     os.system("ocamlrun" + space + file_path + "/mk_cnn" + space + protoFile + ' -o ' + topFile)
-    # else:
-    #     print 'Not enought arguments, use: haddoc2 --help'

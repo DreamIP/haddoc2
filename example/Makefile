@@ -11,7 +11,11 @@ clean:
 	rm -f ./*.rpt
 
 hdl:
-	python ../lib/haddoc2.py  --proto=./caffe/lenet.prototxt --model=./caffe/lenet.caffemodel --out=./hdl_generated
+	python ../lib/haddoc2.py \
+	--proto=./caffe/lenet.prototxt \
+	--model=./caffe/lenet.caffemodel \
+	--out=./hdl_generated \
+	--nbits=5
 
 quartus_proj:
 	python ../lib/quartus.py ./

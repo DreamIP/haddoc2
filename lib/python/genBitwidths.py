@@ -1,3 +1,17 @@
+##----------------------------------------------------------------------------
+## Title      : genBitwidths
+## Project    : Haddoc2
+##----------------------------------------------------------------------------
+## File       : genBitwidths.py
+## Author     : K. Abdelouahab
+## Company    : Institut Pascal
+## Created    : 26-10-2016
+## Last update: 07-07-2017
+##----------------------------------------------------------------------------
+## Description: A simple script to generate bitwidth.vhd file that defines
+##              fixed point formats used in haddoc2 generated inference engines 
+##----------------------------------------------------------------------------
+
 import sys
 import os
 import io

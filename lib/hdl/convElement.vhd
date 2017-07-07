@@ -1,8 +1,17 @@
----------------------------------------------------------------------------------
--- Design Name 	: convElement : A parrellel MAC unit
--- Coder       	: Kamel ABDELOUAHAB
--- Institution 	: Institut Pascal  - 2016
----------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+-- Title      : convElement
+-- Project    : Haddoc2
+------------------------------------------------------------------------------
+-- File       : convElement.vhd
+-- Author     : K. Abdelouahab
+-- Company    : Institut Pascal
+-- Last update: 07-07-2017
+------------------------------------------------------------------------------
+-- Description: The design of parrallel Multiply-ACcumulate architecture that
+--              processes one pixel/clock top. (K x K) elements are generated
+--				to do so. This IP is plugged with the neighExtractor entity to
+--				process convolutions
+------------------------------------------------------------------------------
 
 
 library ieee;
@@ -56,6 +65,7 @@ architecture bhv of convElement is
     -- ARCHITECTURE
     --------------------------------------------------------------------------
     begin
+		-- 07/07/2017 : DEPRECATED - Using std_logic_signed now
         -- Cast into signed arrays
         -- cast_loop : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) generate
         --     s_data(i)   <= signed(in_data(i));

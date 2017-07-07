@@ -1,3 +1,16 @@
+##----------------------------------------------------------------------------
+## Title      : parseNetParams
+## Project    : Haddoc2
+##----------------------------------------------------------------------------
+## File       : parseNetParams.py
+## Author     : K. Abdelouahab
+## Company    : Institut Pascal
+## Created    : 26-10-2016
+## Last update: 07-07-2017
+##----------------------------------------------------------------------------
+## Description: Library of functions used in parseNetParams file
+##----------------------------------------------------------------------------
+
 import sys
 import os
 import numpy as np
@@ -32,16 +45,10 @@ def write_image_width (layer_name,value,target):
 ######################################################################
 def to_shiftNorm(kernel):
     ### DEPRECATED ###
-    # Experimental results show that for kernels with a low norm
-    # It s better to give a higher shift value, so , dont be surprised with the 2 following line
-    # Now, Im going to hide this where only the strongest of you can find it
     norm  = np.abs(np.sum(kernel[...]));
-    if (norm < 4):
-        return 8;
-    else:
-        real_shift = math.log(norm,2);
-        int_shift  = int(real_shift);
-        return int_shift + 1;
+    real_shift = math.log(norm,2);
+    int_shift  = int(real_shift);
+    return int_shift + 1;
 ######################################################################
 def to_fixedPoint (data,scale_factor):
     scaled_data = scale_factor * data
@@ -311,8 +318,6 @@ def write_fileHead(target):
     target.write("--------------------------------------------------------\n")
     target.write("-- This file is generated with Haddoc2 utility \n")
     target.write("-- Generated on : " + time.ctime() + "\n")
-    # target.write("-- Author : \n")
-    # target.write("-- Institution : Institut Pascal\n")
     target.write("--------------------------------------------------------\n\n")
     target.write("library ieee;\n")
     target.write("	use	ieee.std_logic_1164.all;\n")
@@ -326,32 +331,3 @@ def write_pixelWidth(target,pixelWidth):
 def write_fileEnd(target):
     target.write("end package;")
 ######################################################################
-
-#
-#
-# if __name__ == "__main__":
-#
-#     HOME                = os.environ['HOME']
-#     CAFFE_DIRNAME       = HOME + '/caffe'
-#     CAFFE_PYTHON_LIB    = CAFFE_DIRNAME+'/python'
-#     sys.path.insert(0, CAFFE_PYTHON_LIB)
-#     import caffe;
-#
-#     filename = "../example/cnn/hdl/params.vhd"
-#     cnn   = caffe.Net('../caffe/network/test.prototxt','../caffe/network/network.caffemodel',caffe.TEST)
-#     conv1 = cnn.params['conv1']
-#     conv2 = cnn.params['conv2']
-#     conv3 = cnn.params['conv3']
-#     fc    = cnn.params['fc']
-#     s1    = cnn.blobs['s1']
-#     s2    = cnn.blobs['s2']
-#
-#     with open (filename,'w') as f:
-#         write_fileHead(f)
-#         parse_convLayer(conv1,'CONV1',8,f,320)
-#         parse_poolLayer(s1,'POOL1',f,318)
-#         parse_convLayer(conv2,'CONV2',8,f,159)
-#         parse_poolLayer(s2,'POOL2',f,157)
-#         parse_convLayer(conv3,'CONV3',8,f,79)
-#         parse_fcLayer  (conv3,fc,'FC',8,f,77)
-#         write_fileEnd(f)
