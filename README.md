@@ -5,10 +5,10 @@ More implementation details can be found here [here](https://arxiv.org/abs/1705.
 
 
 ## Pre-requisite
-- [Caffe](https://github.com/BVLC/caffe) with A simple CPU-only build is required.
+- [Caffe](https://github.com/BVLC/caffe) with A simple CPU-only build is needed.
 - [Ocamlrun](https://ocaml.org/docs/install.html) : Required by the VHDL top-level generator
-- [Quartus II](https://www.altera.com/downloads/download-center.html) or [Vivado](https://www.xilinx.com/support/download.html) (Optional)to compile and synthesize your design
-- [GPStudio FPGA](https://github.com/DreamIP/GPStudio) (Optional): Haddoc2 generated accelerators are compatible with GPStudio, a tool-chain to to deploy image processing applications on FPGA-based smart cameras. Thus, Haddoc2 generated CNNs can be implemented on smart camera nodes and provide real time image classification.
+- [Quartus II](https://www.altera.com/downloads/download-center.html) or [Vivado](https://www.xilinx.com/support/download.html) (Optional) : to compile and synthesize your design
+- [GPStudio FPGA](https://github.com/DreamIP/GPStudio) (Optional): Haddoc2 generated accelerators are compatible with GPStudio, a tool-chain to to deploy image processing applications on FPGA-based smart cameras.
 
 ## Execution
 To run haddoc2, please use the binders in `bin/` directory.
