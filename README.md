@@ -1,8 +1,20 @@
 # Haddoc2 :  Hardware Automated Dataflow Description of CNNs
 Haddoc2 is a tool to automatically design FPGA-based hardware accelerators for convolutional neural networks (CNNs). Using a Caffe model, Haddoc2 generates a hardware description of the network (in VHDL-87) which is constructor and device independent. Haddoc2 is built upon the principals of Dataflow stream-based processing of data, and, implements CNNs using a Direct Hardware Mapping approach, where all the actors involved in CNN processing are physically  mapped on the FPGA.
 
-More implementation details can be found here [here](https://arxiv.org/abs/1705.04543)
-
+More implementation details can be found in this [technical report](https://arxiv.org/abs/1705.04543) and the this [paper](https://www.researchgate.net/profile/Kamel_Abdelouahab/publication/319258752_Tactics_to_Directly_Map_CNN_graphs_on_Embedded_FPGAs/links/59e60a5caca272390ee02342/Tactics-to-Directly-Map-CNN-graphs-on-Embedded-FPGAs.pdf?origin=publication_detail&ev=pub_int_prw_xdl&msrp=gQefk54M8Tdnk4g76MAMzqykHGTN7ukVyBzP3qkuPxj8toj3rGo_8yB5muVLa4HOcKD--Yjj3TyGDWa6mMMF9aANqOzpLd4vtrxpsP3ZCqkDAm-ZzQYkJ9s-.4RjZnyFpwz-5Tos4Dv7UyQoB1gIf8V1q1wLMGOy4uCcUK2OMXc24LdTvkKiVLcTCmcqBysf3iZlxf4IwQ6UsHgqG4pguudsC5fEvFA.-0UWG5mSHa61qzSszI2tYSlID65CF4R_zpxNfRkfeRDL1Pe1x3HJwp7O3uAJweRCYIM3mFei1JuQvmS7NCTeZIZUlK0MsbrTvQRgAQ.jCop4SPL-ToaM4G6puyag4u_ubgcX-dykkmOsQQnS0rm7gnwyotySa511nomGhiOlH1o3g_7j0z0NXlKkM8G2qOtALD09B6bP-SMBA) 
+If you find Haddoc2 useful in your research, please consider citing the following paper
+```
+@article{Abdelouahab17,
+author = {Abdelouahab, Kamel and Pelcat, Maxime and Serot, Jocelyn. and Bourrasset, Cedric and Berry, Fran{\c{c}}ois},
+doi = {10.1109/LES.2017.2743247},
+issn = {19430663},
+journal = {IEEE Embedded Systems Letters},
+keywords = {CNN,Dataflow,FPGA,VHDL},
+pages = {1--4},
+title = {{Tactics to Directly Map CNN graphs on Embedded FPGAs}},
+url = {http://ieeexplore.ieee.org/document/8015156/},
+year = {2017}}
+```
 
 ## Pre-requisite
 - [Caffe](https://github.com/BVLC/caffe) with A simple CPU-only build is needed.
