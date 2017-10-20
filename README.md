@@ -15,6 +15,7 @@ title = {{Tactics to Directly Map CNN graphs on Embedded FPGAs}},
 url = {http://ieeexplore.ieee.org/document/8015156/},
 year = {2017}}
 ```
+A short demo of the tool: here [here](https://www.youtube.com/watch?v=qqex4tHG-gk&t=14s)
 
 ## Pre-requisite
 - [Caffe](https://github.com/BVLC/caffe) with A simple CPU-only build is needed.
