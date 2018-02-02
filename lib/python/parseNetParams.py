@@ -37,7 +37,7 @@ def main(vhdFile, protoFile, modelFile,pixel_width):
 	previousLayer = cnn.params['conv1']
 	# Delete label and classification layers
 	layer_id = 0;
-	for b in blobs.keys():
+	for b in list(blobs.keys()):
 		if (cnn.layers[layer_id].type == 'SoftmaxWithLoss' or
 			cnn.layers[layer_id].type == 'Softmax' or
 			cnn.layers[layer_id].type == 'Accuracy'):
@@ -50,7 +50,7 @@ def main(vhdFile, protoFile, modelFile,pixel_width):
 		write_fileHead(f)
 
 		# Browse caffe model layer by layer
-		for b in blobs.keys():
+		for b in list(blobs.keys()):
 			if (cnn.layers[layer_id].type == 'Input'):
 				image_width = cnn.blobs[b].data.shape[2]
 

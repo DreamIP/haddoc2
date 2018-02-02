@@ -268,7 +268,7 @@ def parse_convLayer (previous_layer,layer,name,nbits,target,image_width):
     kernel_size  = kernel_data.shape[2]
     ## Test if layer is with group :
     if(previous_layer_size != in_size and name != 'CONV1'):
-        print "Potential group in layer " + layer_name + ": " + str(in_size) + " vs " + str(previous_layer_size)
+        print("Potential group in layer " + layer_name + ": " + str(in_size) + " vs " + str(previous_layer_size))
         nb_group = in_size / previous_layer_size;
 
     ## Write layer params ##

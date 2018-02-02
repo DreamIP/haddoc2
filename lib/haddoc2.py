@@ -52,10 +52,10 @@ def main(protoFile,modelFile,targetDir,bitWidth):
 
     # Generate toplevel vhdl output
     # TODO: Replace with python version : parseNetTopology.py
-    print green
+    print(green)
     parseNetTopology = "ocamlrun " +  HADDOC2_ROOT + "/bin/mk_cnn " +  protoFile + ' -o ' + topFile
     os.system(parseNetTopology)
-    print white
+    print(white)
 
 if __name__ == '__main__':
     # Default config
@@ -81,11 +81,11 @@ if __name__ == '__main__':
 
     green = '\033[92m'
     white = '\033[0m'
-    print green + "Haddoc2 CNN parameter parser:"
-    print "\tprototxt: " + protoFile
-    print "\tcaffe model: " + modelFile
-    print "\tvhdl out: " + targetDir
-    print "\tbit width : "  + str(bitWidth)
-    print white
+    print(green + "Haddoc2 CNN parameter parser:")
+    print("\tprototxt: " + protoFile)
+    print("\tcaffe model: " + modelFile)
+    print("\tvhdl out: " + targetDir)
+    print("\tbit width : "  + str(bitWidth))
+    print(white)
 
     main(protoFile,modelFile,targetDir,bitWidth)
