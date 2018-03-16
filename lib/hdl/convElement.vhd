@@ -9,20 +9,21 @@
 ------------------------------------------------------------------------------
 -- Description: The design of parrallel Multiply-ACcumulate architecture that
 --              processes one pixel/clock top. (K x K) elements are generated
---				to do so. This IP is plugged with the neighExtractor entity to
---				process convolutions
+--              to do so. This IP is plugged with the neighExtractor entity to
+--              process convolutions. It basically performs a dot product in a
+--              fully pipelined fashion
 ------------------------------------------------------------------------------
 
 
 library ieee;
-	use	ieee.std_logic_1164.all;
-	use ieee.std_logic_signed.all;
-    use ieee.math_real.all;
+  use  ieee.std_logic_1164.all;
+  use ieee.std_logic_signed.all;
+  use ieee.math_real.all;
 
 
 library work;
-	use work.cnn_types.all;
-	use work.bitwidths.all;
+  use work.cnn_types.all;
+  use work.bitwidths.all;
 
 entity convElement is
 
@@ -37,11 +38,11 @@ entity convElement is
         reset_n     :   in  std_logic;
         enable      :   in  std_logic;
         in_data     :   in  pixel_array (0 to KERNEL_SIZE * KERNEL_SIZE - 1);
-        in_dv    	:   in  std_logic;
-        in_fv    	:   in  std_logic;
+        in_dv       :   in  std_logic;
+        in_fv       :   in  std_logic;
         out_data    :   out std_logic_vector(SUM_WIDTH - 1 downto 0);
-        out_dv    	:   out std_logic;
-        out_fv    	:   out std_logic
+        out_dv      :   out std_logic;
+        out_fv      :   out std_logic
 
     );
 end convElement;
@@ -65,14 +66,6 @@ architecture bhv of convElement is
     -- ARCHITECTURE
     --------------------------------------------------------------------------
     begin
-		-- 07/07/2017 : DEPRECATED - Using std_logic_signed now
-        -- Cast into signed arrays
-        -- cast_loop : for i in 0 to (KERNEL_SIZE * KERNEL_SIZE - 1) generate
-        --     s_data(i)   <= signed(in_data(i));
-        --     s_kernel(i) <= signed(in_kernel(i));
-        -- end generate cast_loop;
-
-        -- all_valid
         all_valid <= enable and in_dv and in_fv;
 
         --------------------------------------------------------------------------

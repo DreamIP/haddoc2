@@ -10,14 +10,14 @@
 -- Description: Implementation of the first convolutional layer of a CNN
 -----------------------------------------------------------------------------
 library ieee;
-	use	ieee.std_logic_1164.all;
-	use	ieee.numeric_std.all;
-    use ieee.math_real.all;
+  use ieee.std_logic_1164.all;
+  use ieee.numeric_std.all;
+  use ieee.math_real.all;
 
 
 library work;
-	use work.cnn_types.all;
-	use work.bitwidths.all;
+  use work.cnn_types.all;
+  use work.bitwidths.all;
 
 
 entity firstLayer is
@@ -32,8 +32,8 @@ entity firstLayer is
     );
 
     port(
-        clk	          :   in  std_logic;
-        reset_n	      :   in  std_logic;
+        clk            :   in  std_logic;
+        reset_n        :   in  std_logic;
         enable        :   in  std_logic;
         in_data       :   in  std_logic_vector (0 to PIXEL_SIZE - 1);
         in_dv         :   in  std_logic;
@@ -50,21 +50,21 @@ architecture STRUCTURAL of firstLayer is
     --------------------------------------------------------------------------------
     component neighExtractor
     generic(
-		PIXEL_SIZE      :   integer;
-		IMAGE_WIDTH     :   integer;
-		KERNEL_SIZE     :   integer
-	);
+    PIXEL_SIZE      :   integer;
+    IMAGE_WIDTH     :   integer;
+    KERNEL_SIZE     :   integer
+  );
 
     port(
-		clk	            :	in 	std_logic;
-        reset_n	        :	in	std_logic;
-        enable	        :	in	std_logic;
-        in_data         :	in 	std_logic_vector((PIXEL_SIZE-1) downto 0);
-        in_dv	        :	in	std_logic;
-        in_fv	        :	in	std_logic;
-        out_data        :	out	pixel_array (0 to (KERNEL_SIZE * KERNEL_SIZE)- 1);
-        out_dv			:	out std_logic;
-        out_fv			:	out std_logic
+        clk         :  in   std_logic;
+        reset_n     :  in  std_logic;
+        enable      :  in  std_logic;
+        in_data     :  in   std_logic_vector((PIXEL_SIZE-1) downto 0);
+        in_dv       :  in  std_logic;
+        in_fv       :  in  std_logic;
+        out_data    :  out  pixel_array (0 to (KERNEL_SIZE * KERNEL_SIZE)- 1);
+        out_dv      :  out std_logic;
+        out_fv      :  out std_logic
     );
     end component;
 
@@ -96,9 +96,9 @@ architecture STRUCTURAL of firstLayer is
     );
 
     port(
-        clk	            :	in  std_logic;
-        reset_n	        :	in  std_logic;
-        enable          :	in  std_logic;
+        clk             :  in  std_logic;
+        reset_n         :  in  std_logic;
+        enable          :  in  std_logic;
         in_data         :   in  std_logic_vector (SUM_WIDTH - 1 downto 0);
         in_dv           :   in  std_logic;
         in_fv           :   in  std_logic;
@@ -131,20 +131,20 @@ architecture STRUCTURAL of firstLayer is
         -- Extract neighborhood
         NE_INST : neighExtractor
         generic map(
-            PIXEL_SIZE	 => PIXEL_SIZE,
+            PIXEL_SIZE   => PIXEL_SIZE,
             IMAGE_WIDTH  => IMAGE_WIDTH,
-            KERNEL_SIZE	 => KERNEL_SIZE
+            KERNEL_SIZE  => KERNEL_SIZE
         )
         port map(
-            clk	         => clk,
-            reset_n	     => reset_n,
-            enable	     => enable,
-            in_data      => in_data,
-            in_dv	     => in_dv,
-            in_fv	     => in_fv,
-            out_data     => s_ne_data,
-            out_dv	     => s_ne_dv,
-            out_fv	     => s_ne_fv
+            clk         => clk,
+            reset_n     => reset_n,
+            enable      => enable,
+            in_data     => in_data,
+            in_dv       => in_dv,
+            in_fv       => in_fv,
+            out_data    => s_ne_data,
+            out_dv      => s_ne_dv,
+            out_fv      => s_ne_fv
         );
 
         -- Process Convolutions
@@ -166,15 +166,15 @@ architecture STRUCTURAL of firstLayer is
                                              KERNEL_VALUE)
             )
             port map(
-                clk         => clk,
-                reset_n     => reset_n,
-                enable      => enable,
-                in_data     => s_ne_data,
-                in_dv    	=> s_ne_dv,
-                in_fv    	=> s_ne_fv,
-                out_data    => s_ce_data (flowIndex),
-                out_dv    	=> s_ce_dv   (flowIndex),
-                out_fv    	=> s_ce_fv   (flowIndex)
+                clk        => clk,
+                reset_n    => reset_n,
+                enable     => enable,
+                in_data    => s_ne_data,
+                in_dv      => s_ne_dv,
+                in_fv      => s_ne_fv,
+                out_data   => s_ce_data (flowIndex),
+                out_dv     => s_ce_dv   (flowIndex),
+                out_fv     => s_ce_fv   (flowIndex)
             );
         end generate CEs_loop;
 

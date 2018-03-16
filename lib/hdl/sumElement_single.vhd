@@ -1,11 +1,11 @@
 library ieee;
-	use	ieee.std_logic_1164.all;
-	use	ieee.numeric_std.all;
-	use	ieee.math_real.all;
+  use ieee.std_logic_1164.all;
+  use ieee.numeric_std.all;
+  use ieee.math_real.all;
 
 library work;
-	use work.cnn_types.all;
-	use work.bitwidths.all;
+  use work.cnn_types.all;
+  use work.bitwidths.all;
 
 --
 --                    ----------------
@@ -27,16 +27,16 @@ entity sumElement_single is
     );
 
     port(
-        clk	            :	in 	std_logic;
-        reset_n	        :	in	std_logic;
-        enable          :	in	std_logic;
-        in_data         :   in  std_logic_vector (SUM_WIDTH - 1 downto 0);
-        in_dv           :   in  std_logic;
-        in_fv           :   in  std_logic;
-        in_bias         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
-        out_data        :   out std_logic_vector (PIXEL_SIZE - 1 downto 0);
-        out_dv          :   out std_logic;
-        out_fv          :   out std_logic
+        clk             :  in  std_logic;
+        reset_n         :  in  std_logic;
+        enable          :  in  std_logic;
+        in_data         :  in  std_logic_vector (SUM_WIDTH - 1 downto 0);
+        in_dv           :  in  std_logic;
+        in_fv           :  in  std_logic;
+        in_bias         :  in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
+        out_data        :  out std_logic_vector (PIXEL_SIZE - 1 downto 0);
+        out_dv          :  out std_logic;
+        out_fv          :  out std_logic
     );
 end entity;
 --
@@ -90,7 +90,6 @@ architecture bhv of sumElement_single is
                     std_logic_vector( to_signed( V2,PIXEL_SIZE));
 
     -- TODO : Unary operators : Only supported in VHDL-2008
-
     -- out_dv <= and (in_dv);
     -- out_fv <= and (in_fv);
     end bhv;

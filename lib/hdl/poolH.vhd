@@ -1,7 +1,7 @@
 library ieee;
-	use	ieee.std_logic_1164.all;
-	use	ieee.numeric_std.all;
-    use ieee.math_real.all;
+  use  ieee.std_logic_1164.all;
+  use  ieee.numeric_std.all;
+  use  ieee.math_real.all;
 
 
 entity poolH is
@@ -13,8 +13,8 @@ entity poolH is
     );
 
     port(
-        clk	            :	in 	std_logic;
-        reset_n	        :	in	std_logic;
+        clk              :  in   std_logic;
+        reset_n          :  in  std_logic;
         enable          :   in  std_logic;
         in_data         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
         in_dv           :   in  std_logic;
@@ -92,17 +92,17 @@ architecture rtl of poolH is
         end process;
         --------------------------------------------------------------------------
         delay : process(clk)
-   	    begin
-   	        if (reset_n = '0') then
-   			     delay_fv <= '0';
-   			    buffer_fv <= (others=>'0');
+         begin
+             if (reset_n = '0') then
+              delay_fv <= '0';
+             buffer_fv <= (others=>'0');
             elsif (rising_edge(clk)) then
                 if (enable = '1') then
-   			        buffer_fv   <= buffer_fv(buffer_fv'HIGH -1 downto 0) & in_fv;
-   			         delay_fv   <= buffer_fv(buffer_fv'HIGH);
+                 buffer_fv   <= buffer_fv(buffer_fv'HIGH -1 downto 0) & in_fv;
+                  delay_fv   <= buffer_fv(buffer_fv'HIGH);
                 end if;
-   	        end if;
-   	    end process;
+             end if;
+         end process;
 
      out_data <= std_logic_vector(max_value_signal);
      out_fv   <= delay_fv;

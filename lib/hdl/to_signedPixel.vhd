@@ -1,10 +1,10 @@
 library ieee;
-	use	ieee.std_logic_1164.all;
-	use	ieee.numeric_std.all;
-    use ieee.math_real.all;
+  use ieee.std_logic_1164.all;
+  use ieee.numeric_std.all;
+  use ieee.math_real.all;
 
 library work;
-	use work.cnn_types.all;
+  use work.cnn_types.all;
 
 entity to_signedPixel is
     generic(
@@ -12,15 +12,15 @@ entity to_signedPixel is
     );
 
     port(
-        clk         :   in  std_logic;
-        reset_n     :   in  std_logic;
-        enable      :   in  std_logic;
-        in_data     :   in  std_logic_vector(PIXEL_SIZE-1 downto 0);
-        in_dv    	:   in  std_logic;
-        in_fv    	:   in  std_logic;
-        out_data    :   out std_logic_vector(PIXEL_SIZE-1 downto 0);
-        out_dv    	:   out std_logic;
-        out_fv    	:   out std_logic
+        clk       :   in  std_logic;
+        reset_n   :   in  std_logic;
+        enable    :   in  std_logic;
+        in_data   :   in  std_logic_vector(PIXEL_SIZE-1 downto 0);
+        in_dv     :   in  std_logic;
+        in_fv     :   in  std_logic;
+        out_data  :   out std_logic_vector(PIXEL_SIZE-1 downto 0);
+        out_dv    :   out std_logic;
+        out_fv    :   out std_logic
 
     );
 end entity;

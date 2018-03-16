@@ -42,17 +42,14 @@ entity sumElement is
         PIXEL_SIZE      :   integer;
         NB_IN_FLOWS     :   integer
     );
-
     port(
         clk             :   in  std_logic;
         reset_n         :   in  std_logic;
         enable          :   in  std_logic;
-
         in_data         :   in  sum_array        (0 to NB_IN_FLOWS - 1);
         in_dv           :   in  std_logic_vector (0 to NB_IN_FLOWS - 1);
         in_fv           :   in  std_logic_vector (0 to NB_IN_FLOWS - 1);
         in_bias         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
-
         out_data        :   out std_logic_vector (PIXEL_SIZE - 1 downto 0);
         out_dv          :   out std_logic;
         out_fv          :   out std_logic
@@ -62,14 +59,11 @@ end entity;
 architecture bhv of sumElement is
 
     type sum_array_signed is array ( integer range <> )  of signed (SUM_WIDTH -1 downto 0);
-
     constant THIS_SUM_WIDTH    :   integer := integer(ceil(log2(real(NB_IN_FLOWS+ 1)))) + SUM_WIDTH;
-
     signal  data_s      :   sum_array_signed (0 to NB_IN_FLOWS - 1) := (others=>(others=>'0'));
     signal  sum_s       :   signed (THIS_SUM_WIDTH - 1 downto 0):= (others=>'0');
     signal  tmp_dv      :   std_logic := '0';
     signal  tmp_fv      :   std_logic := '0';
-
     signal  tmp1        :   signed (THIS_SUM_WIDTH-1 downto 0):= (others=>'0');
     signal  tmp2        :   signed (THIS_SUM_WIDTH-1 downto 0):= (others=>'0');
     signal  s_bias      :   signed (2*PIXEL_SIZE  -1 downto 0):= (others=>'0');

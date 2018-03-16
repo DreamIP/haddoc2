@@ -1,15 +1,15 @@
 ---------------------------------------------------------------------------------
--- Design Name 	: poolLayer
--- Coder       	: Kamel ABDELOUAHAB
--- Institution 	: Institut Pascal  - 2016
+-- Design Name   : poolLayer
+-- Coder         : Kamel ABDELOUAHAB
+-- Institution   : Institut Pascal  - 2016
 ---------------------------------------------------------------------------------
 
 library ieee;
-	use	ieee.std_logic_1164.all;
-	use	ieee.numeric_std.all;
+  use ieee.std_logic_1164.all;
+  use ieee.numeric_std.all;
 
 library work;
-	use work.cnn_types.all;
+  use work.cnn_types.all;
 
 entity poolLayer is
     generic(
@@ -20,8 +20,8 @@ entity poolLayer is
     );
 
     port(
-        clk	          : in  std_logic;
-        reset_n	      : in  std_logic;
+        clk           : in  std_logic;
+        reset_n       : in  std_logic;
         enable        : in  std_logic;
         in_data       : in  pixel_array      (0 to NB_OUT_FLOWS - 1);
         in_dv         : in  std_logic_vector (0 to NB_OUT_FLOWS - 1);
@@ -44,15 +44,15 @@ architecture STRUCTURAL of poolLayer is
     );
 
     port(
-        clk	            :	in 	std_logic;
-        reset_n	        :	in	std_logic;
-        enable          :   in  std_logic;
-        in_data         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
-        in_dv           :   in  std_logic;
-        in_fv           :   in  std_logic;
-        out_data        :   out std_logic_vector (PIXEL_SIZE - 1 downto 0);
-        out_dv          :   out std_logic;
-        out_fv          :   out std_logic
+        clk             :  in  std_logic;
+        reset_n         :  in  std_logic;
+        enable          :  in  std_logic;
+        in_data         :  in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
+        in_dv           :  in  std_logic;
+        in_fv           :  in  std_logic;
+        out_data        :  out std_logic_vector (PIXEL_SIZE - 1 downto 0);
+        out_dv          :  out std_logic;
+        out_fv          :  out std_logic
     );
 
     end component;
