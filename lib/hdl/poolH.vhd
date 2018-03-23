@@ -13,8 +13,8 @@ entity poolH is
     );
 
     port(
-        clk              :  in   std_logic;
-        reset_n          :  in  std_logic;
+        clk             :   in  std_logic;
+        reset_n         :   in  std_logic;
         enable          :   in  std_logic;
         in_data         :   in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
         in_dv           :   in  std_logic;

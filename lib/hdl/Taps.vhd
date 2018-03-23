@@ -30,7 +30,7 @@ library work;
   use work.cnn_types.all;
 
 
-entity taps  is
+entity Taps  is
   generic (
     PIXEL_SIZE   :  integer;
     TAPS_WIDTH   :  integer;
@@ -45,10 +45,10 @@ entity taps  is
     taps_data    :  out  pixel_array (0 to KERNEL_SIZE -1 );
     out_data     :  out  std_logic_vector (PIXEL_SIZE-1 downto 0)
   );
-end taps;
+end Taps;
 
 
-architecture bhv of taps is
+architecture bhv of Taps is
 
   signal cell    :  pixel_array (0 to TAPS_WIDTH-1);
 

@@ -14,14 +14,15 @@
 library ieee;
 	use	ieee.std_logic_1164.all;
 	use	ieee.numeric_std.all;
-    use ieee.math_real.all;
-    use work.bitwidths.all;
+  use ieee.math_real.all;
+  use work.bitwidths.all;
 
 package	cnn_types is
 
 	-- Types
 	type	 pixel_array    is array ( integer range <> ) of std_logic_vector (PIXEL_CONST-1 downto 0);
 	type	 sum_array      is array ( integer range <> ) of std_logic_vector (SUM_WIDTH-1 downto 0);
+	type	 prod_array     is array ( integer range <> ) of std_logic_vector (2*PIXEL_CONST-1 downto 0);
 	type	 pixel_matrix   is array ( integer range <> ,  integer range <>) of std_logic_vector (PIXEL_CONST-1 downto 0);
 	------------------------------------------------------------------------------
 
@@ -39,10 +40,10 @@ package	cnn_types is
 	-- Functions:
 	-- extractRow : Extracts a row of pixel_array data from a pixel_matrix.
     function extractRow( target_row :  integer;
-                            nb_row     :  integer;
-                            nb_col     :  integer;
-                            in_matrix  :  pixel_matrix )
-                            return        pixel_array;
+                         nb_row     :  integer;
+                         nb_col     :  integer;
+                         in_matrix  :  pixel_matrix)
+    return pixel_array;
 	------------------------------------------------------------------------------
 end cnn_types;
 
