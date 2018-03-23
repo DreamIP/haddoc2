@@ -13,8 +13,7 @@
 ## Description: Main python script of the Haddoc2 tool:
 ##              - Run the parseNetParams to generate VHDL configuration file
 ##              - Run the genBitwidths to define fixed point format during inference
-##              - Run mkcnn executable to generate the top
-##				- TODO: Replace mkcnn Caml with python version : parseNetTopology.py
+##              - Run parseNetTopology to generate the toplevel VHDL file
 ##              Technical details can be found in the technical report submitted here:
 ##              https://arxiv.org/abs/1705.04543
 ##----------------------------------------------------------------------------
@@ -33,6 +32,7 @@ HADDOC2_ROOT = os.environ['HADDOC2_ROOT']
 HADDOC2_LIB  = HADDOC2_ROOT + '/lib/python'
 sys.path.insert(0, HADDOC2_LIB)
 import parseNetParams
+import parseNetTopology
 import genBitwidths
 
 green = '\033[92m'
@@ -51,10 +51,8 @@ def main(protoFile,modelFile,targetDir,bitWidth):
     genBitwidths.main(bitwidthFile,bitWidth)
 
     # Generate toplevel vhdl output
-    # TODO: Replace with python version : parseNetTopology.py
+    parseNetTopology.main(topFile, protoFile, modelFile)
     print(green)
-    parseNetTopology = "ocamlrun " +  HADDOC2_ROOT + "/bin/mk_cnn " +  protoFile + ' -o ' + topFile
-    os.system(parseNetTopology)
     print(white)
 
 if __name__ == '__main__':
