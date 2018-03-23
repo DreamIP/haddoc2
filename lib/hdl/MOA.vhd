@@ -1,4 +1,5 @@
--- Implementation of a Multi-Operand-Adder
+-- Design of a Multi-Operand-Adder block
+-- This is a naive implementation with binary adder trees
 library ieee;
     use ieee.std_logic_1164.all;
     use ieee.std_logic_signed.all;
@@ -10,7 +11,7 @@ entity MOA is
       PIXEL_SIZE    : integer;
       SUM_WIDTH     : integer;
       NUM_OPERANDS  : integer;
-      BIAS_VALUE    : std_logic_vector(PIXEL_SIZE - 1 downto 0)
+      BIAS_VALUE    : std_logic_vector
     );
 
     port(
@@ -33,11 +34,11 @@ architecture rtl of MOA is
   begin
     if (rising_edge(clk) and enable='1') then
       if (in_valid = '1') then
-		  acc_loop : for i in 0 to NUM_OPERANDS-1 loop
-		    v_acc := v_acc + in_data(i);
-		  end loop acc_loop;
+          acc_loop : for i in 0 to NUM_OPERANDS-1 loop
+            v_acc := v_acc + in_data(i);
+          end loop acc_loop;
        end if;
-	  end if;
+      end if;
   s_acc <= v_acc;
   out_valid <= in_valid;
   end process;

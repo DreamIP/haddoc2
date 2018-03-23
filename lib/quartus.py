@@ -11,7 +11,7 @@
 ## Last update: 07-07-2017
 ##----------------------------------------------------------------------------
 ## Description: Script to create a Quartus project using generated Haddoc2 VHDL
-##				and Haddoc2 IP library. FPGA here is Intel's Cyclone V 5CGXFC9E7F35C8
+##                and Haddoc2 IP library. FPGA here is Intel's Cyclone V 5CGXFC9E7F35C8
 ##----------------------------------------------------------------------------
 
 import sys
@@ -45,21 +45,24 @@ def gen_qsf (qsfFilename,haddoc_lib_dir,vhdlTarget):
          f.write("set_global_assignment -name VHDL_FILE " + vhdlTarget     + "/cnn_process.vhd\n");
 
          # Haddoc2 lib
-         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/convElement.vhd\n");
-         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/to_signedPixel.vhd\n");
-         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/maxPool.vhd\n");
-         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/fcLayer.vhd\n");
-         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/display_mux.vhd\n");
-         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/poolLayer.vhd\n");
-         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/taps.vhd\n");
          f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/cnn_types.vhd\n");
-         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/sumElement_single.vhd\n");
-         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/convLayer.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/InputLayer.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/DisplayLayer.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/ConvLayer.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/MCM.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/MOA.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/DotProduct.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/Taps.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/NeighExtractor.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/TensorExtractor.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/TanhLayer.vhd\n");
+
+
+         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/PoolLayer.vhd\n");
          f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/poolV.vhd\n");
-         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/firstLayer.vhd\n");
-         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/sumElement.vhd\n");
-         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/neighExtractor.vhd\n");
          f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/poolH.vhd\n");
+         f.write("set_global_assignment -name VHDL_FILE " + haddoc_lib_dir + "/maxPool.vhd\n");
+         
          f.write("set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top\n");
          f.close();
 

@@ -39,7 +39,7 @@ architecture rtl of MCM is
         end loop ;
       end if;
      end if;
-	out_data <= mult;
+    out_data <= mult;
    end process;
-	out_valid <= in_valid;
+    out_valid <= in_valid;
 end architecture;

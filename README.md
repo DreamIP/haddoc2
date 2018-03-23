@@ -1,7 +1,7 @@
 # Haddoc2 :  Hardware Automated Dataflow Description of CNNs
-Haddoc2 is a tool to automatically design FPGA-based hardware accelerators for convolutional neural networks (CNNs). Using a Caffe model, Haddoc2 generates a hardware description of the network (in VHDL-87) which is constructor and device independent. Haddoc2 is built upon the principals of Dataflow stream-based processing of data, and, implements CNNs using a Direct Hardware Mapping approach, where all the actors involved in CNN processing are physically  mapped on the FPGA.
+Haddoc2 is a tool to automatically design FPGA-based hardware accelerators for convolutional neural networks (CNNs). Using a Caffe model, Haddoc2 generates a hardware description of the network (in VHDL-2008) which is constructor and device independent. Haddoc2 is built upon the principals of Dataflow stream-based processing of data, and, implements CNNs using a Direct Hardware Mapping approach, where all the actors involved in CNN processing are physically  mapped on the FPGA.
 
-More implementation details can be found in this [technical report](https://arxiv.org/abs/1705.04543) and the this [paper](https://arxiv.org/pdf/1712.04322.pdf) 
+More implementation details can be found in this [technical report](https://arxiv.org/abs/1705.04543) and the this [paper](https://arxiv.org/pdf/1712.04322.pdf)
 If you find Haddoc2 useful in your research, please consider citing the following paper
 ```
 @article{Abdelouahab17,
@@ -11,7 +11,7 @@ issn = {19430663},
 journal = {IEEE Embedded Systems Letters},
 keywords = {CNN,Dataflow,FPGA,VHDL},
 pages = {1--4},
-title = {{Tactics to Directly Map CNN graphs on Embedded FPGAs}},
+title = {Tactics to Directly Map CNN graphs on Embedded FPGAs},
 url = {http://ieeexplore.ieee.org/document/8015156/},
 year = {2017}}
 ```
@@ -39,10 +39,10 @@ export HADDOC2_ROOT="$HOME/dev/haddoc2"
 ```
 
 Components required to implement the supported CNN layers can be found at `lib/hdl/` directory.
+**Important: Be sure to synthesize your project in VHDL 2008 mode !**
 
 
-
-## Example
+## Generating an example
 `example/` directory contains pre-trained BVLC_caffe model version of the Lenet5 CNN. Please use the Makefile given to test Haddoc2.
 -  `make hdl` generates the VHDL description of the CNN
 -  `make quartus_proj` creates a simple Quartus II project to implement LeNet on an Intel Cyclone V FPGA
@@ -52,10 +52,10 @@ Components required to implement the supported CNN layers can be found at `lib/h
 cd $HADDOC2_ROOT/example
 make hdl
 >> Haddoc2 CNN parameter parser:
-	prototxt: ./caffe/lenet.prototxt
-	caffe model: ./caffe/lenet.caffemodel
-	vhdl out: ./hdl_generated
-	bit width : 5
+    prototxt: ./caffe/lenet.prototxt
+    caffe model: ./caffe/lenet.caffemodel
+    vhdl out: ./hdl_generated
+    bit width : 5
 >> Generated toplevel file: ./hdl_generated/cnn_process.vhd
 
 make quartus_proj
@@ -67,3 +67,7 @@ make compile
 
 
 ```
+# TODO
+1. Add support of BatchNorm / Sigmoid / ReLU layers
+2. Implement Dynamic Fixed Point Arithmetic
+3. Support conv layers with sparse connections (such AlexNet's conv2 layer, where each neuron is connected to only half of conv1 outputs i.e n_outputs(layer-1) != n_inputs(layer) )

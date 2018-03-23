@@ -1,3 +1,6 @@
+-- Converts the camera output to signals usable by Haddoc layers
+-- TODO : Support a variable PIXEL_BIT_WIDTH
+
 library ieee;
   use ieee.std_logic_1164.all;
   use ieee.std_logic_signed.all;
@@ -45,16 +48,16 @@ architecture bhv of InputLayer is
       end generate MONOCHROME_INPUT;
 
       COLOR_INPUT : if NB_OUT_FLOWS=3 generate
-        -- Suppose its an 8 bits image
+        -- Suppose its an 8 bits color depth
         process(clk)
         begin
             if (reset_n = '0') then
                 out_data <= (others=>(others=>'0'));
             else
                 if (enable = '1') then
-                    out_data(0) <= (2 downto 0 => in_data(7 downto 5), others=>'0'); -- Red
-                    out_data(1) <= (2 downto 0 => in_data(4 downto 2), others=>'0'); -- Green
-                    out_data(2) <= (1 downto 0 => in_data(1 downto 0), others=>'0'); -- Blue
+                    out_data(0) <= (2 => in_data(7), 1 => in_data(6), 0 =>in_data(5), others=>'0'); -- Red
+                    out_data(1) <= (2 => in_data(4), 1 => in_data(3), 0 =>in_data(2), others=>'0');-- Green
+                    out_data(2) <= (1 => in_data(1), 0 => in_data(0), others=>'0'); -- Blue
                 end if;
                 out_dv <= in_dv;
                 out_fv <= in_fv;
