@@ -10,8 +10,8 @@ entity DotProduct is
         PIXEL_SIZE        : integer;
         SUM_WIDTH         : integer;
         DOT_PRODUCT_SIZE  : integer;
-        KERNEL_VALUE      : pixel_array (0 to DOT_PRODUCT_SIZE-1);
-        BIAS_VALUE        : std_logic_vector(PIXEL_SIZE - 1 downto 0)
+        KERNEL_VALUE      : pixel_array;
+        BIAS_VALUE        : std_logic_vector
     );
     port(
         clk         :   in  std_logic;
@@ -50,7 +50,7 @@ architecture rtl of DotProduct is
     PIXEL_SIZE   : integer;
     SUM_WIDTH    : integer;
     NUM_OPERANDS : integer;
-    BIAS_VALUE   : std_logic_vector(PIXEL_SIZE - 1 downto 0)
+    BIAS_VALUE   : std_logic_vector
   );
   port (
     clk      : in  std_logic;
