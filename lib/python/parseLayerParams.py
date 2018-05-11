@@ -167,12 +167,15 @@ def write_kernel_value (kernel_data, layer_name, nbits, target):
 ######################################################################
 def parse_convLayer (target, cnn, layer_name, previous_layer_name, nbits):
     kernel_data = cnn.params[layer_name][0].data
-    bias_data = cnn.params[layer_name][1].data
     in_size = cnn.params[layer_name][0].data.shape[1]
     out_size = cnn.blobs[layer_name].data.shape[1]
     previous_layer_size = cnn.blobs[previous_layer_name].data.shape[1]
     kernel_size = cnn.params[layer_name][0].data.shape[2]
     image_width = cnn.blobs[previous_layer_name].data.shape[2]
+    try:
+        bias_data = cnn.params[layer_name][1].data
+    except NameError:
+        bias_data = np.zeros(out_size, dtype=float)
 
     ## Write layer params ##
     target.write("--" + layer_name + "\n")
