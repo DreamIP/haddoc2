@@ -55,9 +55,12 @@ architecture bhv of InputLayer is
                 out_data <= (others=>(others=>'0'));
             else
                 if (enable = '1') then
-                    out_data(0) <= (2 => in_data(7), 1 => in_data(6), 0 =>in_data(5), others=>'0'); -- Red
-                    out_data(1) <= (2 => in_data(4), 1 => in_data(3), 0 =>in_data(2), others=>'0');-- Green
-                    out_data(2) <= (1 => in_data(1), 0 => in_data(0), others=>'0'); -- Blue
+                    -- out_data(0) <= (2 => in_data(7), 1 => in_data(6), 0 =>in_data(5), others=>'0'); -- Red
+                    -- out_data(1) <= (2 => in_data(4), 1 => in_data(3), 0 =>in_data(2), others=>'0');-- Green
+                    -- out_data(2) <= (1 => in_data(1), 0 => in_data(0), others=>'0'); -- Blue
+                    out_data(0) <= in_data;
+                    out_data(1) <= in_data;
+                    out_data(2) <= in_data;
                 end if;
                 out_dv <= in_dv;
                 out_fv <= in_fv;

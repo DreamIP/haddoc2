@@ -146,9 +146,9 @@ architecture STRUCTURAL of ConvLayer is
           DOT_PRODUCT_SIZE => NB_IN_FLOWS * KERNEL_SIZE * KERNEL_SIZE,
           BIAS_VALUE       => BIAS_VALUE(n),
           KERNEL_VALUE     => extractRow(n,
-                                          NB_OUT_FLOWS, -- N
-                                          NB_IN_FLOWS * KERNEL_SIZE * KERNEL_SIZE,-- CJK
-                                          KERNEL_VALUE) --Theta(n)
+                                         NB_OUT_FLOWS, -- N
+                                         NB_IN_FLOWS * KERNEL_SIZE * KERNEL_SIZE,-- CJK
+                                         KERNEL_VALUE) --Theta(n)
         )
         port map (
           clk      => clk,
@@ -158,8 +158,8 @@ architecture STRUCTURAL of ConvLayer is
           in_dv    => neighborhood_dv,
           in_fv    => neighborhood_fv,
           out_data => dp_data(n),
-          out_dv   => out_dv,
-          out_fv   => out_fv
+          out_dv   => OPEN,
+          out_fv   => OPEN
         );
 
         -- Dummy Activation
@@ -173,6 +173,8 @@ architecture STRUCTURAL of ConvLayer is
           out_data => out_data(n)
         );
 
+		  out_dv <= in_dv;
+        out_fv <= in_fv;
       end generate;
 
 
