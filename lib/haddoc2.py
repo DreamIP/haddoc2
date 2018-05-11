@@ -45,6 +45,12 @@ def main(protoFile,modelFile,targetDir,bitWidth):
 
     if not os.path.exists(targetDir):
         os.makedirs(targetDir)
+    print("Haddoc2 VHDL Genrator:")
+    print("\tprototxt: " + protoFile)
+    print("\tcaffe model: " + modelFile)
+    print("\tbit width : "  + str(bitWidth))
+    print("\tvhdl top-level: " + topFile)
+    print("\tvhdl parameters: " + paramFile)
 
     # Generate config vhdl output
     parseNetParams.main(paramFile, protoFile, modelFile, bitWidth)
@@ -52,8 +58,7 @@ def main(protoFile,modelFile,targetDir,bitWidth):
 
     # Generate toplevel vhdl output
     parseNetTopology.main(topFile, protoFile, modelFile)
-    print(green)
-    print(white)
+    print("Succefully generated VHDL files")
 
 if __name__ == '__main__':
     # Default config
@@ -76,14 +81,4 @@ if __name__ == '__main__':
     modelFile = args.model
     targetDir = args.out
     bitWidth  = args.nbits
-
-    green = '\033[92m'
-    white = '\033[0m'
-    print(green + "Haddoc2 CNN parameter parser:")
-    print("\tprototxt: " + protoFile)
-    print("\tcaffe model: " + modelFile)
-    print("\tvhdl out: " + targetDir)
-    print("\tbit width : "  + str(bitWidth))
-    print(white)
-
     main(protoFile,modelFile,targetDir,bitWidth)
