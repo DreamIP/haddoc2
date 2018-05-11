@@ -156,8 +156,12 @@ def WriteInstances(target,cnn):
         elif (layer_type == 'Pooling'):
             InstancePoolLayer(target, l, previous_layer_name)
             previous_layer_name = l
+        elif(layer_type == 'ReLU'):
+            print("\tWARNING : Replaced ReLU with TanH Activation ...")
+        elif(layer_type == 'TanH'):
+            pass
         else:
-            print("WARNING : Bypassed layer " + l + " of type " + layer_type)
+            print("\tWARNING : Bypassed layer " + l + " of type " + layer_type)
     InstanceDisplayLayer(target,previous_layer_name)
 
 def InstanceConvLayer(target, layer_name,previous_layer_name):
@@ -291,6 +295,7 @@ def main(top_level_vhdl, proto_file, weight_file):
     os.environ["GLOG_minloglevel"] = "0"
 
 if __name__ == '__main__':
+    # DEBUG
     top_level_vhdl = "/home/kamel/Seafile/Code/Haddoc-v3/example/hdl_generated/cnn_process.vhd"
     proto_file = "/home/kamel/Seafile/CNN-Models/lenet.prototxt"
     weight_file = "/home/kamel/Seafile/CNN-Models/lenet.caffemodel"

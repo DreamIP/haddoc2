@@ -40,7 +40,7 @@ def main(vhdFile, protoFile, modelFile,pixel_width):
     with open (vhdFile,'w') as f:
         # Opens target toplevel vhdl file
         write_fileHead(f)
-       
+
         # Browse caffe model layer by layer
         for l in cnn._layer_names:
             layer_id = list(cnn._layer_names).index(l)
@@ -48,11 +48,11 @@ def main(vhdFile, protoFile, modelFile,pixel_width):
             if (cnn.layers[layer_id].type == 'Input'):
                 previous_layer_name = l
             elif (cnn.layers[layer_id].type == 'Convolution'):
-                parse_convLayer(target=f,
+                parse_convLayer(target = f,
                                 cnn = cnn,
                                 layer_name = l,
                                 previous_layer_name = previous_layer_name,
-                                nbits=pixel_width)
+                                nbits = pixel_width)
                 previous_layer_name = l
             elif (cnn.layers[layer_id].type == 'Pooling'):
                 blob  = cnn.blobs[l]
@@ -61,9 +61,6 @@ def main(vhdFile, protoFile, modelFile,pixel_width):
                                 layer_name = l,
                                 previous_layer_name = previous_layer_name)
                 previous_layer_name = l
-            else:
-                print("WARNING : Bypassed layer " + l)
-
         write_fileEnd(f)
         os.environ["GLOG_minloglevel"] = "0"
 
