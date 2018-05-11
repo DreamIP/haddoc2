@@ -11,7 +11,7 @@ clean:
     rm -f ./*.rpt
 
 hdl:
-    python3 ../lib/haddoc2.py \
+    python ../lib/haddoc2.py \
     --proto=./caffe/lenet.prototxt \
     --model=./caffe/lenet.caffemodel \
     --out=./hdl_generated \

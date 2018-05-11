@@ -38,6 +38,7 @@
 
 # examples
 example/hdl_generated/*
+example/quartus
 
 # Caffe
 caffe/dataset/*

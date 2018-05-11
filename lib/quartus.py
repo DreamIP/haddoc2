@@ -87,11 +87,11 @@ def generateProject(haddoc2_hdl_lib,
 
 if __name__ == '__main__':
     if (len(sys.argv) == 2):
-        cwd       = os.getcwd()
-        file_path = os.path.dirname(os.path.realpath(__file__))
+        cwd = os.getcwd()
+        cwd = '/'.join(cwd.split('\\'))
         out_dir = sys.argv[1]
-        generateProject(haddoc2_hdl_lib = file_path + '/hdl',
-                        top_level_dir = './hdl_generated',
+        generateProject(haddoc2_hdl_lib = cwd + '/../lib/hdl',
+                        top_level_dir = cwd + '/hdl_generated',
                         out_dir = out_dir)
     else:
         print('Not enought arguments')
