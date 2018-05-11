@@ -18,7 +18,7 @@ hdl:
     --nbits=5
 
 quartus_proj:
-    python ../lib/quartus.py ./
+    python ../lib/quartus.py ./quartus
 
 compile:
     quartus_map cnn_process -c cnn_process

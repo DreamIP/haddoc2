@@ -27,7 +27,7 @@ CAFFE_ROOT       = os.environ['CAFFE_ROOT']
 CAFFE_PYTHON_LIB = CAFFE_ROOT+'/python'
 sys.path.insert(0, CAFFE_PYTHON_LIB)
 os.environ['GLOG_minloglevel'] = '2' # Supresses Display on console
-import caffe;
+import caffe
 
 
 def main(vhdFile, protoFile, modelFile,pixel_width):
@@ -52,15 +52,15 @@ def main(vhdFile, protoFile, modelFile,pixel_width):
                                 cnn = cnn,
                                 layer_name = l,
                                 previous_layer_name = previous_layer_name,
-                                nbits=pixel_width);
-                previous_layer_name = l;
+                                nbits=pixel_width)
+                previous_layer_name = l
             elif (cnn.layers[layer_id].type == 'Pooling'):
-                blob  = cnn.blobs[l];
+                blob  = cnn.blobs[l]
                 parse_poolLayer(target = f,
                                 cnn = cnn,
                                 layer_name = l,
-                                previous_layer_name = previous_layer_name);
-                previous_layer_name = l;
+                                previous_layer_name = previous_layer_name)
+                previous_layer_name = l
             else:
                 print("WARNING : Bypassed layer " + l)
 
