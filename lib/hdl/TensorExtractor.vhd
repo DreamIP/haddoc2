@@ -60,7 +60,7 @@ architecture rtl of TensorExtractor is
     begin
     neighExtractor_gen : for c in 0 to NB_IN_FLOWS-1 generate
 
-        SINGLE_CHANNEL: if c=0 generate
+      SINGLE_CHANNEL: if c=0 generate
       neighExtractor_0 : neighExtractor
       generic map (
         PIXEL_SIZE  => PIXEL_SIZE,
@@ -80,7 +80,7 @@ architecture rtl of TensorExtractor is
       );
         end generate SINGLE_CHANNEL;
 
-        MULTI_CHANNEL: if c>0 generate
+      MULTI_CHANNEL: if c>0 generate
       neighExtractor_i : neighExtractor
       generic map (
         PIXEL_SIZE  => PIXEL_SIZE,
