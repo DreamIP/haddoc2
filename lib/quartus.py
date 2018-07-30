@@ -45,6 +45,9 @@ def gen_qsf (qsf_file,haddoc2_hdl_lib,top_level_dir):
          f.write("set_global_assignment -name VHDL_FILE " + top_level_dir + "/params.vhd\n")
          f.write("set_global_assignment -name VHDL_FILE " + top_level_dir + "/cnn_process.vhd\n")
 
+         # SDC File for timing
+         f.write("set_global_assignment -name VHDL_FILE " + top_level_dir + "/../cnn_process.sdc\n")
+         
          # Haddoc2 lib
          f.write("set_global_assignment -name VHDL_FILE " + haddoc2_hdl_lib + "/cnn_types.vhd\n")
          f.write("set_global_assignment -name VHDL_FILE " + haddoc2_hdl_lib + "/InputLayer.vhd\n")
