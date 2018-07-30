@@ -34,6 +34,7 @@ architecture rtl of MOA is
   begin
     if (rising_edge(clk) and enable='1') then
       if (in_valid = '1') then
+          v_acc:= (others=>'0');
           acc_loop : for i in 0 to NUM_OPERANDS-1 loop
             v_acc := v_acc + in_data(i);
           end loop acc_loop;
