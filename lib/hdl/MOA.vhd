@@ -70,7 +70,7 @@ architecture rtl of MOA is
 -----------------------------
 -- Pipelined implmentation --
 -----------------------------  
-  signal pip_acc : sum_array (0 to NUM_OPERANDS - 1);
+  signal pip_acc : sum_array (0 to NUM_OPERANDS - 1) := (others => (others =>'0'));
   begin
   process(clk)
   begin
@@ -81,11 +81,11 @@ architecture rtl of MOA is
 	 elsif(rising_edge(clk)) then
 	   if (enable = '1') then
 		  if (in_valid = '1') then
-		    pip_acc(0) <= "00000000" & in_data(0);
+		    pip_acc(0)(2*PIXEL_SIZE-1 downto 0) <= in_data(0);
 		    acc_loop : for i in 1 to NUM_OPERANDS-1 loop
 			   pip_acc(i) <= pip_acc(i-1) + in_data(i);
 			 end loop acc_loop;
-		    out_data <= pip_acc(NUM_OPERANDS-1);
+		    out_data <= pip_acc(NUM_OPERANDS-1) + BIAS_VALUE;
 			 
 		  end if;
 		end if;
