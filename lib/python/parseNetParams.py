@@ -5,7 +5,7 @@
 ## File       : parseNetParams.py
 ## Author     : K. Abdelouahab
 ## Company    : Institut Pascal
-## Last update: 07-07-2017
+## Last update: 30-07-2017
 ##----------------------------------------------------------------------------
 ## Description: Extract params from a Caffe model, generates a vhdl configration
 ##              file with the learned kernels quantized and definded as VHDL
@@ -35,8 +35,7 @@ def main(vhdFile, protoFile, modelFile,pixel_width):
     cnn   = caffe.Net(protoFile,modelFile,caffe.TEST)
     blobs = cnn.blobs
     if (cnn.blobs['data'].data.shape[1] == 3 and pixel_width < 8):
-        print("Error: for color inputs, pixel width should be at least 8 bits")
-        sys.exit()
+        print("WARNING: for color inputs, pixel width should be at least 8 bits")
     with open (vhdFile,'w') as f:
         # Opens target toplevel vhdl file
         write_fileHead(f)
