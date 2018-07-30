@@ -15,7 +15,7 @@ hdl:
     --proto=./caffe/lenet.prototxt \
     --model=./caffe/lenet.caffemodel \
     --out=./hdl_generated \
-    --nbits=5
+    --nbits=8
 
 quartus_proj:
     python ../lib/quartus.py ./quartus

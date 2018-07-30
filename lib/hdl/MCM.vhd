@@ -26,20 +26,35 @@ entity MCM is
 end MCM;
 
 architecture rtl of MCM is
+  -- Generate DOT_PRODUCT_SIZE Multipliers
   signal mult : prod_array  (0 to DOT_PRODUCT_SIZE - 1);
+  
   begin
+  ---------------------------------
+  -- Assynchronous implmentation --
+  ---------------------------------
+  -- mcm_loop : for i in 0 to DOT_PRODUCT_SIZE - 1 generate
+  --     out_data(i) <=  KERNEL_VALUE(i) * in_data(i);
+  -- end generate mcm_loop;
+  -- out_valid <= in_valid;
+
+  ---------------------------------
+  --  synchronous implmentation  --
+  ---------------------------------  
+
   process(clk)
-  begin
-    if(reset_n = '0') then
-      out_data <= (others=>(others=>'0'));
-    elsif (rising_edge(clk) and enable='1') then
-      if (in_valid = '1') then
-        mcm_loop : for i in 0 to DOT_PRODUCT_SIZE - 1 loop
-          mult(i) <=  KERNEL_VALUE(i) * in_data(i);
-        end loop ;
-      end if;
-     end if;
-    out_data <= mult;
-   end process;
-    out_valid <= in_valid;
+   begin
+     if(reset_n = '0') then
+     out_data <= (others=>(others=>'0'));
+  	  out_valid <= '0';
+     elsif (rising_edge(clk) and enable='1') then
+        if (in_valid = '1') then
+          mcm_loop : for i in 0 to DOT_PRODUCT_SIZE - 1 loop
+            out_data(i) <=  KERNEL_VALUE(i) * in_data(i);
+          end loop ;
+        end if;
+  	  out_valid <= in_valid;
+     end if;   
+  end process;
+    
 end architecture;
