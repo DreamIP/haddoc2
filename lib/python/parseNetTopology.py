@@ -1,24 +1,26 @@
-##----------------------------------------------------------------------------
-## Title      : ParseNetTopology
-## Project    : Haddoc2
-##----------------------------------------------------------------------------
-## File       : ParseNetTopology.py
-## Author     : K. Abdelouahab
-## Company    : Institut Pascal
-## Created    : 22-03-2017
-##----------------------------------------------------------------------------
-## Description: Generates the toplevel desccription
-##----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+# Title      : ParseNetTopology
+# Project    : Haddoc2
+# ----------------------------------------------------------------------------
+# File       : ParseNetTopology.py
+# Author     : K. Abdelouahab
+# Company    : Institut Pascal
+# Created    : 22-03-2017
+# ----------------------------------------------------------------------------
+# Description: Generates the toplevel desccription
+# ----------------------------------------------------------------------------
 import sys
 import os
 import numpy as np
-CAFFE_ROOT       = os.environ['CAFFE_ROOT']
-CAFFE_PYTHON_LIB = CAFFE_ROOT+'/python'
+CAFFE_ROOT = os.environ['CAFFE_ROOT']
+CAFFE_PYTHON_LIB = CAFFE_ROOT + '/python'
 sys.path.insert(0, CAFFE_PYTHON_LIB)
-os.environ['GLOG_minloglevel'] = '2' # Supresses Display on console
-import caffe;
+os.environ['GLOG_minloglevel'] = '2'  # Supresses Display on console
+import caffe
 
 ## I . COMPONENENTS
+
+
 def WriteComponents(target):
     target.write("--Components\n")
     WriteInputLayerComponent(target)
@@ -26,6 +28,7 @@ def WriteComponents(target):
     WriteConvlayerComponent(target)
     WritePoolLayerComponent(target)
     target.write("\n")
+
 
 def WriteInputLayerComponent(target):
     target.write("component InputLayer\n")
@@ -46,6 +49,7 @@ def WriteInputLayerComponent(target):
     target.write("  out_fv   : out std_logic\n")
     target.write(");\n")
     target.write("end component InputLayer;\n\n")
+
 
 def WriteConvlayerComponent(target):
     target.write("component ConvLayer\n")
@@ -72,6 +76,7 @@ def WriteConvlayerComponent(target):
     target.write(");\n")
     target.write("end component ConvLayer;\n\n")
 
+
 def WriteDisplayLayerComponent(target):
     target.write("component DisplayLayer is\n")
     target.write("generic(\n")
@@ -88,6 +93,7 @@ def WriteDisplayLayerComponent(target):
     target.write("  out_fv   : out std_logic\n")
     target.write(");\n")
     target.write("end component;\n\n")
+
 
 def WritePoolLayerComponent(target):
     target.write("component PoolLayer\n")
@@ -112,40 +118,46 @@ def WritePoolLayerComponent(target):
 
 #######################################################################################
 ## II. SIGNALS
-def WriteLayerSignal(target,layer_name):
+
+
+def WriteLayerSignal(target, layer_name):
     target.write("signal " + layer_name +
                  "_data: pixel_array (0 to "
-                 + layer_name+"_OUT_SIZE - 1);\n")
+                 + layer_name + "_OUT_SIZE - 1);\n")
     target.write("signal " + layer_name + "_dv\t: std_logic;\n")
     target.write("signal " + layer_name + "_fv\t: std_logic;\n")
+
 
 def WriteInputSignal(target, layer_name, next_layer_name):
     target.write("signal " + layer_name + "_data: pixel_array(0 to " +
-                  next_layer_name + "_IN_SIZE-1);\n")
+                 next_layer_name + "_IN_SIZE-1);\n")
     target.write("signal " + layer_name + "_dv\t: std_logic;\n")
     target.write("signal " + layer_name + "_fv\t: std_logic;\n")
 
-def WriteSignals(target,cnn):
+
+def WriteSignals(target, cnn):
     target.write(" -- Signals\n")
     for l in cnn._layer_names:
         layer_id = list(cnn._layer_names).index(l)
-        layer_type =  cnn.layers[layer_id].type
+        layer_type = cnn.layers[layer_id].type
         if (layer_type == 'Input' or layer_type == 'Data'):
             next_layer_name = cnn._layer_names[1]
-            WriteInputSignal(target,l, next_layer_name)
+            WriteInputSignal(target, l, next_layer_name)
         if (layer_type == 'Convolution'):
-            WriteLayerSignal(target,l)
+            WriteLayerSignal(target, l)
         if (layer_type == 'Pooling'):
-            WriteLayerSignal(target,l)
+            WriteLayerSignal(target, l)
     target.write("\n")
 #######################################################################################
 ## III. Instances
-def WriteInstances(target,cnn):
+
+
+def WriteInstances(target, cnn):
     target.write(" -- Instances\n")
     target.write("begin\n")
     for l in cnn._layer_names:
         layer_id = list(cnn._layer_names).index(l)
-        layer_type =  cnn.layers[layer_id].type
+        layer_type = cnn.layers[layer_id].type
         if (layer_type == 'Input' or layer_type == 'Data'):
             next_layer_name = cnn._layer_names[1]
             previous_layer_name = l
@@ -162,9 +174,10 @@ def WriteInstances(target,cnn):
             pass
         else:
             print("\tWARNING : Bypassed layer " + l + " of type " + layer_type)
-    InstanceDisplayLayer(target,previous_layer_name)
+    InstanceDisplayLayer(target, previous_layer_name)
 
-def InstanceConvLayer(target, layer_name,previous_layer_name):
+
+def InstanceConvLayer(target, layer_name, previous_layer_name):
     target.write(layer_name + ": ConvLayer\n")
     target.write("generic map (\n")
     target.write("  PIXEL_SIZE   => PIXEL_SIZE,\n")
@@ -188,7 +201,8 @@ def InstanceConvLayer(target, layer_name,previous_layer_name):
     target.write("  out_fv   => " + layer_name + "_fv\n")
     target.write(");\n\n")
 
-def InstancePoolLayer(target, layer_name,previous_layer_name):
+
+def InstancePoolLayer(target, layer_name, previous_layer_name):
     target.write(layer_name + " : PoolLayer\n")
     target.write("generic map (\n")
     target.write("  PIXEL_SIZE   => PIXEL_SIZE,\n")
@@ -207,6 +221,7 @@ def InstancePoolLayer(target, layer_name,previous_layer_name):
     target.write("  out_dv   => " + layer_name + "_dv,\n")
     target.write("  out_fv   => " + layer_name + "_fv\n")
     target.write(");\n\n")
+
 
 def InstanceInputLayer(target, layer_name, next_layer_name):
     target.write("InputLayer_i : InputLayer\n")
@@ -227,6 +242,7 @@ def InstanceInputLayer(target, layer_name, next_layer_name):
     target.write("  out_fv   => " + layer_name + "_fv\n")
     target.write("  );\n\n")
 
+
 def InstanceDisplayLayer(target, previous_layer_name):
     target.write("DisplayLayer_i: DisplayLayer\n")
     target.write("  generic map(\n")
@@ -244,6 +260,8 @@ def InstanceDisplayLayer(target, previous_layer_name):
     target.write(");\n")
 
 #######################################################################################
+
+
 def WriteLibs(target):
     target.write("library ieee;\n")
     target.write("  use ieee.std_logic_1164.all;\n")
@@ -253,6 +271,8 @@ def WriteLibs(target):
     target.write("  use work.cnn_types.all;\n")
     target.write("  use work.params.all;\n")
 #######################################################################################
+
+
 def WriteEntity(target):
     target.write("entity cnn_process is\n")
     target.write("generic(\n")
@@ -273,26 +293,35 @@ def WriteEntity(target):
     target.write("  );\n")
     target.write("end entity;\n\n")
 #######################################################################################
+
+
 def WriteArchitecutreHead(target):
     target.write("architecture STRUCTURAL of cnn_process is\n")
+
+
 def WriteArchitectureEnd(target):
     target.write("end architecture;\n")
 #######################################################################################
-def WriteArchitecture(target,cnn):
+
+
+def WriteArchitecture(target, cnn):
     WriteArchitecutreHead(target)
-    WriteSignals(target,cnn)
+    WriteSignals(target, cnn)
     WriteComponents(target)
-    WriteInstances(target,cnn)
+    WriteInstances(target, cnn)
     WriteArchitectureEnd(target)
 #######################################################################################
+
+
 def main(top_level_vhdl, proto_file, weight_file):
-    cnn   = caffe.Net(proto_file,weight_file,caffe.TEST)
-    with open (top_level_vhdl,'w') as f:
-    # Opens target toplevel vhdl file
+    cnn = caffe.Net(proto_file, weight_file, caffe.TEST)
+    with open(top_level_vhdl, 'w') as f:
+        # Opens target toplevel vhdl file
         WriteLibs(f)
         WriteEntity(f)
-        WriteArchitecture(f,cnn)
+        WriteArchitecture(f, cnn)
     os.environ["GLOG_minloglevel"] = "0"
+
 
 if __name__ == '__main__':
     # DEBUG
