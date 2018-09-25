@@ -56,7 +56,7 @@ def main(protoFile, modelFile, targetDir, bitWidth):
 
     # Generate config vhdl output
     parseNetParams.main(paramFile, protoFile, modelFile, bitWidth)
-    genBitwidths.main(bitwidthFile, bitWidth)
+    genBitwidths.main(bitwidthFile, protoFile, modelFile, bitWidth)
 
     # Generate toplevel vhdl output
     parseNetTopology.main(topFile, protoFile, modelFile)

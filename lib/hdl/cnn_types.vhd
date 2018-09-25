@@ -20,15 +20,15 @@ use work.bitwidths.all;
 package cnn_types is
   ------------------------------------------------------------------------------
   -- Types
-  type pixel_array is array (integer range <>) of std_logic_vector (PIXEL_CONST-1 downto 0);
+  type pixel_array is array (integer range <>) of std_logic_vector (GENERAL_BITWIDTH-1 downto 0);
   type sum_array is array (integer range <>) of std_logic_vector (SUM_WIDTH-1 downto 0);
-  type prod_array is array (integer range <>) of std_logic_vector (2*PIXEL_CONST-1 downto 0);
-  type pixel_matrix is array (integer range <>, integer range <>) of std_logic_vector (PIXEL_CONST-1 downto 0);
+  type prod_array is array (integer range <>) of std_logic_vector (2*GENERAL_BITWIDTH-1 downto 0);
+  type pixel_matrix is array (integer range <>, integer range <>) of std_logic_vector (GENERAL_BITWIDTH-1 downto 0);
   ------------------------------------------------------------------------------
   -- Constants to implement piecewize TanH : cf DotProduct.vhd
-  constant SCALE_FACTOR : integer := 2 **(PIXEL_CONST-1) - 1;
-  constant A1           : integer := PIXEL_CONST - 1;
-  constant A2           : integer := PIXEL_CONST;
+  constant SCALE_FACTOR : integer := 2 **(GENERAL_BITWIDTH-1) - 1;
+  constant A1           : integer := GENERAL_BITWIDTH - 1;
+  constant A2           : integer := GENERAL_BITWIDTH;
   constant T1           : integer := SCALE_FACTOR * SCALE_FACTOR / 2;
   constant T2           : integer := SCALE_FACTOR * SCALE_FACTOR * 5/4;
   constant V1           : integer := SCALE_FACTOR / 4;

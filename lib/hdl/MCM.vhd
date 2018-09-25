@@ -10,7 +10,7 @@ use work.cnn_types.all;
 
 entity MCM is
   generic(
-    PIXEL_SIZE       : integer;
+    BITWIDTH       : integer;
     DOT_PRODUCT_SIZE : integer;
     KERNEL_VALUE     : pixel_array
     );

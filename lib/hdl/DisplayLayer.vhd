@@ -22,7 +22,7 @@ use work.cnn_types.all;
 
 entity DisplayLayer is
   generic(
-    PIXEL_SIZE  : integer;
+    BITWIDTH  : integer;
     NB_IN_FLOWS : integer
     );
   port(
@@ -30,7 +30,7 @@ entity DisplayLayer is
     in_dv    : in  std_logic;
     in_fv    : in  std_logic;
     sel      : in  std_logic_vector(31 downto 0);
-    out_data : out std_logic_vector(PIXEL_SIZE-1 downto 0);
+    out_data : out std_logic_vector(BITWIDTH-1 downto 0);
     out_dv   : out std_logic;
     out_fv   : out std_logic
     );

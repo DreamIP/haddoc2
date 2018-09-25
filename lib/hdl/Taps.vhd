@@ -32,7 +32,7 @@ use work.cnn_types.all;
 
 entity Taps is
   generic (
-    PIXEL_SIZE  : integer;
+    BITWIDTH  : integer;
     TAPS_WIDTH  : integer;
     KERNEL_SIZE : integer
     );
@@ -41,9 +41,9 @@ entity Taps is
     clk       : in  std_logic;
     reset_n   : in  std_logic;
     enable    : in  std_logic;
-    in_data   : in  std_logic_vector (PIXEL_SIZE-1 downto 0);
+    in_data   : in  std_logic_vector (BITWIDTH-1 downto 0);
     taps_data : out pixel_array (0 to KERNEL_SIZE -1);
-    out_data  : out std_logic_vector (PIXEL_SIZE-1 downto 0)
+    out_data  : out std_logic_vector (BITWIDTH-1 downto 0)
     );
 end Taps;
 

@@ -22,7 +22,7 @@ use ieee.numeric_std.all;
 
 entity maxPool is
   generic(
-    PIXEL_SIZE  : integer;
+    BITWIDTH  : integer;
     IMAGE_WIDTH : integer;
     KERNEL_SIZE : integer
     );
@@ -31,10 +31,10 @@ entity maxPool is
     clk      : in  std_logic;
     reset_n  : in  std_logic;
     enable   : in  std_logic;
-    in_data  : in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
+    in_data  : in  std_logic_vector (BITWIDTH - 1 downto 0);
     in_dv    : in  std_logic;
     in_fv    : in  std_logic;
-    out_data : out std_logic_vector (PIXEL_SIZE - 1 downto 0);
+    out_data : out std_logic_vector (BITWIDTH - 1 downto 0);
     out_dv   : out std_logic;
     out_fv   : out std_logic
     );
@@ -44,7 +44,7 @@ architecture rtl of maxPool is
   --------------------------------------------------------------------------
   -- Signals
   --------------------------------------------------------------------------
-  signal connect_data : std_logic_vector (PIXEL_SIZE - 1 downto 0);
+  signal connect_data : std_logic_vector (BITWIDTH - 1 downto 0);
   signal connect_dv   : std_logic;
   signal connect_fv   : std_logic;
 
@@ -53,7 +53,7 @@ architecture rtl of maxPool is
   --------------------------------------------------------------------------
   component poolH
     generic(
-      PIXEL_SIZE  : integer;
+      BITWIDTH  : integer;
       IMAGE_WIDTH : integer;
       KERNEL_SIZE : integer
       );
@@ -62,10 +62,10 @@ architecture rtl of maxPool is
       clk      : in  std_logic;
       reset_n  : in  std_logic;
       enable   : in  std_logic;
-      in_data  : in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
+      in_data  : in  std_logic_vector (BITWIDTH - 1 downto 0);
       in_dv    : in  std_logic;
       in_fv    : in  std_logic;
-      out_data : out std_logic_vector (PIXEL_SIZE - 1 downto 0);
+      out_data : out std_logic_vector (BITWIDTH - 1 downto 0);
       out_dv   : out std_logic;
       out_fv   : out std_logic
       );
@@ -74,7 +74,7 @@ architecture rtl of maxPool is
   --------------------------------------------------------------------------
   component poolV
     generic(
-      PIXEL_SIZE  : integer;
+      BITWIDTH  : integer;
       IMAGE_WIDTH : integer;
       KERNEL_SIZE : integer
       );
@@ -83,10 +83,10 @@ architecture rtl of maxPool is
       clk      : in  std_logic;
       reset_n  : in  std_logic;
       enable   : in  std_logic;
-      in_data  : in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
+      in_data  : in  std_logic_vector (BITWIDTH - 1 downto 0);
       in_dv    : in  std_logic;
       in_fv    : in  std_logic;
-      out_data : out std_logic_vector (PIXEL_SIZE - 1 downto 0);
+      out_data : out std_logic_vector (BITWIDTH - 1 downto 0);
       out_dv   : out std_logic;
       out_fv   : out std_logic
       );
@@ -97,7 +97,7 @@ architecture rtl of maxPool is
 begin
   poolv_inst : poolV
     generic map (
-      PIXEL_SIZE  => PIXEL_SIZE,
+      BITWIDTH  => BITWIDTH,
       KERNEL_SIZE => KERNEL_SIZE,
       IMAGE_WIDTH => IMAGE_WIDTH
       )
@@ -118,7 +118,7 @@ begin
 
   poolh_inst : poolH
     generic map (
-      PIXEL_SIZE  => PIXEL_SIZE,
+      BITWIDTH  => BITWIDTH,
       KERNEL_SIZE => KERNEL_SIZE,
       IMAGE_WIDTH => IMAGE_WIDTH
       )

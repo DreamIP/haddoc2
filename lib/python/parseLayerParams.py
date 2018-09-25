@@ -240,7 +240,7 @@ def write_fileHead(target):
 
 
 def write_pixelWidth(target, pixelWidth):
-    target.write("constant PIXEL_CONST    : integer :=" +
+    target.write("constant GENERAL_BITWIDTH    : integer :=" +
                  str(pixelWidth) + ";\n")
 ######################################################################
 

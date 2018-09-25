@@ -34,8 +34,6 @@ def main(vhdFile, protoFile, modelFile, pixel_width):
     # Opens Caffe Model
     cnn = caffe.Net(protoFile, modelFile, caffe.TEST)
     blobs = cnn.blobs
-    if (cnn.blobs['data'].data.shape[1] == 3 and pixel_width < 8):
-        print("WARNING: for color inputs, pixel width should be at least 8 bits")
     with open(vhdFile, 'w') as f:
         # Opens target toplevel vhdl file
         write_fileHead(f)

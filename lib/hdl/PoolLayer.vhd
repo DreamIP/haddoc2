@@ -13,7 +13,7 @@ use work.cnn_types.all;
 
 entity PoolLayer is
   generic(
-    PIXEL_SIZE   : integer;
+    BITWIDTH   : integer;
     IMAGE_WIDTH  : integer;
     KERNEL_SIZE  : integer;
     NB_OUT_FLOWS : integer
@@ -37,7 +37,7 @@ architecture STRUCTURAL of PoolLayer is
   --------------------------------------------------------------------------------
   component maxPool
     generic(
-      PIXEL_SIZE  : integer;
+      BITWIDTH  : integer;
       IMAGE_WIDTH : integer;
       KERNEL_SIZE : integer
       );
@@ -45,10 +45,10 @@ architecture STRUCTURAL of PoolLayer is
       clk      : in  std_logic;
       reset_n  : in  std_logic;
       enable   : in  std_logic;
-      in_data  : in  std_logic_vector (PIXEL_SIZE - 1 downto 0);
+      in_data  : in  std_logic_vector (BITWIDTH - 1 downto 0);
       in_dv    : in  std_logic;
       in_fv    : in  std_logic;
-      out_data : out std_logic_vector (PIXEL_SIZE - 1 downto 0);
+      out_data : out std_logic_vector (BITWIDTH - 1 downto 0);
       out_dv   : out std_logic;
       out_fv   : out std_logic
       );
@@ -61,7 +61,7 @@ begin
     first_maxpool : if i = 0 generate
       maxPool_0 : maxPool
         generic map(
-          PIXEL_SIZE  => PIXEL_SIZE,
+          BITWIDTH  => BITWIDTH,
           IMAGE_WIDTH => IMAGE_WIDTH,
           KERNEL_SIZE => KERNEL_SIZE
           )
@@ -81,7 +81,7 @@ begin
     other_maxPool : if i > 0 generate
       maxPool_i : maxPool
         generic map(
-          PIXEL_SIZE  => PIXEL_SIZE,
+          BITWIDTH  => BITWIDTH,
           IMAGE_WIDTH => IMAGE_WIDTH,
           KERNEL_SIZE => KERNEL_SIZE
           )

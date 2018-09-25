@@ -59,7 +59,7 @@ use work.cnn_types.all;
 entity neighExtractor is
 
   generic(
-    PIXEL_SIZE  : integer;
+    BITWIDTH  : integer;
     IMAGE_WIDTH : integer;
     KERNEL_SIZE : integer
     );
@@ -68,7 +68,7 @@ entity neighExtractor is
     clk      : in  std_logic;
     reset_n  : in  std_logic;
     enable   : in  std_logic;
-    in_data  : in  std_logic_vector((PIXEL_SIZE-1) downto 0);
+    in_data  : in  std_logic_vector((BITWIDTH-1) downto 0);
     in_dv    : in  std_logic;
     in_fv    : in  std_logic;
     out_data : out pixel_array (0 to (KERNEL_SIZE * KERNEL_SIZE)- 1);
@@ -93,7 +93,7 @@ architecture rtl of neighExtractor is
   -- components
   component taps
     generic (
-      PIXEL_SIZE  : integer;
+      BITWIDTH  : integer;
       TAPS_WIDTH  : integer;
       KERNEL_SIZE : integer
       );
@@ -102,9 +102,9 @@ architecture rtl of neighExtractor is
       clk       : in  std_logic;
       reset_n   : in  std_logic;
       enable    : in  std_logic;
-      in_data   : in  std_logic_vector (PIXEL_SIZE-1 downto 0);
+      in_data   : in  std_logic_vector (BITWIDTH-1 downto 0);
       taps_data : out pixel_array (0 to KERNEL_SIZE -1);
-      out_data  : out std_logic_vector (PIXEL_SIZE-1 downto 0)
+      out_data  : out std_logic_vector (BITWIDTH-1 downto 0)
       );
   end component;
 
@@ -139,7 +139,7 @@ begin
     gen_1 : if i = 0 generate
       gen1_inst : taps
         generic map(
-          PIXEL_SIZE  => PIXEL_SIZE,
+          BITWIDTH  => BITWIDTH,
           TAPS_WIDTH  => IMAGE_WIDTH-1,
           KERNEL_SIZE => KERNEL_SIZE
           )
@@ -157,7 +157,7 @@ begin
     gen_i : if i > 0 and i < KERNEL_SIZE-1 generate
       geni_inst : taps
         generic map(
-          PIXEL_SIZE  => PIXEL_SIZE,
+          BITWIDTH  => BITWIDTH,
           TAPS_WIDTH  => IMAGE_WIDTH-1,
           KERNEL_SIZE => KERNEL_SIZE
           )
@@ -175,7 +175,7 @@ begin
     gen_last : if i = (KERNEL_SIZE-1) generate
       gen_last_inst : taps
         generic map(
-          PIXEL_SIZE  => PIXEL_SIZE,
+          BITWIDTH  => BITWIDTH,
           TAPS_WIDTH  => KERNEL_SIZE,
           KERNEL_SIZE => KERNEL_SIZE
           )

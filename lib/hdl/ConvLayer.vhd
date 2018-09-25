@@ -30,7 +30,7 @@ use work.cnn_types.all;
 
 entity ConvLayer is
   generic(
-    PIXEL_SIZE   : integer;
+    BITWIDTH   : integer;
     IMAGE_WIDTH  : integer;
     SUM_WIDTH    : integer;
     KERNEL_SIZE  : integer;
@@ -59,7 +59,7 @@ architecture STRUCTURAL of ConvLayer is
   --------------------------------------------------------------------------------
   component TensorExtractor
     generic (
-      PIXEL_SIZE  : integer;
+      BITWIDTH  : integer;
       IMAGE_WIDTH : integer;
       KERNEL_SIZE : integer;
       NB_IN_FLOWS : integer
@@ -79,7 +79,7 @@ architecture STRUCTURAL of ConvLayer is
 
   component DotProduct
     generic (
-      PIXEL_SIZE       : integer;
+      BITWIDTH       : integer;
       SUM_WIDTH        : integer;
       DOT_PRODUCT_SIZE : integer;
       KERNEL_VALUE     : pixel_array;
@@ -101,12 +101,12 @@ architecture STRUCTURAL of ConvLayer is
 
   component TanhLayer
     generic (
-      PIXEL_SIZE : integer;
+      BITWIDTH : integer;
       SUM_WIDTH  : integer
       );
     port (
       in_data  : in  std_logic_vector (SUM_WIDTH-1 downto 0);
-      out_data : out std_logic_vector (PIXEL_SIZE-1 downto 0)
+      out_data : out std_logic_vector (BITWIDTH-1 downto 0)
       );
   end component TanhLayer;
   ------------------------------------------------------------------------------------------
@@ -121,7 +121,7 @@ begin
 
   TensorExtractor_i : TensorExtractor
     generic map (
-      PIXEL_SIZE  => PIXEL_SIZE,
+      BITWIDTH  => BITWIDTH,
       IMAGE_WIDTH => IMAGE_WIDTH,
       KERNEL_SIZE => KERNEL_SIZE,
       NB_IN_FLOWS => NB_IN_FLOWS
@@ -141,7 +141,7 @@ begin
   DotProduct_loop : for n in 0 to NB_OUT_FLOWS- 1 generate
     DotProduct_i : DotProduct
       generic map (
-        PIXEL_SIZE       => PIXEL_SIZE,
+        BITWIDTH       => BITWIDTH,
         SUM_WIDTH        => SUM_WIDTH,
         DOT_PRODUCT_SIZE => NB_IN_FLOWS * KERNEL_SIZE * KERNEL_SIZE,
         BIAS_VALUE       => BIAS_VALUE(n),
@@ -165,7 +165,7 @@ begin
     -- Dummy Activation
     TanhLayer_i : TanhLayer
       generic map (
-        PIXEL_SIZE => PIXEL_SIZE,
+        BITWIDTH => BITWIDTH,
         SUM_WIDTH  => SUM_WIDTH
         )
       port map (

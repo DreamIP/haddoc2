@@ -1,25 +1,21 @@
 all: hdl quartus_proj
-
 clean:
-    rm -rf ./hdl_generated
-    rm -rf ./build
-    rm -rf ./db
-    rm -rf ./incremental_db
-
-    rm -f ./cnn_process.qsf
-    rm -f ./cnn_process.qpf
-    rm -f ./*.rpt
-
+	rm -rf ./hdl_generated
+	rm -rf ./build
+	rm -rf ./db
+	rm -rf ./incremental_db
+	rm -f ./cnn_process.qsf
+	rm -f ./cnn_process.qpf
+	rm -f ./*.rpt
 hdl:
-    python ../lib/haddoc2.py \
-    --proto=./caffe/lenet.prototxt \
-    --model=./caffe/lenet.caffemodel \
-    --out=./hdl_generated \
-    --nbits=8
-
+	python3 ../lib/haddoc2.py \
+	--proto=./caffe/lenet.prototxt \
+	--model=./caffe/lenet.caffemodel \
+	--out=./hdl_generated \
+	--nbits=6
 quartus_proj:
-    python ../lib/quartus.py ./quartus
-
+	python3 ../lib/quartus.py ./quartus
 compile:
-    quartus_map cnn_process -c cnn_process
-    quartus_fit cnn_process -c cnn_process
+	cd ./quartus
+	quartus_map cnn_process -c cnn_process
+	quartus_fit cnn_process -c cnn_process

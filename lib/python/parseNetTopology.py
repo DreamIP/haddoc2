@@ -33,15 +33,15 @@ def WriteComponents(target):
 def WriteInputLayerComponent(target):
     target.write("component InputLayer\n")
     target.write("generic (\n")
-    target.write("  PIXEL_SIZE      : integer;\n")
-    target.write("  PIXEL_BIT_WIDTH : integer;\n")
+    target.write("  BITWIDTH      : integer;\n")
+    target.write("  INPUT_BIT_WIDTH : integer;\n")
     target.write("  NB_OUT_FLOWS    : integer\n")
     target.write(");\n")
     target.write("port (\n")
     target.write("  clk      : in  std_logic;\n")
     target.write("  reset_n  : in  std_logic;\n")
     target.write("  enable   : in  std_logic;\n")
-    target.write("  in_data  : in  std_logic_vector(PIXEL_SIZE-1 downto 0);\n")
+    target.write("  in_data  : in  std_logic_vector(INPUT_BIT_WIDTH-1 downto 0);\n")
     target.write("  in_dv    : in  std_logic;\n")
     target.write("  in_fv    : in  std_logic;\n")
     target.write("  out_data : out pixel_array(0 to NB_OUT_FLOWS-1);\n")
@@ -54,7 +54,7 @@ def WriteInputLayerComponent(target):
 def WriteConvlayerComponent(target):
     target.write("component ConvLayer\n")
     target.write("generic (\n")
-    target.write("  PIXEL_SIZE   : integer;\n")
+    target.write("  BITWIDTH   : integer;\n")
     target.write("  IMAGE_WIDTH  : integer;\n")
     target.write("  SUM_WIDTH    : integer;\n")
     target.write("  KERNEL_SIZE  : integer;\n")
@@ -80,7 +80,7 @@ def WriteConvlayerComponent(target):
 def WriteDisplayLayerComponent(target):
     target.write("component DisplayLayer is\n")
     target.write("generic(\n")
-    target.write("  PIXEL_SIZE : integer;\n")
+    target.write("  BITWIDTH : integer;\n")
     target.write("  NB_IN_FLOWS: integer\n")
     target.write(");\n")
     target.write("port(\n")
@@ -88,7 +88,7 @@ def WriteDisplayLayerComponent(target):
     target.write("  in_dv    : in  std_logic;\n")
     target.write("  in_fv    : in  std_logic;\n")
     target.write("  sel      : in  std_logic_vector(31 downto 0);\n")
-    target.write("  out_data : out std_logic_vector(PIXEL_SIZE-1 downto 0);\n")
+    target.write("  out_data : out std_logic_vector(BITWIDTH-1 downto 0);\n")
     target.write("  out_dv   : out std_logic;\n")
     target.write("  out_fv   : out std_logic\n")
     target.write(");\n")
@@ -98,7 +98,7 @@ def WriteDisplayLayerComponent(target):
 def WritePoolLayerComponent(target):
     target.write("component PoolLayer\n")
     target.write("generic \n(")
-    target.write("  PIXEL_SIZE   : integer;\n")
+    target.write("  BITWIDTH   : integer;\n")
     target.write("  IMAGE_WIDTH  : integer;\n")
     target.write("  KERNEL_SIZE  : integer;\n")
     target.write("  NB_OUT_FLOWS : integer\n")
@@ -149,9 +149,8 @@ def WriteSignals(target, cnn):
             WriteLayerSignal(target, l)
     target.write("\n")
 #######################################################################################
+
 ## III. Instances
-
-
 def WriteInstances(target, cnn):
     target.write(" -- Instances\n")
     target.write("begin\n")
@@ -161,7 +160,11 @@ def WriteInstances(target, cnn):
         if (layer_type == 'Input' or layer_type == 'Data'):
             next_layer_name = cnn._layer_names[1]
             previous_layer_name = l
-            InstanceInputLayer(target, l, next_layer_name)
+            if (cnn.blobs[l].data.shape[1] == 1):       #Monochrome input
+                input_bitwidth = 8
+            else:
+                input_bitwidth = 24
+            InstanceInputLayer(target, l, next_layer_name,input_bitwidth)
         elif (layer_type == 'Convolution'):
             InstanceConvLayer(target, l, previous_layer_name)
             previous_layer_name = l
@@ -180,7 +183,7 @@ def WriteInstances(target, cnn):
 def InstanceConvLayer(target, layer_name, previous_layer_name):
     target.write(layer_name + ": ConvLayer\n")
     target.write("generic map (\n")
-    target.write("  PIXEL_SIZE   => PIXEL_SIZE,\n")
+    target.write("  BITWIDTH   => BITWIDTH,\n")
     target.write("  SUM_WIDTH    => SUM_WIDTH,\n")
     target.write("  IMAGE_WIDTH  => " + layer_name + "_IMAGE_WIDTH,\n")
     target.write("  KERNEL_SIZE  => " + layer_name + "_KERNEL_SIZE,\n")
@@ -205,7 +208,7 @@ def InstanceConvLayer(target, layer_name, previous_layer_name):
 def InstancePoolLayer(target, layer_name, previous_layer_name):
     target.write(layer_name + " : PoolLayer\n")
     target.write("generic map (\n")
-    target.write("  PIXEL_SIZE   => PIXEL_SIZE,\n")
+    target.write("  BITWIDTH   => BITWIDTH,\n")
     target.write("  IMAGE_WIDTH  => " + layer_name + "_IMAGE_WIDTH,\n")
     target.write("  KERNEL_SIZE  => " + layer_name + "_KERNEL_SIZE,\n")
     target.write("  NB_OUT_FLOWS => " + layer_name + "_OUT_SIZE\n")
@@ -223,11 +226,11 @@ def InstancePoolLayer(target, layer_name, previous_layer_name):
     target.write(");\n\n")
 
 
-def InstanceInputLayer(target, layer_name, next_layer_name):
+def InstanceInputLayer(target, layer_name, next_layer_name, input_bitwidth):
     target.write("InputLayer_i : InputLayer\n")
     target.write("generic map (\n")
-    target.write("  PIXEL_SIZE      => PIXEL_SIZE,\n")
-    target.write("  PIXEL_BIT_WIDTH => PIXEL_SIZE,\n")
+    target.write("  BITWIDTH      => BITWIDTH,\n")
+    target.write("  INPUT_BIT_WIDTH => " + str(input_bitwidth) + ",\n")
     target.write("  NB_OUT_FLOWS    => " + next_layer_name + "_IN_SIZE\n")
     target.write(")\n")
     target.write("port map (\n")
@@ -246,7 +249,7 @@ def InstanceInputLayer(target, layer_name, next_layer_name):
 def InstanceDisplayLayer(target, previous_layer_name):
     target.write("DisplayLayer_i: DisplayLayer\n")
     target.write("  generic map(\n")
-    target.write("  PIXEL_SIZE => PIXEL_SIZE,\n")
+    target.write("  BITWIDTH => BITWIDTH,\n")
     target.write("  NB_IN_FLOWS => " + previous_layer_name + "_OUT_SIZE\n")
     target.write("  )\n")
     target.write("  port map(\n")
@@ -276,7 +279,7 @@ def WriteLibs(target):
 def WriteEntity(target):
     target.write("entity cnn_process is\n")
     target.write("generic(\n")
-    target.write("  PIXEL_SIZE  : integer := PIXEL_CONST;\n")
+    target.write("  BITWIDTH  : integer := GENERAL_BITWIDTH;\n")
     target.write("  IMAGE_WIDTH : integer := CONV1_IMAGE_WIDTH\n")
     target.write(");\n")
     target.write("port(\n")
@@ -284,10 +287,10 @@ def WriteEntity(target):
     target.write("  reset_n  : in std_logic;\n")
     target.write("  enable   : in std_logic;\n")
     target.write("  select_i : in std_logic_vector(31 downto 0);\n")
-    target.write("  in_data  : in std_logic_vector(PIXEL_SIZE-1 downto 0);\n")
+    target.write("  in_data  : in std_logic_vector(INPUT_BIT_WIDTH-1 downto 0);\n")
     target.write("  in_dv    : in std_logic;\n")
     target.write("  in_fv    : in std_logic;\n")
-    target.write("  out_data : out std_logic_vector(PIXEL_SIZE-1 downto 0);\n")
+    target.write("  out_data : out std_logic_vector(BITWIDTH-1 downto 0);\n")
     target.write("  out_dv   : out std_logic;\n")
     target.write("  out_fv   : out std_logic\n")
     target.write("  );\n")

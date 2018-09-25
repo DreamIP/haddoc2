@@ -95,7 +95,7 @@ def gen_qsf(qsf_file, haddoc2_hdl_lib, top_level_dir):
 
 def gen_qpf(qpf_file):
     with open(qpf_file, 'w') as f:
-        f.write("QUARTUS_VERSION = \"16.0\"\n")
+        f.write("QUARTUS_VERSION = \"18.0\"\n")
         f.write("PROJECT_REVISION = \"cnn_process\"\n")
         f.close()
 

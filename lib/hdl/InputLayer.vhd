@@ -10,8 +10,8 @@ use work.cnn_types.all;
 
 entity InputLayer is
   generic(
-    PIXEL_SIZE      : integer;          -- Bit-width of the activations and FMs
-    PIXEL_BIT_WIDTH : integer;          -- Bit-width of the input pixel
+    BITWIDTH      : integer;          -- Bit-width of the activations and FMs
+    INPUT_BIT_WIDTH : integer;          -- Bit-width of the input pixel
     NB_OUT_FLOWS    : integer           -- Number of channels in input
     );
 
@@ -19,7 +19,7 @@ entity InputLayer is
     clk      : in  std_logic;
     reset_n  : in  std_logic;
     enable   : in  std_logic;
-    in_data  : in  std_logic_vector(PIXEL_SIZE-1 downto 0);
+    in_data  : in  std_logic_vector(INPUT_BIT_WIDTH-1 downto 0);
     in_dv    : in  std_logic;
     in_fv    : in  std_logic;
     out_data : out pixel_array(0 to NB_OUT_FLOWS-1);
@@ -39,7 +39,7 @@ begin
         out_data <= (others => (others => '0'));
       else
         if (enable = '1') then
-          out_data(0) <= '0' & in_data(PIXEL_SIZE-1 downto 1);
+          out_data(0) <= '0' & in_data(INPUT_BIT_WIDTH-1 downto INPUT_BIT_WIDTH-BITWIDTH+1);
         end if;
         out_dv <= in_dv;
         out_fv <= in_fv;
@@ -48,19 +48,17 @@ begin
   end generate MONOCHROME_INPUT;
 
   COLOR_INPUT : if NB_OUT_FLOWS = 3 generate
-    -- Suppose its an 8 bits color depth
+    -- RGB 8 bits color depth
     process(clk)
     begin
       if (reset_n = '0') then
         out_data <= (others => (others => '0'));
       else
         if (enable = '1') then
-          -- out_data(0) <= (2 => in_data(7), 1 => in_data(6), 0 =>in_data(5), others=>'0'); -- Red
-          -- out_data(1) <= (2 => in_data(4), 1 => in_data(3), 0 =>in_data(2), others=>'0');-- Green
-          -- out_data(2) <= (1 => in_data(1), 0 => in_data(0), others=>'0'); -- Blue
-          out_data(0) <= in_data;
-          out_data(1) <= in_data;
-          out_data(2) <= in_data;
+          -- MSBs of each channel
+          out_data(0) <= '0' & in_data(INPUT_BIT_WIDTH/1-1 downto INPUT_BIT_WIDTH/1-BITWIDTH+1);
+          out_data(1) <= '0' & in_data(INPUT_BIT_WIDTH/2-1 downto INPUT_BIT_WIDTH/2-BITWIDTH+1);
+          out_data(2) <= '0' & in_data(INPUT_BIT_WIDTH/3-1 downto INPUT_BIT_WIDTH/3-BITWIDTH+1);
         end if;
         out_dv <= in_dv;
         out_fv <= in_fv;

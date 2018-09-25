@@ -7,7 +7,7 @@ use work.cnn_types.all;
 
 entity DotProduct is
   generic(
-    PIXEL_SIZE       : integer;
+    BITWIDTH       : integer;
     SUM_WIDTH        : integer;
     DOT_PRODUCT_SIZE : integer;
     KERNEL_VALUE     : pixel_array;
@@ -30,7 +30,7 @@ architecture rtl of DotProduct is
   -- components
   component MCM
     generic (
-      PIXEL_SIZE       : integer;
+      BITWIDTH       : integer;
       DOT_PRODUCT_SIZE : integer;
       KERNEL_VALUE     : pixel_array
       );
@@ -47,7 +47,7 @@ architecture rtl of DotProduct is
 
   component MOA
     generic (
-      PIXEL_SIZE   : integer;
+      BITWIDTH   : integer;
       SUM_WIDTH    : integer;
       NUM_OPERANDS : integer;
       BIAS_VALUE   : std_logic_vector
@@ -69,7 +69,7 @@ architecture rtl of DotProduct is
 begin
   MCM_i : MCM
     generic map (
-      PIXEL_SIZE       => PIXEL_SIZE,
+      BITWIDTH       => BITWIDTH,
       DOT_PRODUCT_SIZE => DOT_PRODUCT_SIZE,
       KERNEL_VALUE     => KERNEL_VALUE
       )
@@ -84,7 +84,7 @@ begin
       );
   MOA_i : MOA
     generic map (
-      PIXEL_SIZE   => PIXEL_SIZE,
+      BITWIDTH   => BITWIDTH,
       SUM_WIDTH    => SUM_WIDTH,
       NUM_OPERANDS => DOT_PRODUCT_SIZE,
       BIAS_VALUE   => BIAS_VALUE
