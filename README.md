@@ -48,27 +48,25 @@ Components required to implement the supported CNN layers can be found at `lib/h
 
 -   `make hdl` generates the VHDL description of the CNN
 -   `make quartus_proj` creates a simple Quartus II project to implement LeNet on an Intel Cyclone V FPGA
--    `make compile` lunches Quartus tool to compile and synthesize your design. This command requires `quartus` binary to be on your path
+-   `make compile` lunches Quartus tool to compile and synthesize your design. This command requires `quartus` binary to be on your path
 
-
-    cd $HADDOC2_ROOT/example
-    make hdl
-    >> Haddoc2 CNN parameter parser:
-        prototxt: ./caffe/lenet.prototxt
-        caffe model: ./caffe/lenet.caffemodel
-        vhdl out: ./hdl_generated
-        bit width : 5
-    >> Generated toplevel file: ./hdl_generated/cnn_process.vhd
-
-    make quartus_proj
-    >> Succefully generated quartus project
-
-    make compile
-    >> quartus_map cnn_process -c cnn_process
-    ...
+```
+cd $HADDOC2_ROOT/example
+make hdl
+>> Haddoc2 CNN parameter parser:
+  prototxt: ./caffe/lenet.prototxt
+  caffe model: ./caffe/lenet.caffemodel
+  vhdl out: ./hdl_generated
+  bit width : 5
+>> Generated toplevel file: ./hdl_generated/cnn_process.vhd
+make quartus_proj
+>> Succefully generated quartus project
+make compile
+>> quartus_map cnn_process -c cnn_process
+...
+```
 
 # TODO
-
 1.  Add support of BatchNorm / Sigmoid / ReLU layers
 2.  Implement Dynamic Fixed Point Arithmetic
 3.  Support conv layers with sparse connections (such AlexNet's conv2 layer, where each neuron is connected to only half of conv1 outputs i.e n_outputs(layer-1) != n_inputs(layer) )
